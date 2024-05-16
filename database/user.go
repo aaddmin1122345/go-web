@@ -7,21 +7,14 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type User struct {
-	ID       int
-	StudID   int
-	Username string
-	Sex      string
-	Email    string
-}
-
+// Database 连接和关闭已由db.go实现
 type Database interface {
-	Connect() (*sql.DB, error)
+	//Connect() (*sql.DB, error)
 	GetUserByStudID(studID int) (*User, error)
 	AddUser(user *User) error
 	UpdateUser(user *User) error
 	DeleteUser(studID int) error
-	Close() error
+	//Close() error
 }
 
 type MysqlDatabase struct {
@@ -29,20 +22,20 @@ type MysqlDatabase struct {
 }
 
 // Connect 连接数据库
-func (m MysqlDatabase) Connect() (*sql.DB, error) {
-	dbConn := "root:123456@tcp(127.0.0.1:3306)/web"
-	db, err := sql.Open("mysql", dbConn)
-	if err != nil {
-		return nil, err
-	}
-	err = db.Ping()
-	if err != nil {
-		_ = m.Close()
-		return nil, err
-	}
-
-	return m.db, nil
-}
+//func (m MysqlDatabase) Connect() (*sql.DB, error) {
+//	dbConn := "root:123456@tcp(127.0.0.1:3306)/web"
+//	db, err := sql.Open("mysql", dbConn)
+//	if err != nil {
+//		return nil, err
+//	}
+//	err = db.Ping()
+//	if err != nil {
+//		_ = m.Close()
+//		return nil, err
+//	}
+//
+//	return m.db, nil
+//}
 
 // GetUserByStudID 通过studID查询
 func (m MysqlDatabase) GetUserByStudID(studID int) (*User, error) {
@@ -85,10 +78,10 @@ func (m MysqlDatabase) DeleteUser(studID int) error {
 	return err
 }
 
-// Close 关闭数据库连接
-func (m MysqlDatabase) Close() error {
-	if m.db != nil {
-		return m.db.Close()
-	}
-	return nil
-}
+//// Close 关闭数据库连接
+//func (m MysqlDatabase) Close() error {
+//	if m.db != nil {
+//		return m.db.Close()
+//	}
+//	return nil
+//}
