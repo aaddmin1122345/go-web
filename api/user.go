@@ -1,40 +1,33 @@
 package api
 
-import "errors"
+import (
+	"encoding/json"
+	"fmt"
+	"go-web/service"
+	"net/http"
+)
 
-type userRepository interface {
-	addUser(user *User) (*User, error)
-	deleteUser(user *User) (*User, error)
-	updateUser(user *User) (*User, error)
-	getUserByUsername(username string) (*User, error)
-}
+func GetUsersByStudID(w http.ResponseWriter, r *http.Request) {
 
-type User struct {
-	ID       int
-	StudID   string
-	Username string
-	Sex      string
-	email    string
-}
+	fmt.Println(r.)
 
-type userServiceImpl struct {
-}
+	user := service.GetUsersByStudID(1000)
 
-func (u userServiceImpl) addUser(user *User) (*User, error) {
-	//if (*user).StudID != '0' {
-	return nil, errors.New("user already exists")
-	//}
-}
+	// 将学生信息编码为 JSON 格式
+	responseData, err := json.Marshal(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-func (u userServiceImpl) deleteUser(user *User) (*User, error) {
-	return nil, errors.New("not implemented")
+	// 设置响应头
+	w.Header().Set("Content-Type", "application/json")
 
-}
-
-func (u userServiceImpl) updateUser(user *User) (*User, error) {
-	return nil, errors.New("not implemented")
-}
-
-func (u userServiceImpl) getUserByUsername(username string) (*User, error) {
-	return nil, errors.New("not implemented")
+	// 将 JSON 响应写入到 ResponseWriter 中
+	_, err = w.Write(responseData)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	return
 }

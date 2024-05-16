@@ -5,5 +5,5 @@ type User struct {
 	StudID   string
 	Username string
 	Sex      string
-	email    string
+	Email    string
 }

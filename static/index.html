@@ -134,8 +134,8 @@
 
         function getStud() {
             let data = {
-                Id: 0,
-                StudId: "",
+                ID: 0,
+                StudID: "",
                 Username: "",
                 Sex: "",
                 Email: ""
@@ -143,13 +143,13 @@
 
             $.ajax({
                 type: "GET",
-                url: "/stud",
+                url: "/api/GetUsersByStudID",
                 dataType: "json",
                 success: function (responseData) {
                     data = responseData;
                     console.log("success", data);
-                    $("#stud").html("ID: " + data.Id + "<br>" +
-                        "学生 ID: " + data.StudId + "<br>" +
+                    $("#stud").html("ID: " + data.ID + "<br>" +
+                        "学生 ID: " + data.StudID + "<br>" +
                         "用户名: " + data.Username + "<br>" +
                         "性别: " + data.Sex + "<br>" +
                         "邮箱: " + data.Email)
@@ -166,7 +166,7 @@
             console.log(searchUser)
             $.ajax({
                 type: "POST",
-                url: "/api/searchUsers",
+                url: "/api/GetUsersByStudID",
                 data: searchUser, // 直接发送搜索关键字字符串
                 success: function (data) {
                     console.log("success", data);
