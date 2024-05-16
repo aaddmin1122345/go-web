@@ -7,3 +7,8 @@ type User struct {
 	Sex      string
 	Email    string
 }
+
+type Login struct {
+	Username string
+	Password string
+}

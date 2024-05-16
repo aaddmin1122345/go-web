@@ -83,7 +83,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/userValid",  // 修改为与后端路由匹配的路径
+                url: "/api/login",  // 修改为与后端路由匹配的路径
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 data: JSON.stringify(dataToSend),
@@ -115,7 +115,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/userIsValid",
+                url: "/api/login",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 data: JSON.stringify(jsonData),
@@ -143,7 +143,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "/api/GetUsersByStudID",
+                url: "/api/",
                 dataType: "json",
                 success: function (responseData) {
                     data = responseData;
@@ -161,21 +161,33 @@
             });
         }
 
-        function searchUser() {
+        function searchUser()
+        {
+            let data = {
+                ID: 0,
+                StudID: "",
+                Username: "",
+                Sex: "",
+                Email: ""
+            };
             let searchUser = $("#searchUser").val();
             console.log(searchUser)
             $.ajax({
                 type: "POST",
                 url: "/api/GetUsersByStudID",
                 data: searchUser, // 直接发送搜索关键字字符串
-                success: function (data) {
+                success: function (responseData) {
+                    data = responseData;
                     console.log("success", data);
-                    $("#aaa").html(data).css("color", "Red");
-                    // 处理成功响应的逻辑
+                    $("#stud").html("ID: " + data.ID + "<br>" +
+                        "学生 ID: " + data.StudID + "<br>" +
+                        "用户名: " + data.Username + "<br>" +
+                        "性别: " + data.Sex + "<br>" +
+                        "邮箱: " + data.Email)
+                        .css("color", "Red");
                 },
                 error: function () {
                     console.log("false");
-                    // 处理失败响应的逻辑
                 }
             });
         }

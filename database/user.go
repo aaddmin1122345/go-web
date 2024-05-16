@@ -14,6 +14,7 @@ type Database interface {
 	AddUser(user *model.User) error
 	UpdateUser(user *model.User) error
 	DeleteUser(studID int) error
+	Login(login *model.Login) (*model.Login, error)
 }
 
 type MyDatabaseImpl struct {
@@ -49,14 +50,43 @@ func (m *MyDatabaseImpl) AddUser(user *model.User) error {
 
 // UpdateUser 更新用户信息
 func (m *MyDatabaseImpl) UpdateUser(user *model.User) error {
-	query := "UPDATE stud SET username = ?, sex = ?, email = ? WHERE studNo = ?"
+	query := "UPDATE stud SET uUsername = ?, Sex = ?, Email = ? WHERE StudID = ?"
 	_, err := m.Db.Exec(query, user.Username, user.Sex, user.Email, user.StudID)
 	return err
 }
 
 // DeleteUser 通过studID删除用户
 func (m *MyDatabaseImpl) DeleteUser(studID int) error {
-	query := "DELETE FROM stud WHERE studNo = ?"
+	query := "DELETE FROM stud WHERE StudID = ?"
 	_, err := m.Db.Exec(query, studID)
 	return err
+}
+
+func (m *MyDatabaseImpl) Login(login *model.Login) (*model.Login, error) {
+	// 准备查询语句
+	query := "SELECT Username, Password FROM stud WHERE " +
+		"" +
+		"''' = ?"
+
+	// 执行查询
+	var storedUsername, storedPassword string
+	err := m.Db.QueryRow(query, login.Username).Scan(&storedUsername, &storedPassword)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, errors.New("用户名或密码错误")
+		}
+		return nil, err
+	}
+
+	//fmt.Println(login.Username, login.Password)
+
+	if login.Password != storedPassword {
+		return nil, errors.New("用户名或密码错误")
+	}
+
+	// 返回登录成功的用户信息
+	return &model.Login{
+		Username: storedUsername,
+		Password: storedPassword,
+	}, nil
 }
