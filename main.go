@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"web/api"
-	"web/database"
+	//"web/api"
+	//"web/database"
 )
 
 func main() {

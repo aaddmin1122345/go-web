@@ -5,7 +5,7 @@ async function searchUser(): Promise<void> {
         const searchUser: string = (document.getElementById("searchUser") as HTMLInputElement).value;
         console.log(searchUser);
 
-        const response = await axios.post("/api/searchUsers", { searchUser });
+        const response = await axios.post("/api/searchUsers", {searchUser});
 
         if (response.status !== 200) {
             throw new Error("Failed to fetch data. Status: " + response.status);
