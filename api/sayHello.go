@@ -9,7 +9,7 @@ type Response struct {
 	Message string `json:"message"`
 }
 
-func SayHello(w http.ResponseWriter, r *http.Request) {
+func SayHello(w http.ResponseWriter, _ *http.Request) {
 	response := Response{
 		Message: "Hello, World!",
 	}
@@ -25,5 +25,8 @@ func SayHello(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// 将 JSON 响应写入响应体
-	w.Write(jsonResponse)
+	_, err = w.Write(jsonResponse)
+	if err != nil {
+		return
+	}
 }

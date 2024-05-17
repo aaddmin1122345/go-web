@@ -64,9 +64,9 @@ func (m *MyDatabaseImpl) DeleteUser(studID int) error {
 
 func (m *MyDatabaseImpl) Login(login *model.Login) (*model.Login, error) {
 	// 准备查询语句
-	query := "SELECT Username, Password FROM stud WHERE " +
-		"" +
-		"''' = ?"
+	query := "SELECT Username, Password FROM stud WHERE " + ""
+
+	//query := "SELECT Username, Password FROM stud WHERE Username = ?"
 
 	// 执行查询
 	var storedUsername, storedPassword string
