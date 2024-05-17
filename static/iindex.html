@@ -1,0 +1,279 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+    <script src="script/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 点击发送Ajax响应
+            $("#btn1").click(function () {
+                sendAjaxHello();
+            });
+
+            // 点击计算
+            $("#btn2").click(function () {
+                calculate();
+            });
+
+            // 点击登录
+            $("#btn3").click(function () {
+                login();
+            });
+
+            //     另外一个版本的登陆
+            $("#btn4").click(function () {
+                loginA();
+            });
+
+            $("#btn5").click(function () {
+                searchUser();
+            });
+
+            $("#btn6").click(function () {
+                UserSelect();
+            });
+        });
+
+
+        function UserSelect(){
+            {
+                let data = {
+                    ID: 0,
+                    StudID: "",
+                    Username: "",
+                    Sex: "",
+                    Email: ""
+                };
+                let searchUser = $("#searchUser").val();
+                console.log(searchUser)
+                $.ajax({
+                    type: "POST",
+                    url: "/api/GetUsersByStudID",
+                    data: searchUser, // 直接发送搜索关键字字符串
+                    success: function (responseData) {
+                        data = responseData;
+                        console.log("success", data);
+                        $("#stud").html("ID: " + data.ID + "<br>" +
+                            "学生 ID: " + data.StudID + "<br>" +
+                            "用户名: " + data.Username + "<br>" +
+                            "性别: " + data.Sex + "<br>" +
+                            "邮箱: " + data.Email)
+                            .css("color", "Red");
+                    },
+                    error: function () {
+                        console.log("false");
+                    }
+                });
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function sendAjaxHello() {
+            $.ajax({
+                type: "POST",
+                url: "/sayHello",  // 修改为与后端路由匹配的路径
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr, status, error) {
+                    alert("请求失败：" + error);
+                }
+            });
+        }
+
+        // 计算
+        function calculate() {
+            const par1Value = parseInt($("#par1").val());
+            const par2Value = parseInt($("#par2").val());
+            const dataToSend = {
+                par1: par1Value,
+                par2: par2Value
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/sum",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(dataToSend),
+                // data:dataToSend,
+                success: function (data) {
+                    $("#result").html("<h1 style='color: red;'>结果：" + data.result + "</h1>"); // 修正这一行
+                },
+                error: function (xhr, status, error) {
+                    alert("请求失败：" + error);
+                }
+            });
+        }
+
+
+        // 用户登录验证
+        function login() {
+            const username = $("#user").val();
+            const password = $("#pwd").val();
+            const dataToSend = {
+                username: username,
+                password: password
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/api/login",  // 修改为与后端路由匹配的路径
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(dataToSend),
+                success: function (data) {
+                    if (data.valid)
+                        alert("登录成功");
+                    else
+                        alert("登录失败");
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        function loginA() {
+            const name = $("#userName").val();
+            const pwd = $("#passWord").val();
+
+            const jsonData = {
+                userName: name,
+                passWord: pwd
+            };
+
+            if (name.length === 0 || pwd.length === 0) {
+                $("#errorInfo").html("用户名和密码都不能为空").css("color", "Red");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/api/login",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(jsonData),
+                success: function (data) {
+                    if (data.valid) {
+                        alert("success!")
+                    } else {
+                        $("#errorInfo").html("用户或密码错误").css("color", "Red");
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        function getStud() {
+            let data = {
+                ID: 0,
+                StudID: "",
+                Username: "",
+                Sex: "",
+                Email: ""
+            };
+
+            $.ajax({
+                type: "GET",
+                url: "/api/",
+                dataType: "json",
+                success: function (responseData) {
+                    data = responseData;
+                    console.log("success", data);
+                    $("#stud").html("ID: " + data.ID + "<br>" +
+                        "学生 ID: " + data.StudID + "<br>" +
+                        "用户名: " + data.Username + "<br>" +
+                        "性别: " + data.Sex + "<br>" +
+                        "邮箱: " + data.Email)
+                        .css("color", "Red");
+                },
+                error: function () {
+                    console.log("false");
+                }
+            });
+        }
+
+        function searchUser()
+        {
+            let data = {
+                ID: 0,
+                StudID: "",
+                Username: "",
+                Sex: "",
+                Email: ""
+            };
+            let searchUser = $("#searchUser").val();
+            console.log(searchUser)
+            $.ajax({
+                type: "POST",
+                url: "/api/GetUsersByStudID",
+                data: searchUser, // 直接发送搜索关键字字符串
+                success: function (responseData) {
+                    data = responseData;
+                    console.log("success", data);
+                    $("#stud").html("ID: " + data.ID + "<br>" +
+                        "学生 ID: " + data.StudID + "<br>" +
+                        "用户名: " + data.Username + "<br>" +
+                        "性别: " + data.Sex + "<br>" +
+                        "邮箱: " + data.Email)
+                        .css("color", "Red");
+                },
+                error: function () {
+                    console.log("false");
+                }
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+<button id="btn1" type="button">点击发送Ajax响应</button>
+<br/>
+<label for="par1">参数1：</label><input id="par1" placeholder="参数1" type="text">
+<label for="par2">参数2：</label><input id="par2" placeholder="参数2" type="text">
+<button id="btn2" type="button">计算</button>
+<div id="result"></div>
+<br/>
+<label for="user">用户名：</label><input id="user" placeholder="用户名" type="text">
+<label for="pwd">密码：</label><input id="pwd" placeholder="密码" type="text">
+<button id="btn3" type="button">登录</button>
+<br/>
+<label for="userName">新用户名：</label><input id="userName" placeholder="新用户名" type="text"/>
+<label for="passWord">新密码：</label><input id="passWord" placeholder="新密码" type="text"/>
+<button id="btn4" type="button">新登陆</button>
+<div id="errorInfo"></div><!-- 添加用于显示错误信息的 div 元素 -->
+<br>
+<button id="getStud" onclick="getStud()" type="button"> 学生信息</button>
+<div id="stud"></div>
+<br>
+<label for="searchUser"></label><input id="searchUser" type="text">
+<button id="btn5" onclick="searchUser()"> 查询信息</button>
+<div id="aaa"></div>
+<br>
+
+<label for="UserSelect"></label><input id="UserSelect" type="text">
+<button id="btn6" > 查询信息</button>
+<div id="bbb"></div>
+
+
+</body>
+</html>

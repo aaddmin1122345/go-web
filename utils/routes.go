@@ -19,6 +19,10 @@ func (r RouteImpl) Handler() {
 	http.HandleFunc("/sayHello", api.SayHello)
 	http.HandleFunc("/api/login", UserApi.Login)
 	http.HandleFunc("/api/GetUsersByStudID", UserApi.GetUsersByStudID)
+	http.HandleFunc("/api/web10", UserApi.GetUserByUserName)
+	http.HandleFunc("/api/register", UserApi.AddUser)
+	http.HandleFunc("/api/deleteUser", UserApi.DeleteUser)
+
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		return
