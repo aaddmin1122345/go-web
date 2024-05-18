@@ -18,8 +18,9 @@ func (r RouteImpl) Handler() {
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/sayHello", api.SayHello)
 	http.HandleFunc("/api/login", UserApi.Login)
-	http.HandleFunc("/api/GetUsersByStudID", UserApi.GetUsersByStudID)
-	http.HandleFunc("/api/web10", UserApi.GetUserByUserName)
+	//http.HandleFunc("/api/GetUsersByStudID", UserApi.GetUsersByStudID)
+	http.HandleFunc("/api/getUserByUserName", UserApi.GetUserByUserName)
+	http.HandleFunc("/api/updateUser", UserApi.UpdateUser)
 	http.HandleFunc("/api/register", UserApi.AddUser)
 	http.HandleFunc("/api/deleteUser", UserApi.DeleteUser)
 
