@@ -1,0 +1,69 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+#search {
+    margin-bottom: 10px;
+}
+
+#getUserByUserNameBtn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#results {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#results th, #results td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#results th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+#registerForm, #loginForm {
+    margin-top: 20px;
+}
+
+#registerForm label, #loginForm label {
+    display: inline-block;
+    width: 100px;
+    margin-right: 10px;
+}
+
+#registerForm input[type="text"], #loginForm input[type="text"], #registerForm input[type="password"], #loginForm input[type="password"] {
+    width: 200px;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+}
+
+#registerForm button[type="submit"], #loginForm button[type="submit"], #getUserByUserNameBtn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#errorInfo {
+    margin-top: 10px;
+    color: red;
+}
