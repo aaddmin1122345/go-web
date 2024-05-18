@@ -13,7 +13,7 @@ type UserService interface {
 	AddUser(user *model.Register) error
 	GetUserByUserName(username string) ([]*model.User, error)
 	Login(login *model.Login) (*model.Login, error)
-	GetUsersByStudID(StudID int) *model.User
+	GetUserByPhoneNum(PhoneNum string) *model.User
 	DeleteUser(StudID int) error
 	UpdateUser(user *model.Register) error
 }
@@ -65,13 +65,13 @@ func (u *UserServiceImpl) Login(login *model.Login) (*model.Login, error) {
 	return user, nil
 }
 
-func (u *UserServiceImpl) GetUsersByStudID(StudID int) *model.User {
-	id, err := myDatabase.GetUserByStudID(StudID)
+func (u *UserServiceImpl) GetUserByPhoneNum(PhoneNum string) *model.User {
+	phoneNum, err := myDatabase.GetUserByPhoneNum(PhoneNum)
 	if err != nil {
 		//fmt.Println("检测StudID是否正确")
 		return nil
 	}
-	return id
+	return phoneNum
 }
 
 func (u *UserServiceImpl) AddUser(user *model.Register) error {

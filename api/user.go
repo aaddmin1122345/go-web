@@ -72,17 +72,21 @@ func (u UserApiImpl) bodyToInit(body io.Reader) (int, error) {
 	return value, nil
 }
 
-func (u UserApiImpl) GetUsersByStudID(w http.ResponseWriter, r *http.Request) {
-	studID, err := u.bodyToInit(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+func (u UserApiImpl) GetUserByPhoneNum(w http.ResponseWriter, r *http.Request) {
+	//studID, err := u.bodyToInit(r.Body)
+	//if err != nil {
+	//	http.Error(w, err.Error(), http.StatusBadRequest)
+	//	return
+	//}
 
 	//fmt.Println("11111111111111")
 	//fmt.Println(studID)
 
-	user := UserService.GetUsersByStudID(studID)
+	data, err := io.ReadAll(r.Body)
+	if err != nil {
+		return
+	}
+	user := UserService.GetUserByPhoneNum(string(data))
 
 	//解码json
 	responseData, err := json.Marshal(user)
@@ -105,7 +109,6 @@ func (u UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
 	// 解析请求体中的 JSON 数据到 requestData 变量中
 	var requestData model.Login
 	err := json.NewDecoder(r.Body).Decode(&requestData)
-	fmt.Println(requestData)
 	if err != nil {
 		//http.StatusBadRequest 返回特定错误
 		http.Error(w, "解码json失败", http.StatusBadRequest)
@@ -121,7 +124,7 @@ func (u UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
 
 	// 构造响应数据
 	//匿名结构体 responseData
-	//user 不为 nil，说明登录成功，Valid 为 true
+	//user 不为 nil，说明登录成功，Valid 默认为 true,如果nil是空的就说明前面查询没报错,那么就代表登陆成功
 	responseData := struct {
 		Valid bool `json:"valid"`
 	}{
