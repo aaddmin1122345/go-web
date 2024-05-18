@@ -184,8 +184,9 @@
 </head>
 <body>
 <h1>学生信息管理</h1>
-
 <h2>模糊查询</h2>
+
+<label for="search"></label>
 <input type="text" id="search" placeholder="输入用户名">
 <button id="getUserByUserNameBtn">查询</button>
 
@@ -196,58 +197,25 @@
         <th>Username</th>
         <th>Sex</th>
         <th>Email</th>
+        <th>Password</th>
+        <th>CreateTime</th>
+        <th>操作</th>
     </tr>
 </table>
-
-<h2>添加学生信息</h2>
-<form id="addUserForm">
-    <label for="studID">StudID:</label>
-    <input type="text" id="studID" required><br>
-    <label for="username">用户名:</label>
-    <input type="text" id="username" required><br>
-    <label for="sex">性别:</label>
-    <input type="text" id="sex" required><br>
-    <label for="email">邮箱:</label>
-    <input type="text" id="email" required><br>
-    <label for="password">密码:</label>
-    <input type="text" id="password" required><br>
-    <button type="submit">添加</button>
-</form>
-<br>
-<h2>删除用户</h2>
-<input id="deleteUser" type="text" >
-<button type="button" id="delUserBtn"> 删除 </button>
-<br>
-<h2>登陆</h2>
-
-<form id="loginForm">
-    <div>
-        <label for="loginUserName">用户名:</label>
-        <input type="text" id="loginUserName"><br>
-        <label for="loginPassWord">密码:</label>
-        <input type="password" id="loginPassWord"><br>
-        <button type="button" onclick="login()">登录</button>
-        <div id="errorInfo"></div>
-    </div>
-</form>
-
-
 
 <h2>修改学生信息</h2>
 <form id="updateUserForm">
     <label for="updateStudID">StudID:</label>
-    <input type="text" id="updateStudID" required><br>
+    <input type="text" id="updateStudID" required readonly><br>
     <label for="updateUsername">用户名:</label>
     <input type="text" id="updateUsername" required><br>
     <label for="updateSex">性别:</label>
     <input type="text" id="updateSex" required><br>
     <label for="updateEmail">邮箱:</label>
     <input type="text" id="updateEmail" required><br>
-    <button type="submit" onclick="updateUser()">修改</button>
+    <label for="updatePassword">密码:</label>
+    <input type="text" id="updatePassword" required><br>
+    <button type="submit">修改</button>
 </form>
-<div id="updateErrorInfo"></div>
-
-
-
 </body>
 </html>
