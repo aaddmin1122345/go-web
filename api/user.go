@@ -13,7 +13,7 @@ import (
 var UserService service.UserServiceImpl
 
 type UserApi interface {
-	DecodeJson(r *http.Request) error
+	DecodeJson(w http.ResponseWriter, r *http.Request, newData interface{}) error
 	bodyToInit(body io.Reader) (int, error)
 	GetUsersByStudID(w http.ResponseWriter, r *http.Request)
 	Login(w http.ResponseWriter, r *http.Request)
@@ -148,8 +148,9 @@ func (u UserApiImpl) GetUserByUserName(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 调用服务层方法进行模糊查询
 	users, err := UserService.GetUserByUserName(requestData.Username)
+
+	//fmt.Println(&users)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -190,6 +191,8 @@ func (u UserApiImpl) AddUser(w http.ResponseWriter, r *http.Request) {
 
 func (u UserApiImpl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	studID, err := u.bodyToInit(r.Body)
+
+	fmt.Println(studID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

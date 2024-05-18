@@ -20,7 +20,7 @@ type UserService interface {
 
 type UserServiceImpl struct{}
 
-func (u UserServiceImpl) UpdateUser(user *model.Register) error {
+func (u *UserServiceImpl) UpdateUser(user *model.Register) error {
 	err := myDatabase.UpdateUser(user)
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func (u UserServiceImpl) UpdateUser(user *model.Register) error {
 
 }
 
-func (u UserServiceImpl) GetUserByUserName(username string) ([]*model.User, error) {
+func (u *UserServiceImpl) GetUserByUserName(username string) ([]*model.User, error) {
 	users, err := myDatabase.GetUserByUserName(username)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func init() {
 //	myDatabase.Db = conn // 将连接对象保存到 myDatabase 结构体中的 db 字段
 //}
 
-func (u UserServiceImpl) Login(login *model.Login) (*model.Login, error) {
+func (u *UserServiceImpl) Login(login *model.Login) (*model.Login, error) {
 	user, err := myDatabase.Login(login)
 	//fmt.Println(user)
 	if err != nil {
@@ -65,7 +65,7 @@ func (u UserServiceImpl) Login(login *model.Login) (*model.Login, error) {
 	return user, nil
 }
 
-func (u UserServiceImpl) GetUsersByStudID(StudID int) *model.User {
+func (u *UserServiceImpl) GetUsersByStudID(StudID int) *model.User {
 	id, err := myDatabase.GetUserByStudID(StudID)
 	if err != nil {
 		//fmt.Println("检测StudID是否正确")
@@ -74,7 +74,7 @@ func (u UserServiceImpl) GetUsersByStudID(StudID int) *model.User {
 	return id
 }
 
-func (u UserServiceImpl) AddUser(user *model.Register) error {
+func (u *UserServiceImpl) AddUser(user *model.Register) error {
 	err := myDatabase.AddUser(user)
 	if err != nil {
 		return err
@@ -82,7 +82,7 @@ func (u UserServiceImpl) AddUser(user *model.Register) error {
 	return nil
 }
 
-func (u UserServiceImpl) DeleteUser(StudID int) error {
+func (u *UserServiceImpl) DeleteUser(StudID int) error {
 	err := myDatabase.DeleteUser(StudID)
 	if err != nil {
 		//fmt.Println("检测StudID是否正确")
