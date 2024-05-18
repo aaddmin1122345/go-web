@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 )
 
 type DbInit interface {
@@ -26,7 +25,7 @@ func (d *DbInitImpl) Conn() (*sql.DB, error) {
 		return nil, err
 	}
 	d.Db = db // 将连接赋值给 Db 字段
-	fmt.Println("Successfully connected to Database")
+	//fmt.Println("连接成功")
 	return d.Db, nil
 }
 
