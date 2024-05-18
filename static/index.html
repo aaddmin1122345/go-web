@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>学生信息管理</title>
+    <title>test</title>
+    <link rel="stylesheet" type="text/css" href="./css/user.css">
     <script src="./script/jquery-3.7.1.js"></script>
     <script src="./script/user.js"></script>
+
     <script>
         $(document).ready(function () {
             // 点击发送Ajax响应
@@ -13,9 +15,13 @@
             });
 
             // 点击计算
-            $("#btn2").click(function () {
-                calculate();
-            });
+            // $("#registerBtn").click(function () {
+            //     addUser();
+            // });
+
+            // $("#registerBtn").click(function () {
+            //     addUser();
+            // });
 
             // 点击登录
             // $("#btn3").click(function () {
@@ -23,9 +29,9 @@
             // });
 
             // 另外一个版本的登陆
-            $("#btn4").click(function () {
-                login();
-            });
+            // $("#loginSubmit").click(function () {
+            //     login();
+            // });
 
             // $("#btn5").click(function () {
             //     searchUser();
@@ -183,39 +189,56 @@
     </script>
 </head>
 <body>
-<h1>学生信息管理</h1>
+<h1>test</h1>
 <h2>模糊查询</h2>
 
 <label for="search"></label>
 <input type="text" id="search" placeholder="输入用户名">
 <button id="getUserByUserNameBtn">查询</button>
 
-<table id="results" border="1">
+<table id="results">
     <tr>
         <th>ID</th>
-        <th>StudID</th>
-        <th>Username</th>
-        <th>Sex</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>CreateTime</th>
+        <th>手机号</th>
+        <th>用户名</th>
+        <th>性别</th>
+        <th>邮箱</th>
+        <th>密码</th>
+        <th>创建时间</th>
+        <th>注册类型</th>
         <th>操作</th>
     </tr>
 </table>
 
-<h2>修改学生信息</h2>
-<form id="updateUserForm">
-    <label for="updateStudID">StudID:</label>
-    <input type="text" id="updateStudID" required readonly><br>
-    <label for="updateUsername">用户名:</label>
-    <input type="text" id="updateUsername" required><br>
-    <label for="updateSex">性别:</label>
-    <input type="text" id="updateSex" required><br>
-    <label for="updateEmail">邮箱:</label>
-    <input type="text" id="updateEmail" required><br>
-    <label for="updatePassword">密码:</label>
-    <input type="text" id="updatePassword" required><br>
-    <button type="submit">修改</button>
+<h2>注册</h2>
+<form id="registerForm">
+    <label for="phoneNum">手机号:</label>
+    <input type="text" id="phoneNum"><br>
+    <label for="username">用户名:</label>
+    <input type="text" id="username" ><br>
+    <label for="sex">性别:</label>
+    <input type="text" id="sex" ><br>
+    <label for="email">邮箱:</label>
+    <input type="text" id="email" ><br>
+    <label for="password">密码:</label>
+    <input type="text" id="password" ><br>
+    <label for="userType">注册类型:</label>
+    <input type="text" id="userType" ><br>
+    <button type="submit">注册</button>
 </form>
+
+<h3> 登陆</h3>
+
+<form id="loginForm">
+    <label for="loginUserName">用户名或手机号:</label>
+    <input type="text" id="loginUserName"><br>
+    <label for="loginPassWord">密码:</label>
+    <input type="text" id="loginPassWord" ><br>
+    <button type="submit" >提交</button>
+    <div id="errorInfo"></div>
+</form>
+
+
+
 </body>
 </html>
