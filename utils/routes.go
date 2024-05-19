@@ -22,7 +22,7 @@ func (r RouteImpl) Handler() {
 	http.HandleFunc("/api/getUserByUserName", UserApi.GetUserByUserName)
 	http.HandleFunc("/api/updateUser", UserApi.UpdateUser)
 	http.HandleFunc("/api/register", UserApi.AddUser)
-	http.HandleFunc("/api/deleteUser", UserApi.DeleteUser)
+	http.HandleFunc("/api/delUser", UserApi.DeleteUser)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

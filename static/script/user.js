@@ -71,17 +71,8 @@ function updateUser(userId) {
 }
 
 
-function getUserByUserName()
-{
-    // const user = {
-    //     ID: 0,
-    //     PhoneNum: 0,
-    //     Username: "",
-    //     Sex: "",
-    //     Email: "",
-    //     Password: "",
-    //     CreateTime: ""
-    // };
+// 重新写的模糊查询
+function getUserByUserName() {
     const username = $('#search').val();
     $.ajax({
         url: '/api/getUserByUserName',
@@ -95,43 +86,22 @@ function getUserByUserName()
             data.forEach(function (user) {
                 const tr = $('<tr>');
                 tr.append('<td>' + user.ID + '</td>');
-                tr.append('<td id="phoneNum_' + user.ID + '">' + user.PhoneNum + '</td>');
-                // tr.append('<td>' + user.PhoneNum + '</td>');
-                tr.append('<td id="username_' + user.ID + '">' + user.Username + '</td>');
-                tr.append('<td id="sex_' + user.ID + '">' + user.Sex + '</td>');
-                tr.append('<td id="email_' + user.ID + '">' + user.Email + '</td>');
-                tr.append('<td id="password_' + user.ID + '">' + user.Password + '</td>');
-                tr.append('<td id="userType_' + user.ID + '">' + user.UserType + '</td>');
-                tr.append('<td id="createTime_' + user.ID + '">' + user.CreateTime + '</td>');
-                // 添加编辑按钮
-                const editButton = $('<button>').text('编辑');
-                editButton.click(function () {
-                    const userId = user.ID; // 获取用户的 ID
+                tr.append('<td>' + user.PhoneNum + '</td>');
+                tr.append('<td>' + user.Username + '</td>');
+                tr.append('<td>' + user.Sex + '</td>');
+                tr.append('<td>' + user.Email + '</td>');
+                tr.append('<td>' + user.Password + '</td>');
+                tr.append('<td>' + user.UserType + '</td>');
+                tr.append('<td>' + user.CreateTime + '</td>');
 
-                    // 将该行信息显示为输入框
-                    $('#phoneNum_' + userId).html('<input type="text" id="updatePhoneNum_' + userId + '" value="' + user.PhoneNum + '">');
-                    $('#username_' + userId).html('<input type="text" id="updateUsername_' + userId + '" value="' + user.Username + '">');
-                    $('#sex_' + userId).html('<input type="text" id="updateSex_' + userId + '" value="' + user.Sex + '">');
-                    $('#email_' + userId).html('<input type="text" id="updateEmail_' + userId + '" value="' + user.Email + '">');
-                    $('#password_' + userId).html('<input type="text" id="updatePassword_' + userId + '" value="' + user.Password + '">');
-                    $('#userType_' + userId).html('<input type="text" id="updateuserType_' + userId + '" value="' + user.UserType_ + '">');
-
-
-                    // 替换编辑按钮为更新按钮
-                    const updateButton = $('<button>').text('更新');
-                    updateButton.click(function () {
-                        updateUser(userId); // 传递用户的 ID 给 updateUser 函数
-                    });
-                    $(this).replaceWith(updateButton);
-
-                    // 取消删除按钮的点击事件
-                    $(this).siblings('td').find('button:contains("删除")').off('click');
+                // 编辑按钮
+                const editButton = $('<button>').text('编辑').click(function () {
+                    editUser(user);
                 });
                 tr.append($('<td>').append(editButton));
 
-                // 添加删除按钮
-                const deleteButton = $('<button>').text('删除');
-                deleteButton.click(function () {
+                // 删除按钮
+                const deleteButton = $('<button>').text('删除').click(function () {
                     delUser(user.ID);
                 });
                 tr.append($('<td>').append(deleteButton));
@@ -140,7 +110,8 @@ function getUserByUserName()
             });
         },
         error: function (xhr, status, error) {
-            alert('查询失败: ' + error);
+            // alert('查询失败: ' + error);
+            console.log(error)
         }
     });
 }
@@ -164,7 +135,7 @@ function addUser() {
         UserType: $('#userType').val(),
     };
 
-    if (!user.PhoneNum || !user.Username || !user.Sex || !user.Email || !user.Password) {
+    if (!user.PhoneNum || !user.Username || !user.Sex || !user.Email || !user.Password|| !user.UserType) {
         alert("所有字段都必须填写");
         return;
     }
@@ -187,7 +158,7 @@ function addUser() {
 
 function delUser(userId) {
     $.ajax({
-        url: '/api/deleteUser',
+        url: '/api/delUser',
         type: 'POST',
         contentType: 'text/plain',
         data: userId.toString(),
@@ -200,6 +171,26 @@ function delUser(userId) {
         }
     });
     console.log(typeof (userId))
+}
+
+
+function editUser(user) {
+    const userId = user.ID;
+    // 加上 userId 的原因是确保在 HTML 文档中对特定用户的信息进行操作，而不会误操作其他用户的信息。
+    $('#phoneNum_' + userId).html('<input type="text" id="updatePhoneNum_' + userId + '" value="' + user.PhoneNum + '">');
+    $('#username_' + userId).html('<input type="text" id="updateUsername_' + userId + '" value="' + user.Username + '">');
+    $('#sex_' + userId).html('<input type="text" id="updateSex_' + userId + '" value="' + user.Sex + '">');
+    $('#email_' + userId).html('<input type="text" id="updateEmail_' + userId + '" value="' + user.Email + '">');
+    $('#password_' + userId).html('<input type="text" id="updatePassword_' + userId + '" value="' + user.Password + '">');
+    $('#userType_' + userId).html('<input type="text" id="updateUserType_' + userId + '" value="' + user.UserType + '">');
+
+
+    const updateButton = $('<button>').text('更新').click(function () {
+        updateUser(userId);
+    });
+    // $('#phoneNum_' + userId).closest('tr').find('button:contains("编辑")').replaceWith(updateButton);
+
+    $('#results').find('button:contains("编辑")').replaceWith(updateButton);
 }
 
 
