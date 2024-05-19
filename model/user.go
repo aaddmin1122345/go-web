@@ -15,6 +15,7 @@ type Login struct {
 	//PhoneNum string
 	Username string
 	PhoneNum string
+	Email    string
 	Password string
 }
 

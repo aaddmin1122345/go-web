@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../script/jquery-3.7.1.js"></script>
+    <script src="../script/login.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../css/login.css">
+    <!--    <link rel="stylesheet" type="text/css" href="../css/user.css">-->
+</head>
+<body>
+
+<!--<div id="container">-->
+<!--    <h3>登陆</h3>-->
+<!--    <form id="loginForm">-->
+<!--        <label for="loginUserName">用户名或手机号或邮箱:</label>-->
+<!--        <input type="text" id="loginUserName"><br>-->
+<!--        <label for="loginPassWord">密码:</label>-->
+<!--        <input type="text" id="loginPassWord" ><br>-->
+<!--        <button type="submit">提交</button>-->
+<!--        <div id="errorInfo"></div>-->
+<!--    </form>-->
+<!--</div>-->
+
+<div class="login-container">
+    <form id="loginForm">
+        <div class="mb-3">
+            <label for="loginUserName" class="form-label">账号</label>
+            <input type="text" class="form-control" id="loginUserName" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">输入你的用户名/邮箱/手机号</div>
+        </div>
+        <div class="mb-3">
+            <label for="loginPassWord" class="form-label">密码</label>
+            <input type="password" class="form-control" id="loginPassWord">
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">记住我</label>
+        </div>
+        <button type="submit" class="btn btn-primary">登陆</button>
+    </form>
+</div>
+
+
+
+
+</body>
+</html>

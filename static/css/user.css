@@ -3,10 +3,24 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 使页面内容在视口高度内居中 */
 }
 
 h1, h2, h3 {
     color: #333;
+}
+
+#container {
+    width: 100%;
+    max-width: 600px; /* 设置一个最大宽度 */
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; /* 使边角圆滑 */
+    text-align: center; /* 文本居中对齐 */
 }
 
 #search {
@@ -44,8 +58,9 @@ h1, h2, h3 {
 
 #registerForm label, #loginForm label {
     display: inline-block;
-    width: 100px;
+    width: 200px; /* 宽度设置为200px以保持输入框对齐 */
     margin-right: 10px;
+    text-align: left; /* 标签文本左对齐 */
 }
 
 #registerForm input[type="text"], #loginForm input[type="text"], #registerForm input[type="password"], #loginForm input[type="password"] {
