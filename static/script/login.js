@@ -32,7 +32,7 @@ function login() {
             if (err.responseJSON && err.responseJSON.message) {
                 errorMessage = err.responseJSON.message;
             }
-            $("#errorInfo").html(errorMessage).css("color", "red");
+            $("#login_error").html(errorMessage).css("color", "red");
         }
     });
 }

@@ -8,6 +8,7 @@ import (
 
 func main() {
 	fmt.Println("web服务:\thttp://127.0.0.1:8080")
-	u := utils.RouteImpl{}
-	u.Handler()
+	route := utils.RouteImpl{}
+	route.Init()
+
 }

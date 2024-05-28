@@ -42,8 +42,8 @@
             // });
 
             // 模糊查询
-            $('#getUserByUserNameBtn').click(function () {
-                getUserByUserName();
+            $('#getUserByKeyword').click(function () {
+                getUserByKeyword();
             });
 
             // 添加学生信息
@@ -58,7 +58,7 @@
             });
 
             $('#updateUserBtn').click(function () {
-                delUser();
+                updateUser();
             });
 
             // $('#loginForm').click(function () {
@@ -194,7 +194,7 @@
 
 <label for="search"></label>
 <input type="text" id="search" placeholder="输入用户名">
-<button id="getUserByUserNameBtn">查询</button>
+<button id="getUserByKeyword">查询</button>
 
 <table id="results">
     <tr>

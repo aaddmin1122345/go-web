@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type DbInit interface {
@@ -12,6 +13,10 @@ type DbInit interface {
 type DbInitImpl struct {
 	Db *sql.DB
 }
+
+//func (d DbInitImpl) SetDb(db *sql.DB) {
+//	d.Db = db
+//}
 
 func (d *DbInitImpl) Conn() (*sql.DB, error) {
 	dbConn := "root:123456@tcp(127.0.0.1:3306)/web"
@@ -24,8 +29,7 @@ func (d *DbInitImpl) Conn() (*sql.DB, error) {
 		_ = d.Close()
 		return nil, err
 	}
-	d.Db = db // 将连接赋值给 Db 字段
-	//fmt.Println("连接成功")
+	d.Db = db
 	return d.Db, nil
 }
 
