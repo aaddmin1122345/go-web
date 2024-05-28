@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布新文章</title>
+    <script src="../script/jquery-3.7.1.js"></script>
+    <script src="../script/article.js"></script>
+</head>
+<body>
+<h1>发布新文章</h1>
+<form id="articleForm">
+    <p>
+        <label for="title">标题:</label>
+        <input type="text" id="title" name="title" required>
+    </p>
+    <p>
+        <label for="content">内容:</label>
+        <textarea id="content" name="content" required></textarea>
+    </p>
+    <p>
+        <label for="category">分类:</label>
+        <input type="text" id="category" name="category" required>
+    </p>
+    <p>
+        <label for="imageURL">封面图片 URL:</label>
+        <input type="text" id="imageURL" name="imageURL">
+    </p>
+    <button type="submit">发布文章</button>
+</form>
+<div id="errorInfo"></div>
+
+</body>
+</html>
