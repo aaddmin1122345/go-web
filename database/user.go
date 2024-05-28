@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"go-web/model"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -18,16 +19,63 @@ type Database interface {
 	HashPassword(password string) ([]byte, error)
 	CheckUser(user *model.Register) error
 	CheckDelUser(id int) error
-	GetUserByUserName(username string) ([]*model.User, error)
+	GetUserByKeyword(username string) ([]*model.User, error)
 	GetUserByPhoneNum(phoneNum string) (*model.User, error)
 	AddUser(user *model.Register) error
 	UpdateUser(user *model.Register) error
 	DeleteUser(id int) error
 	Login(login *model.Login) (*model.Login, error)
+	SetDb(db *sql.DB)
 }
 
 type MyDatabaseImpl struct {
-	Db *sql.DB
+	db *sql.DB
+}
+
+func (m *MyDatabaseImpl) SetDb(db *sql.DB) {
+	m.db = db
+}
+
+func (m *MyDatabaseImpl) GetUserByKeyword(username string) ([]*model.User, error) {
+	//db, err := m.db.Conn()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//defer db.Close()
+
+	if m.db == nil {
+		fmt.Println("数据库为空")
+
+		return nil, nil
+	}
+	query := "SELECT ID, PhoneNum, Username, Sex, Email, Password,UserType,CreateTime FROM user WHERE PhoneNum LIKE ? OR Username LIKE ? OR Sex LIKE ? OR Email LIKE ? OR Password LIKE ? OR UserType LIKE ? OR CreateTime LIKE ?;"
+	rows, err := m.db.Query(query, "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%")
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		err = rows.Close()
+		if err != nil {
+			// handle error
+		}
+	}(rows)
+
+	var users []*model.User
+	for rows.Next() {
+		var user model.User
+		err = rows.Scan(&user.ID, &user.PhoneNum, &user.Username, &user.Sex, &user.Email, &user.Password, &user.UserType, &user.CreateTime)
+		if err != nil {
+			return nil, err
+		}
+
+		//fmt.Println(user)
+		//fmt.Println(&user)
+		//fmt.Printf("%T\n", user)
+		//fmt.Printf("%T\n", &user)
+		users = append(users, &user)
+	}
+
+	return users, nil
 }
 
 func (m *MyDatabaseImpl) CheckUser(user *model.Register) error {
@@ -82,43 +130,13 @@ func (m *MyDatabaseImpl) HashPassword(password string) ([]byte, error) {
 	return hashedPassword, err
 }
 
-// GetUserByUserName 通过用户名进行模糊查询,使用指针就得用切片,不然只会返回一条数据
-func (m *MyDatabaseImpl) GetUserByUserName(username string) ([]*model.User, error) {
-	query := "SELECT ID, PhoneNum, Username, Sex, Email, Password,UserType,CreateTime FROM user WHERE PhoneNum LIKE ? OR Username LIKE ? OR Sex LIKE ? OR Email LIKE ? OR Password LIKE ? OR UserType LIKE ? OR CreateTime LIKE ?;"
-	rows, err := m.Db.Query(query, "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%")
-	if err != nil {
-		return nil, err
-	}
-	defer func(rows *sql.Rows) {
-		err = rows.Close()
-		if err != nil {
-			// handle error
-		}
-	}(rows)
-
-	var users []*model.User
-	for rows.Next() {
-		var user model.User
-		err = rows.Scan(&user.ID, &user.PhoneNum, &user.Username, &user.Sex, &user.Email, &user.Password, &user.UserType, &user.CreateTime)
-		if err != nil {
-			return nil, err
-		}
-
-		//fmt.Println(user)
-		//fmt.Println(&user)
-		//fmt.Printf("%T\n", user)
-		//fmt.Printf("%T\n", &user)
-		users = append(users, &user)
-	}
-
-	return users, nil
-}
+// GetUserByKeyword 通过用户名进行模糊查询,使用指针就得用切片,不然只会返回一条数据
 
 // GetUserByPhoneNum  通过studID查询
 func (m *MyDatabaseImpl) GetUserByPhoneNum(phoneNum string) (*model.User, error) {
 	//query := "SELECT id, studId, username, sex, email FROM stud WHERE studId = ?"
 	query := "SELECT ID, PhoneNum, Username, Sex, Email FROM user WHERE PhoneNum = ?"
-	row := m.Db.QueryRow(query, phoneNum)
+	row := m.db.QueryRow(query, phoneNum)
 	var user model.User
 	err := row.Scan(&user.ID, &user.PhoneNum, &user.Username, &user.Sex, &user.Email)
 	if err != nil {
@@ -146,7 +164,7 @@ func (m *MyDatabaseImpl) AddUser(user *model.Register) error {
 
 	// 执行插入操作
 	query := "INSERT INTO user (PhoneNum, Username, Sex, Email, Password, UserType) VALUES (?, ?, ?, ?, ?, ?)"
-	_, err = m.Db.Exec(query, user.PhoneNum, user.Username, user.Sex, user.Email, hashPassword, user.UserType)
+	_, err = m.db.Exec(query, user.PhoneNum, user.Username, user.Sex, user.Email, hashPassword, user.UserType)
 	if err != nil {
 		return err
 	}
@@ -163,7 +181,7 @@ func (m *MyDatabaseImpl) UpdateUser(user *model.Register) error {
 	}
 	query := "UPDATE user SET PhoneNum = ?, Username = ?, Sex = ?, Email = ?, Password = ? WHERE ID = ?"
 	hashPassword, _ := m.HashPassword(user.Password)
-	_, err := m.Db.Exec(query, user.PhoneNum, user.Username, user.Sex, user.Email, hashPassword, user.ID)
+	_, err := m.db.Exec(query, user.PhoneNum, user.Username, user.Sex, user.Email, hashPassword, user.ID)
 	return err
 }
 
@@ -181,7 +199,7 @@ func (m *MyDatabaseImpl) DeleteUser(id int) error {
 		return err
 	}
 	query := "DELETE FROM user WHERE ID = ?"
-	_, err := m.Db.Exec(query, id)
+	_, err := m.db.Exec(query, id)
 	return err
 }
 
@@ -191,7 +209,7 @@ func (m *MyDatabaseImpl) Login(login *model.Login) (*model.Login, error) {
 	// 执行查询
 	var storedUsername, storedPassword string
 	//sql用了 or 语句,所以两个参数可以设置为Username,Username没匹配到会去匹配PhoneNum,缺点是用户不存在会去查询两次
-	err := m.Db.QueryRow(query, login.Username, login.Username, login.Username).Scan(&storedUsername, &storedPassword)
+	err := m.db.QueryRow(query, login.Username, login.Username, login.Username).Scan(&storedUsername, &storedPassword)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errors.New("用户名或手机号或邮箱不存在或密码不对")
@@ -210,4 +228,5 @@ func (m *MyDatabaseImpl) Login(login *model.Login) (*model.Login, error) {
 		Username: storedUsername,
 		Password: "none",
 	}, nil
+
 }

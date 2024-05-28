@@ -65,17 +65,17 @@ function updateUser(userId) {
         data: JSON.stringify(updatedUser),
         success: function () {
             alert('用户信息修改成功');
-            getUserByUserName(); // 重新加载用户列表
+            getUserByKeyword() // 重新加载用户列表
         },
     });
 }
 
 
 // 重新写的模糊查询
-function getUserByUserName() {
+function getUserByKeyword() {
     const username = $('#search').val();
     $.ajax({
-        url: '/api/getUserByUserName',
+        url: '/api/getUserByKeyword',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ username: username }),
@@ -147,7 +147,7 @@ function addUser() {
         data: JSON.stringify(user),
         success: function () {
             alert('注册成功');
-            getUserByUserName(); // 重新加载用户列表
+            getUserByKeyword() // 重新加载用户列表
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -164,7 +164,7 @@ function delUser(userId) {
         data: userId.toString(),
         success: function () {
             console.log("删除成功");
-            getUserByUserName();
+            getUserByKeyword()
         },
         error: function (xhr, status, error) {
             alert('删除失败: ' + error);

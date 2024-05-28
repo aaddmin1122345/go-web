@@ -1,17 +1,15 @@
 package service
 
 import (
-	"fmt"
-	"go-web/database"
 	"go-web/model"
 )
 
-var dbInit = database.DbInitImpl{}
-var myDatabase = database.MyDatabaseImpl{}
+//var dbInit = DbInit
+//var MyDatabaseUser = MyDatabaseUser
 
 type UserService interface {
 	AddUser(user *model.Register) error
-	GetUserByUserName(username string) ([]*model.User, error)
+	GetUserByKeyword(username string) ([]*model.User, error)
 	Login(login *model.Login) (*model.Login, error)
 	GetUserByPhoneNum(PhoneNum string) *model.User
 	DeleteUser(StudID int) error
@@ -21,7 +19,7 @@ type UserService interface {
 type UserServiceImpl struct{}
 
 func (u *UserServiceImpl) UpdateUser(user *model.Register) error {
-	err := myDatabase.UpdateUser(user)
+	err := MyDatabaseUser.UpdateUser(user)
 	if err != nil {
 		return err
 	}
@@ -29,8 +27,8 @@ func (u *UserServiceImpl) UpdateUser(user *model.Register) error {
 
 }
 
-func (u *UserServiceImpl) GetUserByUserName(username string) ([]*model.User, error) {
-	users, err := myDatabase.GetUserByUserName(username)
+func (u *UserServiceImpl) GetUserByKeyword(username string) ([]*model.User, error) {
+	users, err := MyDatabaseUser.GetUserByKeyword(username)
 	if err != nil {
 		return nil, err
 	}
@@ -38,14 +36,14 @@ func (u *UserServiceImpl) GetUserByUserName(username string) ([]*model.User, err
 }
 
 // 必须初始化数据库连接
-func init() {
-	conn, err := dbInit.Conn()
-	if err != nil {
-		fmt.Println("初始化数据库连接错误")
-		return
-	}
-	myDatabase.Db = conn // 将连接对象保存到 myDatabase 结构体中的 db 字段
-}
+//func init() {
+//	conn, err := DbInit.Conn()
+//	if err != nil {
+//		fmt.Println("初始化数据库连接错误")
+//		return
+//	}
+//	MyDatabaseUser.Db = conn // 将连接对象保存到 MyDatabaseUser 结构体中的 db 字段
+//}
 
 //func (u UserServiceImpl) init() {
 //	conn, err := dbInit.Conn()
@@ -53,11 +51,11 @@ func init() {
 //		fmt.Println("初始化数据库连接错误")
 //		return
 //	}
-//	myDatabase.Db = conn // 将连接对象保存到 myDatabase 结构体中的 db 字段
+//	MyDatabaseUser.Db = conn // 将连接对象保存到 MyDatabaseUser 结构体中的 db 字段
 //}
 
 func (u *UserServiceImpl) Login(login *model.Login) (*model.Login, error) {
-	user, err := myDatabase.Login(login)
+	user, err := MyDatabaseUser.Login(login)
 	//fmt.Println(user)
 	if err != nil {
 		return nil, err
@@ -66,7 +64,7 @@ func (u *UserServiceImpl) Login(login *model.Login) (*model.Login, error) {
 }
 
 func (u *UserServiceImpl) GetUserByPhoneNum(PhoneNum string) *model.User {
-	phoneNum, err := myDatabase.GetUserByPhoneNum(PhoneNum)
+	phoneNum, err := MyDatabaseUser.GetUserByPhoneNum(PhoneNum)
 	if err != nil {
 		//fmt.Println("检测StudID是否正确")
 		return nil
@@ -75,7 +73,7 @@ func (u *UserServiceImpl) GetUserByPhoneNum(PhoneNum string) *model.User {
 }
 
 func (u *UserServiceImpl) AddUser(user *model.Register) error {
-	err := myDatabase.AddUser(user)
+	err := MyDatabaseUser.AddUser(user)
 	if err != nil {
 		return err
 	}
@@ -83,7 +81,7 @@ func (u *UserServiceImpl) AddUser(user *model.Register) error {
 }
 
 func (u *UserServiceImpl) DeleteUser(StudID int) error {
-	err := myDatabase.DeleteUser(StudID)
+	err := MyDatabaseUser.DeleteUser(StudID)
 	if err != nil {
 		//fmt.Println("检测StudID是否正确")
 		return err

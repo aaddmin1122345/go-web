@@ -4,20 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-web/model"
-	"go-web/service"
 	"io"
 	"net/http"
 	"strconv"
 )
 
-var UserService service.UserServiceImpl
-
 type UserApi interface {
 	DecodeJson(w http.ResponseWriter, r *http.Request, newData interface{}) error
 	bodyToInit(body io.Reader) (int, error)
-	GetUsersByStudID(w http.ResponseWriter, r *http.Request)
 	Login(w http.ResponseWriter, r *http.Request)
-	GetUserByUserName(w http.ResponseWriter, r *http.Request)
+	GetUserByKeyword(w http.ResponseWriter, r *http.Request)
 	AddUser(w http.ResponseWriter, r *http.Request)
 	DeleteUser(w http.ResponseWriter, r *http.Request)
 	UpdateUser(w http.ResponseWriter, r *http.Request)
@@ -140,7 +136,7 @@ func (u UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (u UserApiImpl) GetUserByUserName(w http.ResponseWriter, r *http.Request) {
+func (u UserApiImpl) GetUserByKeyword(w http.ResponseWriter, r *http.Request) {
 	// 解析请求体中的 JSON 数据到 requestData 变量中
 	var requestData struct {
 		Username string `json:"username"`
@@ -151,7 +147,7 @@ func (u UserApiImpl) GetUserByUserName(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	users, err := UserService.GetUserByUserName(requestData.Username)
+	users, err := UserService.GetUserByKeyword(requestData.Username)
 
 	//fmt.Println(&users)
 	if err != nil {
