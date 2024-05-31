@@ -3,10 +3,12 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/sessions"
 	"go-web/model"
 	"io"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type UserApi interface {
@@ -17,11 +19,15 @@ type UserApi interface {
 	AddUser(w http.ResponseWriter, r *http.Request)
 	DeleteUser(w http.ResponseWriter, r *http.Request)
 	UpdateUser(w http.ResponseWriter, r *http.Request)
+	Logout(w http.ResponseWriter, r *http.Request)
+	ValidUser(w http.ResponseWriter, r *http.Request)
 }
 
-type UserApiImpl struct{}
+type UserApiImpl struct {
+	Session sessions.Store
+}
 
-func (UserApiImpl) DecodeJson(w http.ResponseWriter, r *http.Request, newData interface{}) error {
+func (u *UserApiImpl) DecodeJson(w http.ResponseWriter, r *http.Request, newData interface{}) error {
 	err := json.NewDecoder(r.Body).Decode(newData)
 	if err != nil {
 		http.Error(w, "解码json失败", http.StatusBadRequest)
@@ -30,7 +36,7 @@ func (UserApiImpl) DecodeJson(w http.ResponseWriter, r *http.Request, newData in
 	return nil
 }
 
-func (u UserApiImpl) UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (u *UserApiImpl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	var newUser model.Register
 	err := u.DecodeJson(w, r, &newUser)
 	if err != nil {
@@ -54,7 +60,7 @@ func (u UserApiImpl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // 为后续查询用户做准备,把body里面的str to int
-func (u UserApiImpl) bodyToInit(body io.Reader) (int, error) {
+func (u *UserApiImpl) bodyToInit(body io.Reader) (int, error) {
 	data, err := io.ReadAll(body)
 	if err != nil {
 		return 0, err
@@ -68,7 +74,7 @@ func (u UserApiImpl) bodyToInit(body io.Reader) (int, error) {
 	return value, nil
 }
 
-func (u UserApiImpl) GetUserByPhoneNum(w http.ResponseWriter, r *http.Request) {
+func (u *UserApiImpl) GetUserByPhoneNum(w http.ResponseWriter, r *http.Request) {
 	//studID, err := u.bodyToInit(r.Body)
 	//if err != nil {
 	//	http.Error(w, err.Error(), http.StatusBadRequest)
@@ -101,42 +107,7 @@ func (u UserApiImpl) GetUserByPhoneNum(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (u UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
-	// 解析请求体中的 JSON 数据到 requestData 变量中
-	var requestData model.Login
-	err := json.NewDecoder(r.Body).Decode(&requestData)
-	if err != nil {
-		//http.StatusBadRequest 返回特定错误
-		http.Error(w, "解码json失败", http.StatusBadRequest)
-		return
-	}
-
-	// 验证逻辑,报错返回401
-	user, err := UserService.Login(&requestData)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-
-	// 构造响应数据
-	//匿名结构体 responseData
-	//user 不为 nil，说明登录成功，Valid 默认为 true,如果nil是空的就说明前面查询没报错,那么就代表登陆成功
-	responseData := struct {
-		Valid bool `json:"valid"`
-	}{
-		Valid: user != nil,
-	}
-
-	//编码为JSON格式
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(responseData)
-	if err != nil {
-		http.Error(w, "无法编码数据", http.StatusInternalServerError)
-		return
-	}
-}
-
-func (u UserApiImpl) GetUserByKeyword(w http.ResponseWriter, r *http.Request) {
+func (u *UserApiImpl) GetUserByKeyword(w http.ResponseWriter, r *http.Request) {
 	// 解析请求体中的 JSON 数据到 requestData 变量中
 	var requestData struct {
 		Username string `json:"username"`
@@ -164,7 +135,7 @@ func (u UserApiImpl) GetUserByKeyword(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (u UserApiImpl) AddUser(w http.ResponseWriter, r *http.Request) {
+func (u *UserApiImpl) AddUser(w http.ResponseWriter, r *http.Request) {
 	var newUser model.Register
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	if err != nil {
@@ -188,7 +159,7 @@ func (u UserApiImpl) AddUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (u UserApiImpl) DeleteUser(w http.ResponseWriter, r *http.Request) {
+func (u *UserApiImpl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	studID, err := u.bodyToInit(r.Body)
 
 	fmt.Println(studID)
@@ -209,4 +180,116 @@ func (u UserApiImpl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+}
+
+func (u *UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
+	// 解析请求体中的 JSON 数据到 requestData 变量中
+	var requestData model.Login
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, "解码json失败", http.StatusBadRequest)
+		return
+	}
+
+	// 验证逻辑，报错返回401
+	user, err := UserService.Login(&requestData)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	// 创建或获取 session
+	session, err := u.Session.Get(r, "session")
+	if err != nil {
+		http.Error(w, "无法创建或获取session", http.StatusInternalServerError)
+		return
+	}
+
+	// 将用户信息存储到 session 中
+	session.Values["username"] = user.Username
+	session.Values["usertype"] = user.UserType
+
+	//前端的rememberMe按钮
+	//rememberMe := r.FormValue("rememberMe")
+	if requestData.RememberMe {
+		session.Options = &sessions.Options{
+			Path:     "/",
+			MaxAge:   168 * 3600, // 记住 7 天，以秒为单位
+			HttpOnly: true,
+		}
+		fmt.Println("用户勾选了记住我")
+	} else {
+		session.Options = &sessions.Options{
+			Path:     "/",
+			MaxAge:   0, // 关闭浏览器后失效
+			HttpOnly: true,
+		}
+	}
+
+	// 保存 session
+	err = session.Save(r, w)
+	if err != nil {
+		http.Error(w, "无法保存session", http.StatusInternalServerError)
+		return
+	}
+
+	// 构造响应数据
+	responseData := struct {
+		Valid bool `json:"valid"`
+	}{
+		Valid: user != nil,
+	}
+
+	// 编码为 JSON 格式
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(responseData)
+	if err != nil {
+		http.Error(w, "无法编码数据", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (u *UserApiImpl) Logout(w http.ResponseWriter, r *http.Request) {
+	// 删除名为 "session" 的cookie，使其立即过期
+	http.SetCookie(w, &http.Cookie{
+		Name:     "session",
+		Value:    "",
+		Path:     "/",                          // 确保路径正确，通常设置为根路径"/"，适用于整个网站
+		Expires:  time.Now().AddDate(0, 0, -1), // 设置过期时间为当前时间之前的一天，即立即过期
+		HttpOnly: true,                         // 确保cookie不能被客户端脚本访问
+	})
+
+	// 返回注销成功的响应
+	w.WriteHeader(http.StatusOK)
+	_, err := w.Write([]byte("注销成功"))
+	if err != nil {
+		http.Error(w, "无法发送响应", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (u *UserApiImpl) ValidUser(w http.ResponseWriter, r *http.Request) {
+	// 获取 session
+	session, err := u.Session.Get(r, "session")
+	if err != nil {
+		http.Error(w, "无法获取session", http.StatusInternalServerError)
+		return
+	}
+
+	//使用类型断言并检查其是否成功。这样可以避免 panic。
+
+	username, usernameOK := session.Values["username"].(string)
+	usertype, usertypeOK := session.Values["usertype"].(string)
+
+	if !usernameOK || !usertypeOK || username == "" || usertype == "" {
+		http.Error(w, "未授权访问", http.StatusUnauthorized)
+		return
+	}
+
+	//Fprintf允许将信息写入到某个io中,这里可以通过w写入到响应中
+	_, err = fmt.Fprintf(w, "当前用户: %s, 用户类型: %s", username, usertype)
+	if err != nil {
+		return
+	}
+
 }

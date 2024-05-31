@@ -204,12 +204,12 @@ func (m *MyDatabaseImpl) DeleteUser(id int) error {
 }
 
 func (m *MyDatabaseImpl) Login(login *model.Login) (*model.Login, error) {
-	query := "SELECT Username, Password FROM user WHERE Username = ? OR PhoneNum = ? OR Email = ?"
+	query := "SELECT Username, Password,UserType FROM user WHERE Username = ? OR PhoneNum = ? OR Email = ?"
 
 	// 执行查询
-	var storedUsername, storedPassword string
+	var storedUsername, storedPassword, storedUserType string
 	//sql用了 or 语句,所以两个参数可以设置为Username,Username没匹配到会去匹配PhoneNum,缺点是用户不存在会去查询两次
-	err := m.db.QueryRow(query, login.Username, login.Username, login.Username).Scan(&storedUsername, &storedPassword)
+	err := m.db.QueryRow(query, login.Username, login.Username, login.Username).Scan(&storedUsername, &storedPassword, &storedUserType)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errors.New("用户名或手机号或邮箱不存在或密码不对")
@@ -227,6 +227,7 @@ func (m *MyDatabaseImpl) Login(login *model.Login) (*model.Login, error) {
 	return &model.Login{
 		Username: storedUsername,
 		Password: "none",
+		UserType: storedUserType,
 	}, nil
 
 }

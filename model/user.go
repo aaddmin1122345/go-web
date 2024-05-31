@@ -13,10 +13,12 @@ type User struct {
 
 type Login struct {
 	//PhoneNum string
-	Username string
-	PhoneNum string
-	Email    string
-	Password string
+	Username   string
+	PhoneNum   string
+	Email      string
+	UserType   string
+	Password   string
+	RememberMe bool
 }
 
 type Register struct {
