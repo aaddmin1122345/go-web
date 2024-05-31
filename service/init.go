@@ -7,7 +7,7 @@ import (
 
 var (
 	DbInit            = database.DbInitImpl{}
-	MyDatabaseUser    = &database.MyDatabaseImpl{} //能用就别动,不使用指针数据都传输不过去
+	MyDatabaseUser    = &database.MyDatabaseImpl{} //能用就别动,不使用指针sql连接数据都传输不过去
 	MyDatabaseArticle = &database.ArticleImpl{}
 )
 

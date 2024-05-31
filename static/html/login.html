@@ -1,49 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="../script/jquery-3.7.1.js"></script>
-    <script src="../script/login.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../css/login.css">
-    <!--    <link rel="stylesheet" type="text/css" href="../css/user.css">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>登录 &lsaquo; 西南林业大学 &#8212; WordPress</title>
+    <script src="/static/script/jquery-3.7.1.js"></script>
+    <script src="/static/script/login.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/swfuLogin.css">
+    <link rel="icon" href="https://www.swfu.edu.cn/wp-content/uploads/2018/09/favcion-1-150x150.png" sizes="32x32" />
+    <link rel="icon" href="https://www.swfu.edu.cn/wp-content/uploads/2018/09/favcion-1.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="https://www.swfu.edu.cn/wp-content/uploads/2018/09/favcion-1.png" />
+    <meta name="msapplication-TileImage" content="https://www.swfu.edu.cn/wp-content/uploads/2018/09/favcion-1.png" />
 </head>
-<body>
-
-<!--<div id="container">-->
-<!--    <h3>登陆</h3>-->
-<!--    <form id="loginForm">-->
-<!--        <label for="loginUserName">用户名或手机号或邮箱:</label>-->
-<!--        <input type="text" id="loginUserName"><br>-->
-<!--        <label for="loginPassWord">密码:</label>-->
-<!--        <input type="text" id="loginPassWord" ><br>-->
-<!--        <button type="submit">提交</button>-->
-<!--        <div id="errorInfo"></div>-->
-<!--    </form>-->
-<!--</div>-->
-
-<div class="login-container">
-    <form id="loginForm">
-        <div class="mb-3">
-            <label for="loginUserName" class="form-label">账号</label>
-            <input type="text" class="form-control" id="loginUserName" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">输入你的用户名/邮箱/手机号</div>
-        </div>
-        <div class="mb-3">
-            <label for="loginPassWord" class="form-label">密码</label>
-            <input type="password" class="form-control" id="loginPassWord">
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">记住我</label>
-        </div>
-        <button type="submit" class="btn btn-primary">登陆</button>
+<body class="login login-action-login wp-core-ui  locale-zh-cn">
+<div id="login">
+<!--    <h1><a href="https://cn.wordpress.org/" title="基于WordPress" tabindex="-1">基于WordPress</a></h1>-->
+    <h1> <p> 登陆管理 </p></h1>
+    <form name="loginForm" id="loginForm" method="post">
+        <p>
+            <label for="loginUserName">用户名或邮箱地址或手机号<br />
+                <input type="text" name="loginUserName" id="loginUserName" class="input" size="20" /></label>
+        </p>
+        <p>
+            <label for="loginPassWord">密码<br />
+                <input type="password" name="loginPassWord" id="loginPassWord" class="input" size="20" /></label>
+        </p>
+        <p class="rememberMe">
+            <label for="rememberMe"><input name="rememberMe" type="checkbox" id="rememberMe" value="forever" /> 记住我</label>
+        </p>
+        <p class="submit">
+            <button type="submit" class="button button-primary button-large">登录</button>
+        </p>
     </form>
+
+    <p id="backtoblog"><a href="/">&larr; 返回到博客首页</a></p>
 </div>
-
-
-
-
+<div class="clear"></div>
 </body>
 </html>

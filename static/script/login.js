@@ -1,10 +1,12 @@
 function login() {
     const name = $("#loginUserName").val();
     const pwd = $("#loginPassWord").val();
+    const rememberMe = $("#rememberMe").is(":checked"); // 修正获取复选框状态的方法
 
     const jsonData = {
         userName: name,
-        passWord: pwd
+        passWord: pwd,
+        rememberMe: rememberMe // 将复选框的状态添加到发送的数据中
     };
 
     if (name.length === 0 || pwd.length === 0) {
@@ -22,8 +24,7 @@ function login() {
             if (data.valid) {
                 // 登录成功时将错误信息设置为绿色
                 alert("登录成功");
-                $("#errorInfo").html("登陆成功").css("color", "green");
-                console.log("成功");
+                window.location.href = "/";
             }
         },
         error: function (err) {

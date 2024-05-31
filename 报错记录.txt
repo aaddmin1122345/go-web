@@ -3,3 +3,5 @@ database/user.go
 GetUserByUserName
 
 该方法不用切片的话只会返回第一个匹配的用户
+
+初始化数据库的时候要记得使用指针

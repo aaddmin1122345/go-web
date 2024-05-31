@@ -3,44 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>test</title>
-    <link rel="stylesheet" type="text/css" href="./css/user.css">
-    <script src="./script/jquery-3.7.1.js"></script>
-    <script src="./script/user.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/user.css">
+    <script src="/static/script/jquery-3.7.1.js"></script>
+    <script src="/static/script/user.js"></script>
 
     <script>
         $(document).ready(function () {
-            // 点击发送Ajax响应
-            $("#btn1").click(function () {
-                sendAjaxHello();
-            });
-
-            // 点击计算
-            // $("#registerBtn").click(function () {
-            //     addUser();
-            // });
-
-            // $("#registerBtn").click(function () {
-            //     addUser();
-            // });
-
-            // 点击登录
-            // $("#btn3").click(function () {
-            //     login();
-            // });
-
-            // 另外一个版本的登陆
-            // $("#loginSubmit").click(function () {
-            //     login();
-            // });
-
-            // $("#btn5").click(function () {
-            //     searchUser();
-            // });
-            //
-            // $("#btn6").click(function () {
-            //     UserSelect();
-            // });
-
             // 模糊查询
             $('#getUserByKeyword').click(function () {
                 getUserByKeyword();
@@ -60,132 +28,7 @@
             $('#updateUserBtn').click(function () {
                 updateUser();
             });
-
-            // $('#loginForm').click(function () {
-            //     login();
-            // });
         });
-
-        function sendAjaxHello() {
-            $.ajax({
-                type: "POST",
-                url: "/sayHello",  // 修改为与后端路由匹配的路径
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    alert(response.message);
-                },
-                error: function (xhr, status, error) {
-                    alert("请求失败：" + error);
-                }
-            });
-        }
-
-        // 计算
-        function calculate() {
-            const par1Value = parseInt($("#par1").val());
-            const par2Value = parseInt($("#par2").val());
-            const dataToSend = {
-                par1: par1Value,
-                par2: par2Value
-            };
-
-            $.ajax({
-                type: "POST",
-                url: "/sum",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify(dataToSend),
-                success: function (data) {
-                    $("#result").html("<h1 style='color: red;'>结果：" + data.result + "</h1>");
-                },
-                error: function (xhr, status, error) {
-                    alert("请求失败：" + error);
-                }
-            });
-        }
-
-        // 用户登录验证
-        // function login() {
-        //     const username = $("#user").val();
-        //     const password = $("#pwd").val();
-        //     const dataToSend = {
-        //         username: username,
-        //         password: password
-        //     };
-        //
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/api/login",  // 修改为与后端路由匹配的路径
-        //         contentType: "application/json; charset=utf-8",
-        //         dataType: "json",
-        //         data: JSON.stringify(dataToSend),
-        //         success: function (data) {
-        //             if (data.valid)
-        //                 alert("登录成功");
-        //             else
-        //                 alert("登录失败");
-        //         },
-        //         error: function (err) {
-        //             alert(err);
-        //         }
-        //     });
-        // }
-
-
-
-        // function getStud() {
-        //     let data = {
-        //         ID: 0,
-        //         StudID: "",
-        //         Username: "",
-        //         Sex: "",
-        //         Email: ""
-        //     };
-        //
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "/api/",
-        //         dataType: "json",
-        //         success: function (responseData) {
-        //             data = responseData;
-        //             console.log("success", data);
-        //             $("#stud").html("ID: " + data.ID + "<br>" +
-        //                 "学生 ID: " + data.StudID + "<br>" +
-        //                 "用户名: " + data.Username + "<br>" +
-        //                 "性别: " + data.Sex + "<br>" +
-        //                 "邮箱: " + data.Email)
-        //                 .css("color", "Red");
-        //         },
-        //         error: function () {
-        //             console.log("false");
-        //         }
-        //     });
-        // }
-        //
-        // function searchUser() {
-        //     let searchUser = $("#searchUser").val();
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/api/GetUsersByStudID",
-        //         data: searchUser, // 直接发送搜索关键字字符串
-        //         success: function (responseData) {
-        //             const data = responseData;
-        //             console.log("success", data);
-        //             $("#stud").html("ID: " + data.ID + "<br>" +
-        //                 "学生 ID: " + data.StudID + "<br>" +
-        //                 "用户名: " + data.Username + "<br>" +
-        //                 "性别: " + data.Sex + "<br>" +
-        //                 "邮箱: " + data.Email)
-        //                 .css("color", "Red");
-        //         },
-        //         error: function () {
-        //             console.log("false");
-        //         }
-        //     });
-        // }
-
-
     </script>
 </head>
 <body>
@@ -194,7 +37,7 @@
 
 <label for="search"></label>
 <input type="text" id="search" placeholder="输入用户名">
-<button id="getUserByKeyword">查询</button>
+<button type="button" id="getUserByKeyword">查询</button>
 
 <table id="results">
     <tr>
@@ -226,9 +69,7 @@
     <input type="text" id="userType" ><br>
     <button type="submit">注册</button>
 </form>
-
 <h3> 登陆</h3>
-
 <form id="loginForm">
     <label for="loginUserName">用户名或手机号:</label>
     <input type="text" id="loginUserName"><br>
@@ -237,8 +78,5 @@
     <button type="submit" >提交</button>
     <div id="errorInfo"></div>
 </form>
-
-
-
 </body>
 </html>

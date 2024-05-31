@@ -6,25 +6,25 @@ import (
 	"go-web/model"
 	"html/template"
 	"net/http"
+	"strconv"
 )
 
 type Article interface {
 	GetArticleByKeyword(w http.ResponseWriter, r *http.Request)
 	CreateArticle(w http.ResponseWriter, r *http.Request)
+	GetArticleByID(w http.ResponseWriter, r *http.Request)
 }
 
 type ArticleImpl struct{}
 
 func (u ArticleImpl) GetArticleByKeyword(w http.ResponseWriter, r *http.Request) {
-	// 解析表单数据
-	err := r.ParseForm()
-	if err != nil {
-		http.Error(w, "解析表单数据失败", http.StatusBadRequest)
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
 	// 获取关键词
-	keyword := r.Form.Get("keyword")
+	keyword := r.FormValue("keyword")
 
 	articles, err := ArticleServer.GetArticleByKeyword(keyword)
 	if err != nil {
@@ -32,8 +32,8 @@ func (u ArticleImpl) GetArticleByKeyword(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	// 加载模板文件
-	tmpl, err := template.ParseFiles("./static/html/html.html")
+	// 加载 HTML 模板
+	tmpl, err := template.ParseFiles("./static/html/searchArticle.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -43,7 +43,7 @@ func (u ArticleImpl) GetArticleByKeyword(w http.ResponseWriter, r *http.Request)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	err = tmpl.Execute(w, articles)
 	if err != nil {
-		//http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "无法生成HTML", http.StatusInternalServerError)
 		return
 	}
 }
@@ -69,6 +69,69 @@ func (u ArticleImpl) CreateArticle(w http.ResponseWriter, r *http.Request) {
 	_, err = w.Write([]byte("文章发布成功"))
 	if err != nil {
 		fmt.Println("文章发布失败!", err)
+		return
+	}
+}
+
+func (u ArticleImpl) GetArticleByCategory(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// 获取关键词
+	category := r.FormValue("category")
+
+	articles, err := ArticleServer.GetArticleByCategory(category)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// 加载 HTML 模板
+	tmpl, err := template.ParseFiles("./static/html/test.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// 渲染模板并将结果写入 ResponseWriter
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	err = tmpl.Execute(w, articles)
+	if err != nil {
+		http.Error(w, "无法生成HTML", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (u ArticleImpl) GetArticleByID(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// 获取关键词
+	ID := r.FormValue("id")
+	IntID, err := strconv.Atoi(ID)
+
+	articles, err := ArticleServer.GetArticleByID(IntID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// 加载 HTML 模板
+	tmpl, err := template.ParseFiles("./static/html/article.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// 渲染模板并将结果写入 ResponseWriter
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	err = tmpl.Execute(w, articles)
+	if err != nil {
+		http.Error(w, "无法生成HTML", http.StatusInternalServerError)
 		return
 	}
 }
