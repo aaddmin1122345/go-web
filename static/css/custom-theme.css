@@ -1,0 +1,167 @@
+.entry-content p {
+    line-height: 1.75rem;
+    text-indent: 2rem;
+    font-family: "宋体", "Times New Roman", "Bitstream Charter", Times, serif;
+    font-size: 16px;
+}
+
+h1.entry-title {
+    text-align: center;
+    font-size: 1.65rem;
+}
+
+.bk {
+    border: 1px solid #4caf50;
+    margin: 0 1rem 0 1rem !important;
+    padding: 0.5rem !important;
+}
+
+.bk:hover {
+    background: #42903f;
+    color: #FFF;
+}
+
+.bk a {
+    color: inherit;
+}
+
+.post-list .entry-summary {
+    color: #777;
+    font-size: 13px;
+}
+
+.post-list .hentry {
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.post-list .hentry:last-child {
+    border-bottom: none;
+}
+
+.colorful-block-links a {
+    padding: 0.7rem;
+}
+
+.page-header {
+    background: none;
+    background-position: center;
+    background-size: cover !important;
+    padding: 10% 0 10% 0;
+}
+
+.aligncenter {
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+}
+
+#footer {
+    background-position: center center;
+}
+
+.hot-more a {
+    color: #212121;
+}
+
+/*
+#navbar {background: #f3f1f1;border-bottom: none;}
+*/
+
+.home #main {
+    background: #f3f1f1;
+}
+
+#colophon .contact-info {
+    font-size: 12px;
+}
+
+#footer a {
+    font-size: 12px;
+}
+
+.block-hot .hot-main .title {
+    font-size: 13px;
+}
+
+.absact {
+    font-size: 12px;
+}
+
+#home-2 {
+    background: none;
+}
+
+#home-2 .block-header {
+    border-bottom-color: #4caf50;
+}
+
+.post-list .entry-meta {
+    text-align: inherit !important;
+}
+
+.post .entry-meta {
+    text-align: center;
+    font-size: 0.812rem;
+}
+
+.post .entry-meta a {
+    color: #9e9e9e;
+}
+
+.assistive-text {
+    display: none;
+}
+
+.home #main {
+    background: #fff;
+}
+
+#header, #footer {
+    width: 100%;
+    /*padding-right: 16px;*/
+    /*padding-left: 16px;*/
+    margin-right: auto;
+    margin-left: auto
+}
+
+@media (min-width: 576px) {
+    #header, #footer {
+        max-width: 540px
+    }
+}
+
+@media (min-width: 768px) {
+    #header, #footer {
+        max-width: 720px
+    }
+}
+
+@media (min-width: 992px) {
+    #header, #footer {
+        max-width: 960px
+    }
+}
+
+@media (min-width: 1200px) {
+    #header, #footer {
+        max-width: 1140px
+    }
+}
+
+div#page {
+    background: #eef3fa;
+}
+
+.home #main {
+    background: #eef3fa;
+}
+
+
+#home-1, #home-2, #home-3, #home-4, #home-5 {
+    background: #fff;
+}
+
+
+.container #main {
+    background: #fff;
+}

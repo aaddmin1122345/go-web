@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $('#registerForm').submit(function(event) {
+$(document).ready(function () {
+    $('#registerForm').submit(function (event) {
         event.preventDefault(); // 防止默认表单提交行为
         register();
     });

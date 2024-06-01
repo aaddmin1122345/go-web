@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>test</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/user.css">
+    <link href="/static/css/user.css" rel="stylesheet" type="text/css">
     <script src="/static/script/jquery-3.7.1.js"></script>
     <script src="/static/script/user.js"></script>
 
@@ -36,8 +36,8 @@
 <h2>模糊查询</h2>
 
 <label for="search"></label>
-<input type="text" id="search" placeholder="输入用户名">
-<button type="button" id="getUserByKeyword">查询</button>
+<input id="search" placeholder="输入用户名" type="text">
+<button id="getUserByKeyword" type="button">查询</button>
 
 <table id="results">
     <tr>
@@ -56,26 +56,26 @@
 <h2>注册</h2>
 <form id="registerForm">
     <label for="phoneNum">手机号:</label>
-    <input type="text" id="phoneNum"><br>
+    <input id="phoneNum" type="text"><br>
     <label for="username">用户名:</label>
-    <input type="text" id="username" ><br>
+    <input id="username" type="text"><br>
     <label for="sex">性别:</label>
-    <input type="text" id="sex" ><br>
+    <input id="sex" type="text"><br>
     <label for="email">邮箱:</label>
-    <input type="text" id="email" ><br>
+    <input id="email" type="text"><br>
     <label for="password">密码:</label>
-    <input type="text" id="password" ><br>
+    <input id="password" type="text"><br>
     <label for="userType">注册类型:</label>
-    <input type="text" id="userType" ><br>
+    <input id="userType" type="text"><br>
     <button type="submit">注册</button>
 </form>
 <h3> 登陆</h3>
 <form id="loginForm">
     <label for="loginUserName">用户名或手机号:</label>
-    <input type="text" id="loginUserName"><br>
+    <input id="loginUserName" type="text"><br>
     <label for="loginPassWord">密码:</label>
-    <input type="text" id="loginPassWord" ><br>
-    <button type="submit" >提交</button>
+    <input id="loginPassWord" type="text"><br>
+    <button type="submit">提交</button>
     <div id="errorInfo"></div>
 </form>
 </body>

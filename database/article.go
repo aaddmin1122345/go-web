@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"go-web/model"
 )
@@ -35,7 +36,7 @@ func (a *ArticleImpl) CreateArticle(article *model.Article) error {
 }
 
 func (a *ArticleImpl) GetArticleByCategory(category string) ([]*model.Article, error) {
-	query := "SELECT ID, Title, Content, CreateTime FROM news WHERE Category = ? ORDER BY CreateTime DESC LIMIT 10"
+	query := "SELECT * FROM news WHERE Category = ? ORDER BY Date DESC LIMIT 10"
 	rows, err := a.db.Query(query, category)
 	if err != nil {
 		return nil, err
@@ -49,7 +50,7 @@ func (a *ArticleImpl) GetArticleByCategory(category string) ([]*model.Article, e
 	var articles []*model.Article
 	for rows.Next() {
 		var article model.Article
-		err = rows.Scan(&article.ID, &article.Title, &article.Content, &article.CreateTime)
+		err = rows.Scan(&article.ID, &article.Title, &article.Content, &article.CreateTime, &article.ImageURL, &article.Category, &article.Date)
 		if err != nil {
 			return nil, err
 		}
@@ -95,7 +96,7 @@ func (a *ArticleImpl) GetArticleByID(id int) (*model.Article, error) {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errors.New("找不到对应的文章")
 		}
-		return nil, err
+		return nil, fmt.Errorf("查询文章失败：%w", err)
 	}
 
 	return &article, nil

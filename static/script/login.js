@@ -38,8 +38,8 @@ function login() {
     });
 }
 
-$(document).ready(function() {
-    $("#loginForm").submit(function(event) {
+$(document).ready(function () {
+    $("#loginForm").submit(function (event) {
         event.preventDefault(); // 阻止表单默认提交行为
         login();
     });

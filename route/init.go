@@ -20,7 +20,7 @@ type MyRoute interface {
 type MyRouteImpl struct{}
 
 func (r MyRouteImpl) Init() {
-	http.HandleFunc("/", MyTemplate.ArticleByIt)
+	http.HandleFunc("/", MyTemplate.RenderSwfuPage)
 	//r.Api()
 	r.User()
 	r.Api()

@@ -4,7 +4,7 @@ function getArticleByKeyword() {
         url: '/api/getArticleByKeyword',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ keyword: keyword }),
+        data: JSON.stringify({keyword: keyword}),
         success: function (data) {
             const table = $('#results');
             table.find("tr:gt(0)").remove(); // Clear all rows except the first (header row)

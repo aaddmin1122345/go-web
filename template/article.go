@@ -1,62 +1,45 @@
 package template
 
 import (
-	"html/template"
 	"net/http"
+	"strconv"
 )
 
-func (t MyTemplateImpl) RenderSWFUPage(w http.ResponseWriter, category string) {
-	// 获取文章数据
-	articles, err := ServiceArticle.GetArticleByCategory(category)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// 加载 HTML 模板
-	tpl, err := template.ParseFiles("./static/html/swfu.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// 渲染模板并将结果写入 ResponseWriter
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	err = tpl.Execute(w, articles)
-	if err != nil {
-		http.Error(w, "无法生成HTML", http.StatusInternalServerError)
-		return
-	}
-}
-
-func (t MyTemplateImpl) ArticleByMusic(w http.ResponseWriter, res *http.Request) {
-	if res.Method != http.MethodGet {
-		return
-	}
-	t.RenderSWFUPage(w, "music")
-}
-
-func (t MyTemplateImpl) ArticleByPe(w http.ResponseWriter, res *http.Request) {
-	if res.Method != http.MethodGet {
-		return
-	}
-	t.RenderSWFUPage(w, "pe")
-}
-
-func (t MyTemplateImpl) ArticleByShipin(w http.ResponseWriter, res *http.Request) {
-	if res.Method != http.MethodGet {
-		return
-	}
-	t.RenderSWFUPage(w, "shipin")
-}
-
-func (t MyTemplateImpl) ArticleByIt(w http.ResponseWriter, res *http.Request) {
-	if res.Method != http.MethodGet {
-		return
-	}
-	t.RenderSWFUPage(w, "it")
-}
-
-func (t MyTemplateImpl) getArticleByKeyword(w http.ResponseWriter, res *http.Request) {
+func (t MyTemplateImpl) GetArticleByKeyword(w http.ResponseWriter, res *http.Request) {
 	ArticleApi.GetArticleByKeyword(w, res)
+}
+
+func (t MyTemplateImpl) CreateArticle(w http.ResponseWriter, res *http.Request) {
+	if res.Method == http.MethodGet {
+		t.RenderTemplate(w, "./static/html/createArticle.html", nil)
+	}
+}
+
+func (t MyTemplateImpl) RenderHead(w http.ResponseWriter, _ *http.Request) {
+
+	t.RenderTemplate(w, "./static/html/head.html", nil)
+}
+
+func (t MyTemplateImpl) RenderFoot(w http.ResponseWriter, _ *http.Request) {
+	t.RenderTemplate(w, "./static/html/foot.html", nil)
+}
+
+func (t MyTemplateImpl) GetArticleByID(w http.ResponseWriter, res *http.Request) {
+	if res.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// 获取关键词
+	ID := res.FormValue("id")
+	IntID, err := strconv.Atoi(ID)
+
+	articles, err := ArticleServer.GetArticleByID(IntID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	t.RenderHead(w, nil)
+	t.RenderTemplate(w, "./static/html/article.html", articles)
+	t.RenderFoot(w, nil)
 }

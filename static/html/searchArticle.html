@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>测试</title>
-    <link rel="stylesheet" type="text/css" href="../css/article.css">
+    <link href="../css/article.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<form method="GET" action="/api/getArticleByKeyword">
+<form action="/api/getArticleByKeyword" method="GET">
     <label for="search">关键词:</label>
-    <input type="text" id="search" name="keyword" placeholder="输入关键词">
+    <input id="search" name="keyword" placeholder="输入关键词" type="text">
     <button id="getArticleByKeyword" type="submit">查询</button>
 </form>
 

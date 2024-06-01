@@ -11,11 +11,11 @@ function createArticle() {
         url: "/api/createArticle",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(articleData),
-        success: function(data) {
+        success: function (data) {
             alert("文章发布成功");
             window.location.href = "/";
         },
-        error: function(err) {
+        error: function (err) {
             let errorMessage = "文章发布失败";
             if (err.responseJSON && err.responseJSON.message) {
                 errorMessage = err.responseJSON.message;
@@ -25,8 +25,8 @@ function createArticle() {
     });
 }
 
-$(document).ready(function() {
-    $("#articleForm").submit(function(event) {
+$(document).ready(function () {
+    $("#articleForm").submit(function (event) {
         event.preventDefault(); // 阻止表单默认提交行为
         createArticle();
     });

@@ -30,7 +30,7 @@ function getUserByKeyword() {
         url: '/api/getUserByKeyword',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ username: username }),
+        data: JSON.stringify({username: username}),
         success: function (data) {
             const table = $('#results');
             table.empty();
@@ -70,14 +70,12 @@ function getUserByKeyword() {
 
 
 // 不加这个提交了会自动刷新
-$(document).ready(function() {
-    $('#registerForm').submit(function(event) {
+$(document).ready(function () {
+    $('#registerForm').submit(function (event) {
         event.preventDefault(); // 防止默认表单提交行为
         addUser();
     });
 });
-
-
 
 
 function addUser() {
@@ -90,7 +88,7 @@ function addUser() {
         UserType: $('#userType').val(),
     };
 
-    if (!user.PhoneNum || !user.Username || !user.Sex || !user.Email || !user.Password|| !user.UserType) {
+    if (!user.PhoneNum || !user.Username || !user.Sex || !user.Email || !user.Password || !user.UserType) {
         alert("所有字段都必须填写");
         return;
     }
