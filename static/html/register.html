@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>登录 ; 西南林业大学 ; WordPress</title>
+    <script src="/static/script/jquery-3.7.1.js"></script>
+    <script src="/static/script/register.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/swfuLogin.css">
+    <link rel="icon" href="https://www.swfu.edu.cn/wp-content/uploads/2018/09/favcion-1-150x150.png" sizes="32x32" />
+    <link rel="icon" href="https://www.swfu.edu.cn/wp-content/uploads/2018/09/favcion-1.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="https://www.swfu.edu.cn/wp-content/uploads/2018/09/favcion-1.png" />
+    <meta name="msapplication-TileImage" content="https://www.swfu.edu.cn/wp-content/uploads/2018/09/favcion-1.png" />
+</head>
+<body class="login login-action-login wp-core-ui  locale-zh-cn">
+<div id="login">
+    <!--    <h1><a href="https://cn.wordpress.org/" title="基于WordPress" tabindex="-1">基于WordPress</a></h1>-->
+    <h1> <p> 登陆管理 </p></h1>
+    <form name="registerForm" id="registerForm" method="post">
+        <p>
+            <label for="phoneNum">手机号<br />
+                <input type="text" name="phoneNum" id="phoneNum" class="input" size="20" /></label>
+        </p>
+        <p>
+            <label for="username">用户名<br />
+                <input type="text" name="username" id="username" class="input" size="20" /></label>
+        </p>
+        <p>
+            <label>性别<br />
+                <input type="radio" name="sex" id="male" value="男" /> 男
+                <input type="radio" name="sex" id="female" value="女" /> 女
+                <input type="radio" name="sex" id="other" value="其它" /> 不便透露
+                <input type="radio" name="sex" id="unspecified" value="不便透露" /> 不便透露
+            </label>
+        </p>
+        <p>
+            <label for="email">邮箱地址<br />
+                <input type="text" name="email" id="email" class="input" size="20" /></label>
+        </p>
+        <p>
+            <label for="password">密码<br />
+                <input type="password" name="password" id="password" class="input" size="20" /></label>
+        </p>
+        <p>
+            <label>用户类型<br />
+                <input type="radio" name="userType" id="reader" value="reader" /> 读者
+                <input type="radio" name="userType" id="author" value="author" /> 作者
+            </label>
+        </p>
+        <p class="submit">
+            <button type="submit" class="button button-primary button-large">注册</button>
+        </p>
+        <br>
+        <a href="/user/register"> 注册一个账号 </a>
+    </form>
+
+
+
+    <p id="backtoblog"><a href="/">&larr; 返回到博客首页</a></p>
+</div>
+<div class="clear"></div>
+</body>
+</html>

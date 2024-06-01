@@ -13,6 +13,7 @@ type Article interface {
 	GetArticleByKeyword(w http.ResponseWriter, r *http.Request)
 	CreateArticle(w http.ResponseWriter, r *http.Request)
 	GetArticleByID(w http.ResponseWriter, r *http.Request)
+	GetArticleByCategory(w http.ResponseWriter, r *http.Request, category string)
 }
 
 type ArticleImpl struct{}
