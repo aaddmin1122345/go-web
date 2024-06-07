@@ -81,26 +81,12 @@ func (u ArticleImpl) GetArticleByCategory(w http.ResponseWriter, r *http.Request
 	// 获取关键词
 	category := r.FormValue("category")
 
-	articles, err := ArticleServer.GetArticleByCategory(category)
+	_, err := ArticleServer.GetArticleByCategory(category)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// 加载 HTML 模板
-	tmpl, err := template.ParseFiles("./static/html/test.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// 渲染模板并将结果写入 ResponseWriter
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	err = tmpl.Execute(w, articles)
-	if err != nil {
-		http.Error(w, "无法生成HTML", http.StatusInternalServerError)
-		return
-	}
 }
 
 //func (u ArticleImpl) GetArticleByID(id int, w http.ResponseWriter, r *http.Request) {

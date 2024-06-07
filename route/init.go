@@ -1,6 +1,7 @@
 package route
 
 import (
+	"fmt"
 	"github.com/gorilla/sessions"
 	"go-web/api"
 	"go-web/template"
@@ -28,6 +29,7 @@ func (r MyRouteImpl) Init() {
 	r.Article()
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 }

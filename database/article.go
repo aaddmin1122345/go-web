@@ -36,8 +36,15 @@ func (a *ArticleImpl) CreateArticle(article *model.Article) error {
 }
 
 func (a *ArticleImpl) GetArticleByCategory(category string) ([]*model.Article, error) {
-	query := "SELECT * FROM news WHERE Category = ? ORDER BY Date DESC LIMIT 10"
-	rows, err := a.db.Query(query, category)
+	var err error
+	var rows *sql.Rows
+	if category == "" {
+		query := "SELECT * FROM news ORDER BY Date DESC LIMIT 10"
+		rows, err = a.db.Query(query)
+	} else {
+		query := "SELECT * FROM news WHERE Category = ? ORDER BY Date DESC LIMIT 10"
+		rows, err = a.db.Query(query, category)
+	}
 	if err != nil {
 		return nil, err
 	}

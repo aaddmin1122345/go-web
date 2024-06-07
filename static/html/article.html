@@ -1,5 +1,5 @@
-<html lang="zh-CN"><script id="allow-copy_script" src="chrome-extension://aefehdhdciieocakfobpaaolhipkcpgc/content_scripts/copy.js"></script><head>
-    <meta charset="UTF-8">
+<html lang="zh-CN">
+<head><meta charset="UTF-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="webkit|ie-comp|ie-stand" name="renderer">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -8,21 +8,9 @@
     <meta content="西南林业大学 - 西南林业大学" name="apple-mobile-web-app-title">
     <style id="kirki-css-vars">:root {
     }</style>
-    <title>{{.Title}}</title>
+
 
     <style type="text/css">
-        img.wp-smiley,
-        img.emoji {
-            display: inline !important;
-            border: none !important;
-            box-shadow: none !important;
-            height: 1em !important;
-            width: 1em !important;
-            margin: 0 .07em !important;
-            vertical-align: -0.1em !important;
-            background: none !important;
-            padding: 0 !important;
-        }
     </style>
     <link href="/static/css/theme.min.css" id="understrap-styles-css" media="all" rel="stylesheet" type="text/css">
     <link href="/static/css/custom-theme.css" id="understrap-custom-styles-css" media="all" rel="stylesheet" type="text/css">
@@ -42,15 +30,6 @@
         }
 
         /*删除轮播图的箭头*/
-        .carousel-control-prev {
-            left: 0;
-            display: none;
-        }
-
-        .carousel-control-next {
-            right: 0;
-            display: none;
-        }
 
         /*轮播图缓冲颜色改为白色*/
         .home-carousel .carousel-item .embed-responsive {
@@ -90,10 +69,10 @@
         }
 
 
-        W
+
         .home-nav-tabs .nav-link {
             padding: 0.5rem 1rem;
-            margin: 0 0rem;
+            margin: 0 0;
             margin-top: -0.5rem;
             text-align: center;
         }
@@ -155,32 +134,31 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8">
-
-
                             <article class="post-22720 post type-post status-publish format-standard has-post-thumbnail hentry category-dangji category-flash-news" id="post-22720">
-
                                 <header class="entry-header">
-
                                     <h1 class="entry-title">
-                                        {{.Title}}</h1>
-                                    <div class="entry-meta">
+                                        {{.Article.Title}}
 
+                                    </h1>
+                                    <div class="entry-meta">
                                 <span class="entry-date">
-                                    <a>{{.CreateTime}}</a>
+                                    <a>{{.Article.CreateTime}}</a>
                                 </span>
                                         <span></span>
                                         <span class="entry-categories">
-
-                                <a href="/article/GetArticleByCategory?category={{.Category}}">{{.Category}}</a>
+                                <a href="/article/GetArticleByCategory?category={{.Article.Category}}">{{.Article.Category}}</a>
                                         </span>
                                     </div><!-- .entry-meta -->
 
                                 </header><!-- .entry-header -->
 
                                 <div class="entry-content">
+        <img src="{{.Article.ImageURL}}">
 
+
+        </img>
                                     <p>
-                                        {{.Content}}
+                                        {{.Article.Content}}
                                     </p>
 
 
@@ -191,37 +169,32 @@
 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="width: 300px">
                             <aside class="widget widget_recent_entries" id="recent-posts-2">
                                 <div class="widget-header"><h3 class="widget-title">最新发布</h3></div>
                                 <ul>
+                                    {{range .ArticlesByCategory}}
                                     <li>
                                         <a href="/article/getArticleByID?id={{.ID}}">{{.Title}}</a>
-                                        <!--                                        <span class="post-date">{{.Date}}</span>-->
+                                        <span class="post-date">{{.CreateTime}}</span>
                                     </li>
-
+                                    {{end}}
                                 </ul>
                             </aside>
                         </div>
+
+
                     </div>
                 </div>
             </div>
 
             <!--</div>--><!-- #main -->
 
-            <div id="footer">
-                <div id="footbar">
 
-                </div>
-
-                <div id="colophon">
-
-                </div>
-            </div><!-- #footer -->
         </div><!-- 修改 -->
     </div><!-- #page -->
 
 
-
 </div>
+
 </body></html>

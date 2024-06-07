@@ -27,10 +27,6 @@ type MyTemplateImpl struct {
 func (t MyTemplateImpl) Index(w http.ResponseWriter, res *http.Request) {
 	// 获取文章数据
 	itArticles, err := ServiceArticle.GetArticleByCategory("it")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 
 	peArticles, err := ServiceArticle.GetArticleByCategory("pe")
 	if err != nil {
@@ -78,6 +74,7 @@ func (t MyTemplateImpl) RenderSwfuPage(w http.ResponseWriter, res *http.Request)
 
 func (t MyTemplateImpl) RenderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 	tpl, err := template.ParseFiles(tmpl)
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -89,3 +86,20 @@ func (t MyTemplateImpl) RenderTemplate(w http.ResponseWriter, tmpl string, data 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+//func (t MyTemplateImpl) RenderTemplate2(w http.ResponseWriter, tmpl string, tmpl2 string, data interface{}, data2 interface{}) {
+//	tpl, err := template.ParseFiles(tmpl)
+//	tpl2, err := template.ParseFiles(tmpl2)
+//
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//
+//	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+//	err = tpl.Execute(w, data)
+//	err = tpl2.Execute(w, data2)
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//	}
+//}

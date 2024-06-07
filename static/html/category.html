@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="webkit|ie-comp|ie-stand" name="renderer">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="yes" name="mobile-web-app-capable">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="西南林业大学 - 西南林业大学" name="apple-mobile-web-app-title">
+    <style id="kirki-css-vars">:root {
+    }</style>
+
+    <link href="//s.w.org" rel="dns-prefetch">
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link href="/static/css/theme.min.css" id="understrap-styles-css" media="all" rel="stylesheet" type="text/css">
+    <link href="/static/css/custom-theme.css" id="understrap-custom-styles-css" media="all" rel="stylesheet" type="text/css">
+    <meta content="WordPress 4.9.22" name="generator">
+    <meta content="/wp-content/uploads/2018/09/favcion-1.png" name="msapplication-TileImage">
+    <style id="wp-custom-css" type="text/css">
+        /* 样式部分省略 */
+    </style>
+</head>
+
+<body class="archive category category-flash-news category-16 wp-custom-logo group-blog hfeed">
+<div class="hfeed site" id="page">
+    <div class="container">
+        <div id="header">
+            <div id="topbar"></div>
+            <nav id="logobar"></nav>
+            <div class="collapse" id="navbar">
+                <div class="container"></div>
+            </div>
+        </div><!-- #header -->
+
+        <div id="main" >
+            <div id="main-content" >
+                <div class="container" >
+                    <div class="row" >
+                        <div class="col-md-8 ">
+                            <header class="block-header">
+                                <h1 class="block-title">分类：{{.Article.Category}}</h1>
+                            </header>
+                            <div class="post-list">
+                                <article class="post- post type-post status-publish format-standard has-post-thumbnail hentry category-flash-news">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="entry-thumb">
+                                                <img alt="" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" height="180" src="{{.Article.ImageURL}}" width="320">
+                                            </div>
+                                        </div>
+                                        <div class="col-8">
+                                            <header class="entry-header">
+                                                <h2 class="entry-title">
+                                                    <a href="/article/getArticleByID?id={{.ID}}">{{.Title}}</a>
+                                                </h2>
+                                            </header>
+                                            <div class="entry-summary"></div>
+                                            <div class="entry-meta">{{.Article.CreateTime}}</div>
+                                        </div>
+                                    </div>
+                                </article><!-- #post-## -->
+                            </div>
+
+                            <nav class="navigation pagination" role="navigation">
+                                <h2 class="screen-reader-text">文章导航</h2>
+                                <div class="nav-links">
+                                    <span aria-current="page" class="page-numbers current">1</span>
+                                    <a class="page-numbers" href="/category/flash-news/page/2/">2</a>
+                                    <span class="page-numbers dots">…</span>
+                                    <a class="page-numbers" href="/category/flash-news/page/164/">164</a>
+                                    <a class="next page-numbers" href="/category/flash-news/page/2/">下一页</a>
+                                </div>
+                            </nav>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div><!-- #main -->
+
+        <div id="footer">
+            <div id="footbar"></div>
+            <div id="colophon"></div>
+        </div><!-- #footer -->
+    </div><!-- #page -->
+</div>
+</body>
+</html>

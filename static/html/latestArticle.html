@@ -1,0 +1,14 @@
+
+<div class="col-md-4" style="width: 300px">
+    <aside class="widget widget_recent_entries" id="recent-posts-2">
+        <div class="widget-header"><h3 class="widget-title">最新发布</h3></div>
+        <ul>
+            {{range .}}
+            <li>
+                <a href="/article/getArticleByCategory?category=">{{.Title}}</a>
+                <span class="post-date">{{.CreateTime}}</span>
+            </li>
+            {{end}}
+        </ul>
+    </aside>
+</div>
