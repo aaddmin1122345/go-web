@@ -63,10 +63,7 @@ func (t MyTemplateImpl) GetArticleByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t MyTemplateImpl) GetArticleByCategory(w http.ResponseWriter, r *http.Request) {
-	type TemplateData struct {
-		Article            []*model.Article
-		ArticlesByCategory []*model.Article
-	}
+
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -75,24 +72,15 @@ func (t MyTemplateImpl) GetArticleByCategory(w http.ResponseWriter, r *http.Requ
 	category := r.FormValue("category")
 
 	article, err := ArticleServer.GetArticleByCategory(category)
-	articlesByCategory, err := ArticleServer.GetArticleByCategory("")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	data := TemplateData{
-		Article:            article,
-		ArticlesByCategory: articlesByCategory,
-	}
-	for _, article := range articlesByCategory {
-		fmt.Println(*article)
 
-	}
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	for _, articles := range article {
+		fmt.Println(articles)
 	}
 
 	// 加载 HTML 模板
-	t.RenderTemplate(w, "./static/html/category.html", data)
+	t.RenderTemplate(w, "./static/html/category.html", article)
 }
