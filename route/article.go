@@ -7,4 +7,6 @@ func (r MyRouteImpl) Article() {
 	http.HandleFunc("/article/getArticleByCategory", MyTemplate.GetArticleByCategory)
 	http.HandleFunc("/article/getArticleByID", MyTemplate.GetArticleByID)
 	http.HandleFunc("/article/createArticle", MyTemplate.CreateArticle)
+	http.HandleFunc("/article/uploadFile", MyTemplate.UploadFile)
+
 }

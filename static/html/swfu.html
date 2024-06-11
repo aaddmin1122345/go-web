@@ -1,6 +1,4 @@
 <html lang="zh-CN">
-<script id="allow-copy_script"
-        src="chrome-extension://aefehdhdciieocakfobpaaolhipkcpgc/content_scripts/copy.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -9,6 +7,8 @@
     <meta content="yes" name="mobile-web-app-capable">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="西南林业大学 - 西南林业大学" name="apple-mobile-web-app-title">
+    <script src="/static/script/theme.min.js"></script>
+    <script src="/static/script/jquery.1.12.4.js"></script>
 
 
     <style id="kirki-css-vars">
@@ -17,134 +17,17 @@
     </style>
     <title>西南林业大学 – 西南林业大学</title>
 
-    <style type="text/css">
-        img.wp-smiley,
-        img.emoji {
-            display: inline !important;
-            border: none !important;
-            box-shadow: none !important;
-            height: 1em !important;
-            width: 1em !important;
-            margin: 0 .07em !important;
-            vertical-align: -0.1em !important;
-            background: none !important;
-            padding: 0 !important;
-        }
-    </style>
-    <link href="/static/css/1.css" id="understrap-styles-css" media="all" rel="stylesheet" type="text/css">
-    <link href="/static/css/2.css" id="understrap-custom-styles-css" media="all" rel="stylesheet" type="text/css">
-    <script src="/static/script/jquery.1.12.4.js" type="text/javascript"></script>
-    <script src="/static/script/jquery-migrate.min.js" type="text/javascript"></script>
-    <link href="https://www.swfu.edu.cn//wp-content/uploads/2018/09/favcion-1-150x150.png" rel="icon" sizes="32x32">
-    <link href="https://www.swfu.edu.cn//wp-content/uploads/2018/09/favcion-1.png" rel="icon" sizes="192x192">
-    <link href="https://www.swfu.edu.cn//wp-content/uploads/2018/09/favcion-1.png" rel="apple-touch-icon-precomposed">
-    <meta content="https://www.swfu.edu.cn//wp-content/uploads/2018/09/favcion-1.png" name="msapplication-TileImage">
-    <style id="wp-custom-css" type="text/css">
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            font-size: .875rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #212121;
-            text-align: justify;
-            background-color: #fff;
-
-        }
-
-
-        .carousel-control-prev {
-            left: 0;
-            display: none;
-        }
-
-        .carousel-control-next {
-            right: 0;
-            display: none;
-        }
-
-
-        .home-carousel .carousel-item .embed-responsive {
-            background: #ffffff no-repeat center center;
-            background-size: cover;
-        }
-
-
-        .block-hot .hot-main .title {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.7);
-            color: #000000;
-            padding: 0.5rem 1rem;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            line-height: 1.2;
-        }
-
-
-        #footbar .container {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-            background-color: #23772D;
-        }
-
-        #colophon {
-            line-height: 1.5;
-            background-color: #23772D;
-        }
-
-
-        .block-hot .hot-more .date {
-
-            color: green;
-        }
-
-
-        .home-nav-tabs .nav-link {
-            padding: 0.5rem 1rem;
-            margin: 0 0rem;
-            margin-top: -0.5rem;
-            text-align: center;
-        }
-
-
-        .home-nav-tabs .cn {
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: #4caf50;
-        }
-
-
-        .home-nav-tabs .nav-link .cn {
-            font-size: 1.5rem;
-            font-weight: 400;
-        }
-
-
-        .tab-content > .active a {
-            color: #212121;
-        }
-
-
-        .justify-content-center {
-            -webkit-box-pack: center !important;
-            -ms-flex-pack: center !important;
-            justify-content: right !important;
-        }
-
-
-        .block-title .cn,
-        .widget-title .cn {
-            font-size: 1.5rem;
-            font-weight: 400;
-            padding: 0px 0px 0px 16px;
-        }
-
-
-        .simple-post-list .date {
-            color: green;
-        }
-    </style>
+<!--    <style type="text/css">-->
+<!--    </style>-->
+<!--    <link href="/static/css/1.css" id="understrap-styles-css" media="all" rel="stylesheet" type="text/css">-->
+<!--    <link href="/static/css/2.css" id="understrap-custom-styles-css" media="all" rel="stylesheet" type="text/css">-->
+<!--    <script src="/static/script/jquery.1.12.4.js" type="text/javascript"></script>-->
+<!--    <script src="/static/script/jquery-migrate.min.js" type="text/javascript"></script>-->
+<!--    <link href="https://www.swfu.edu.cn//wp-content/uploads/2018/09/favcion-1-150x150.png" rel="icon" sizes="32x32">-->
+<!--    <link href="https://www.swfu.edu.cn//wp-content/uploads/2018/09/favcion-1.png" rel="icon" sizes="192x192">-->
+<!--    <link href="https://www.swfu.edu.cn//wp-content/uploads/2018/09/favcion-1.png" rel="apple-touch-icon-precomposed">-->
+<!--    <meta content="https://www.swfu.edu.cn//wp-content/uploads/2018/09/favcion-1.png" name="msapplication-TileImage">-->
+<!--    -->
 </head>
 
 <body class="home page-template-default page page-id-23 wp-custom-logo group-blog">
@@ -170,34 +53,31 @@
 
                 <div class="home-carousel carousel slide" data-ride="carousel" id="home-hero">
                     <ol class="carousel-indicators">
-                        <li class=" active" data-slide-to="0" data-target="#home-hero"></li>
+                        <li class="" data-slide-to="0" data-target="#home-hero"></li>
                         <li class="" data-slide-to="1" data-target="#home-hero"></li>
-                        <li class="" data-slide-to="2" data-target="#home-hero"></li>
+                        <li class="active" data-slide-to="2" data-target="#home-hero"></li>
                         <li class="" data-slide-to="3" data-target="#home-hero"></li>
                         <li class="" data-slide-to="4" data-target="#home-hero"></li>
-                        <li class="" data-slide-to="5" data-target="#home-hero"></li>
                     </ol>
                     <div class="carousel-inner">
-                        <div class="carousel-item active"><a class="embed-responsive embed-responsive-21by9"
-                                                             href="https://www.12371.cn/special/xg20djs/"
-                                                             style="background-image:url(https://www.swfu.edu.cn/wp-content/uploads/2024/03/2024-3-27-网站头图2-.jpg)"></a>
+                        <div class="carousel-item"><a class="embed-responsive embed-responsive-21by9"
+                                                      href="#"
+                                                      style="background-image:url(/static/image/2024-3-27-网站头图2-.jpg)"></a>
                         </div>
                         <div class="carousel-item"><a class="embed-responsive embed-responsive-21by9" href=""
-                                                      style="background-image:url(https://www.swfu.edu.cn/wp-content/uploads/2023/10/网站头图-20231007-绿色-习近平生态文明思想.png)"></a>
+                                                      style="background-image:url(/static/image/网站头图-20231007-绿色-习近平生态文明思想.png)"></a>
                         </div>
-                        <div class="carousel-item"><a class="embed-responsive embed-responsive-21by9" href=""
-                                                      style="background-image:url(https://www.swfu.edu.cn/wp-content/uploads/2023/11/杜官本当选院士-头图.jpg)"></a>
+                        <div class="carousel-item active"><a
+                                class="embed-responsive embed-responsive-21by9"
+                                href="#"
+                                style="background-image:url(/static/image/2023-9-11教育家精神-1.jpg)"></a>
+                        </div>
+                        <div class="carousel-item"><a class="embed-responsive embed-responsive-21by9" href="#"
+                                                      style="background-image:url(/static/image/网站头图-文明公约.jpg)"></a>
                         </div>
                         <div class="carousel-item"><a class="embed-responsive embed-responsive-21by9"
-                                                      href="https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2024/2024_zt06/"
-                                                      style="background-image:url(https://www.swfu.edu.cn/wp-content/uploads/2023/09/2023-9-11教育家精神-1.jpg)"></a>
-                        </div>
-                        <div class="carousel-item"><a class="embed-responsive embed-responsive-21by9" href=""
-                                                      style="background-image:url(https://www.swfu.edu.cn/wp-content/uploads/2024/03/网站头图-文明公约.jpg)"></a>
-                        </div>
-                        <div class="carousel-item"><a class="embed-responsive embed-responsive-21by9"
-                                                      href="https://www.12371.cn/djxx/"
-                                                      style="background-image:url(https://www.swfu.edu.cn/wp-content/uploads/2024/04/党纪学习教育-拷贝-1.jpg)"></a>
+                                                      href="#"
+                                                      style="background-image:url(/static/image/党纪学习教育-拷贝-1.jpg)"></a>
                         </div>
                     </div>
                     <a class="carousel-control-prev" data-slide="prev" href="#home-hero" role="button">
@@ -228,13 +108,14 @@
 
                                     <div class="col-md-6">
                                         <div class="hot-main">
-                                            <a class="thumbnail embed-responsive embed-responsive-4by3" href="1.html"
+                                            <a class="thumbnail embed-responsive embed-responsive-4by3" href="404.html"
                                                title="校领导带队开展访企拓岗促就业专项行动">
                                                 <img alt="" class="attachment-full size-full wp-post-image"
-                                                     height="1279" sizes="(max-width: 2275px) 100vw, 2275px"
-                                                     src="/wp-content/uploads/2024/05/wps_doc_1.jpeg"
-                                                     srcset="https://www.swfu.edu.cn/wp-content/uploads/2024/05/wps_doc_1.jpeg 2275w, /wp-content/uploads/2024/05/wps_doc_1-800x450.jpeg 800w, /wp-content/uploads/2024/05/wps_doc_1-768x432.jpeg 768w, /wp-content/uploads/2024/05/wps_doc_1-1024x576.jpeg 1024w, /wp-content/uploads/2024/05/wps_doc_1-320x180.jpeg 320w"
-                                                     width="2275"> <span
+                                                     height="1237" sizes="(max-width: 2275px) 100vw, 2275px"
+                                                     src="/static/image/1.png">
+<!--                                                     srcset="/static/image/1.png 2275w, /static/image/1.png 800w, /wp-content/uploads/2024/05/wps_doc_1-768x432.jpeg 768w, /wp-content/uploads/2024/05/wps_doc_1-1024x576.jpeg 1024w, /wp-content/uploads/2024/05/wps_doc_1-320x180.jpeg 320w"-->
+<!--                                                     width="1971"> -->
+                                                <span
                                                     class="title">校领导带队开展访企拓岗促就业专项行动</span>
                                             </a>
 
@@ -266,7 +147,7 @@
                             <div class="col-md-6">
                                 <div class="block-header">
                                     <h3 class="block-title">
-                                        <a href="/article/getArticleByCategory?category=it">
+                                        <a href="/article/getArticleByCategory?category=it&page=1">
                                             <span class="cn">互联网新闻</span>
                                             <span class="en"></span>
                                         </a>
@@ -290,7 +171,7 @@
                             <div class="col-md-6">
                                 <div class="block-header">
                                     <h3 class="block-title">
-                                        <a href="/article/getArticleByCategory?category=music">
+                                        <a href="/article/getArticleByCategory?category=music&page=1">
                                             <span class="cn">音乐新闻</span>
                                             <span class="en"></span>
                                         </a>
@@ -320,7 +201,7 @@
                             <div class="col-md-6">
                                 <div class="block-header">
                                     <h3 class="block-title">
-                                        <a href="/article/getArticleByCategory?category=shipin">
+                                        <a href="/article/getArticleByCategory?category=shipin&page=1">
                                             <span class="cn">视频新闻</span>
                                             <span class="en"></span>
                                         </a>
@@ -344,7 +225,7 @@
                             <div class="col-md-6">
                                 <div class="block-header">
                                     <h3 class="block-title">
-                                        <a href="/article/getArticleByCategory?category=pe">
+                                        <a href="/article/getArticleByCategory?category=pe&page=1">
                                             <span class="cn">体育新闻</span>
                                             <span class="en"></span>
                                         </a>

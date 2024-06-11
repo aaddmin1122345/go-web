@@ -19,28 +19,38 @@ type MyTemplate interface {
 	CreateArticle(w http.ResponseWriter, res *http.Request)
 	RenderHead(w http.ResponseWriter, res *http.Request)
 	GetArticleByID(w http.ResponseWriter, res *http.Request)
+	until(start, end int) []int
+	NotFoundHandler(w http.ResponseWriter, req *http.Request)
 }
 
 type MyTemplateImpl struct {
 }
 
+func (t MyTemplateImpl) until(start, end int) []int {
+	var result []int
+	for i := start; i <= end; i++ {
+		result = append(result, i)
+	}
+	return result
+}
+
 func (t MyTemplateImpl) Index(w http.ResponseWriter, res *http.Request) {
 	// 获取文章数据
-	itArticles, err := ServiceArticle.GetArticleByCategory("it")
+	itArticles, err := ServiceArticle.GetArticleByCategory("it", 1, 10)
 
-	peArticles, err := ServiceArticle.GetArticleByCategory("pe")
+	peArticles, err := ServiceArticle.GetArticleByCategory("pe", 1, 10)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	shipinArticles, err := ServiceArticle.GetArticleByCategory("shipin")
+	shipinArticles, err := ServiceArticle.GetArticleByCategory("shipin", 1, 10)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	musicArticles, err := ServiceArticle.GetArticleByCategory("music")
+	musicArticles, err := ServiceArticle.GetArticleByCategory("music", 1, 10)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -66,10 +76,26 @@ func (t MyTemplateImpl) Index(w http.ResponseWriter, res *http.Request) {
 }
 
 func (t MyTemplateImpl) RenderSwfuPage(w http.ResponseWriter, res *http.Request) {
+	path := res.URL.Path
+
+	// 如果请求的路径不是根路径，则返回 404
+	if path != "/" {
+		t.NotFoundHandler(w, res)
+		return
+	}
 	t.RenderHead(w, nil)
 	t.Index(w, nil)
 	t.RenderFoot(w, nil)
 
+}
+
+func (t MyTemplateImpl) NotFoundHandler(w http.ResponseWriter, req *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+
+	t.RenderHead(w, req)
+	t.RenderTemplate(w, "./static/html/404.html", nil)
+	t.RenderFoot(w, req)
+	// 设置响应状态码为 404
 }
 
 func (t MyTemplateImpl) RenderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {

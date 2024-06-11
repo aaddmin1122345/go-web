@@ -12,8 +12,9 @@ type Article interface {
 	GetArticleByKeyword(keyword string) ([]*model.Article, error)
 	CreateArticle(article *model.Article) error
 	SetDb(db *sql.DB)
-	GetArticleByCategory(category string) ([]*model.Article, error)
+	GetArticleByCategory(category string, page int, pageSize int) ([]*model.Article, error)
 	GetArticleByID(id int) (*model.Article, error)
+	CountArticle(category string) (int, error)
 }
 
 type ArticleImpl struct {
@@ -22,6 +23,28 @@ type ArticleImpl struct {
 
 func (a *ArticleImpl) SetDb(db *sql.DB) {
 	a.db = db
+}
+
+// CountArticle 分页的时候需要用到这个代码来计算有几页面
+func (a *ArticleImpl) CountArticle(category string) (int, error) {
+	var count int
+	var err error
+
+	if category == "" {
+		query := "SELECT COUNT(*) FROM news"
+		err = a.db.QueryRow(query).Scan(&count)
+		if err != nil {
+			return 0, err
+		}
+	} else {
+		query := "SELECT COUNT(*) FROM news WHERE Category = ?"
+		err = a.db.QueryRow(query, category).Scan(&count)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	return count, nil
 }
 
 func (a *ArticleImpl) CreateArticle(article *model.Article) error {
@@ -35,19 +58,24 @@ func (a *ArticleImpl) CreateArticle(article *model.Article) error {
 	return nil
 }
 
-func (a *ArticleImpl) GetArticleByCategory(category string) ([]*model.Article, error) {
+func (a *ArticleImpl) GetArticleByCategory(category string, page int, pageSize int) ([]*model.Article, error) {
 	var err error
 	var rows *sql.Rows
+
+	// 计算偏移量,这个是获得当前页
+	offset := (page - 1) * pageSize
+
 	if category == "" {
-		query := "SELECT * FROM news ORDER BY Date DESC LIMIT 10"
-		rows, err = a.db.Query(query)
+		query := "SELECT * FROM news ORDER BY CreateTime DESC LIMIT ? OFFSET ?"
+		rows, err = a.db.Query(query, pageSize, offset)
 	} else {
-		query := "SELECT * FROM news WHERE Category = ? ORDER BY Date DESC LIMIT 10"
-		rows, err = a.db.Query(query, category)
+		query := "SELECT * FROM news WHERE Category = ? ORDER BY CreateTime DESC LIMIT ? OFFSET ?"
+		rows, err = a.db.Query(query, category, pageSize, offset)
 	}
 	if err != nil {
 		return nil, err
 	}
+
 	defer func() {
 		if err = rows.Close(); err != nil {
 			// 处理关闭 rows 时的错误

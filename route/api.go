@@ -14,5 +14,7 @@ func (r MyRouteImpl) Api() {
 	http.HandleFunc("/api/delUser", UserApi.DeleteUser)
 	http.HandleFunc("/api/check", UserApi.ValidUser)
 	http.HandleFunc("/api/createArticle", ArticleApi.CreateArticle)
+	http.HandleFunc("/api/upload", ArticleApi.UploadFile)
+
 	//http.HandleFunc("/api/getArticleByKeyword", MyTemplate)
 }

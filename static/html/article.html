@@ -10,105 +10,7 @@
     }</style>
 
 
-    <style type="text/css">
-    </style>
-    <link href="/static/css/theme.min.css" id="understrap-styles-css" media="all" rel="stylesheet" type="text/css">
-    <link href="/static/css/custom-theme.css" id="understrap-custom-styles-css" media="all" rel="stylesheet" type="text/css">
-    <meta content="/wp-content/uploads/2018/09/favcion-1.png" name="msapplication-TileImage">
-    <style id="wp-custom-css" type="text/css">
-        /*网站变为灰色*/
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            font-size: .875rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #212121;
-            text-align: justify;
-            background-color: #fff;
-            /* filter: grayscale(1);*/
-        }
 
-        /*删除轮播图的箭头*/
-
-        /*轮播图缓冲颜色改为白色*/
-        .home-carousel .carousel-item .embed-responsive {
-            background: #ffffff no-repeat center center;
-            background-size: cover;
-        }
-
-        /*焦点新闻标题改为透明黑色字*/
-        .block-hot .hot-main .title {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.7);
-            color: #000000;
-            padding: 0.5rem 1rem;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            line-height: 1.2;
-        }
-
-        /*底部颜色改为浅绿色*/
-        #footbar .container {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-            background-color: #23772D;
-        }
-
-        #colophon {
-            line-height: 1.5;
-            background-color: #23772D;
-        }
-
-
-        /*修改日期颜色*/
-        .block-hot .hot-more .date {
-            /*color: #9e9e9e;*/
-            color: green;
-        }
-
-
-
-        .home-nav-tabs .nav-link {
-            padding: 0.5rem 1rem;
-            margin: 0 0;
-            margin-top: -0.5rem;
-            text-align: center;
-        }
-
-        /*tab栏目标题颜色改为绿色*/
-        .home-nav-tabs .cn {
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: #4caf50;
-        }
-
-        /*调整tab标题手机上显示字体大小*/
-        .home-nav-tabs .nav-link .cn {
-            font-size: 1.5rem;
-            font-weight: 400;
-        }
-
-
-        /*tab文章标题颜色改为黑色*/
-        .tab-content > .active a {
-            color: #212121;
-        }
-
-
-        /*通知公告类 标题靠右移动点*/
-        .block-title .cn, .widget-title .cn {
-            font-size: 1.5rem;
-            font-weight: 400;
-            padding: 0 0 0 16px;
-        }
-
-        /*tab日期调为绿色*/
-        .simple-post-list .date {
-            color: green;
-        }
-    </style>
 </head>
 <body class="post-template-default single single-post postid-22720 single-format-standard wp-custom-logo group-blog">
 <div class="hfeed site" id="page">
@@ -146,17 +48,17 @@
                                 </span>
                                         <span></span>
                                         <span class="entry-categories">
-                                <a href="/article/GetArticleByCategory?category={{.Article.Category}}">{{.Article.Category}}</a>
+                                <a href="/article/getArticleByCategory?category={{.Article.Category}}&page=1">{{.Article.Category}}</a>
                                         </span>
                                     </div><!-- .entry-meta -->
 
                                 </header><!-- .entry-header -->
 
                                 <div class="entry-content">
-        <img src="{{.Article.ImageURL}}">
+<!--        <img src="{{.Article.ImageURL}}">-->
 
 
-        </img>
+<!--        </img>-->
                                     <p>
                                         {{.Article.Content}}
                                     </p>

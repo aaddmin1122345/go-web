@@ -13,17 +13,15 @@
 
     <link href="//s.w.org" rel="dns-prefetch">
     <style type="text/css">
-        img.wp-smiley,
-        img.emoji {
-            display: inline !important;
-            border: none !important;
-            box-shadow: none !important;
-            height: 1em !important;
-            width: 1em !important;
-            margin: 0 .07em !important;
-            vertical-align: -0.1em !important;
-            background: none !important;
-            padding: 0 !important;
+        body {
+            font-size: 1.5em; /* 增大字体 */
+        }
+        .entry-thumb img {
+            width: 100%; /* 确保图像自适应容器 */
+            height: auto; /* 保持图像比例 */
+        }
+        .container {
+            max-width: 1200px; /* 增加容器的最大宽度 */
         }
     </style>
     <link href="/static/css/theme.min.css" id="understrap-styles-css" media="all" rel="stylesheet" type="text/css">
@@ -33,6 +31,7 @@
     <style id="wp-custom-css" type="text/css">
         /* 样式部分省略 */
     </style>
+    <title> {{with index .Article 0}}{{.Title}}{{end}}</title>
 </head>
 
 <body class="archive category category-flash-news category-16 wp-custom-logo group-blog hfeed">
@@ -51,15 +50,17 @@
                 <div class="container" >
                     <div class="row" >
                         <div class="col-md-8 ">
+
                             <header class="block-header">
-                                <h1 class="block-title">分类：{{.Article.Category}}</h1>
+                                <h1 class="block-title">分类：{{with index .Article 0}}{{.Category}}{{end}}</h1>
                             </header>
                             <div class="post-list">
+                                {{range .Article}}
                                 <article class="post- post type-post status-publish format-standard has-post-thumbnail hentry category-flash-news">
                                     <div class="row">
                                         <div class="col-4">
                                             <div class="entry-thumb">
-                                                <img alt="" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" height="180" src="{{.Article.ImageURL}}" width="320">
+                                                <img alt="" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" height="180" src="{{.ImageURL}}" width="320">
                                             </div>
                                         </div>
                                         <div class="col-8">
@@ -69,25 +70,69 @@
                                                 </h2>
                                             </header>
                                             <div class="entry-summary"></div>
-                                            <div class="entry-meta">{{.Article.CreateTime}}</div>
+                                            <div class="entry-meta">{{.CreateTime}}</div>
                                         </div>
                                     </div>
-                                </article><!-- #post-## -->
+                                </article>
+                                {{end}}
                             </div>
 
                             <nav class="navigation pagination" role="navigation">
                                 <h2 class="screen-reader-text">文章导航</h2>
                                 <div class="nav-links">
-                                    <span aria-current="page" class="page-numbers current">1</span>
-                                    <a class="page-numbers" href="/category/flash-news/page/2/">2</a>
+                                    {{if .HasPrev}}
+                                    <a class="prev page-numbers" href="?page={{.PrevPage}}">上一页</a>
+                                    {{end}}
+                                    <a class="page-numbers" href="?page=1">1</a>
+                                    {{if gt .CurrentPage 4}} <!-- 如果当前页大于 4，显示省略号 -->
                                     <span class="page-numbers dots">…</span>
-                                    <a class="page-numbers" href="/category/flash-news/page/164/">164</a>
-                                    <a class="next page-numbers" href="/category/flash-news/page/2/">下一页</a>
+                                    {{end}}
+                                    {{if le .TotalPages 5}} <!-- 如果总页数小于等于 5，显示所有页面 -->
+                                    {{range $i := until 2 .TotalPages}}
+                                    <a class="page-numbers" href="?page={{$i}}">{{$i}}</a>
+                                    {{end}}
+                                    {{else}}
+                                    {{if ge .CurrentPage 3}} <!-- 如果当前页大于等于 3，从当前页 - 2 开始显示 -->
+                                    {{range $i := until (add .CurrentPage -2) (minimum (add .CurrentPage 2) .TotalPages)}}
+                                    <a class="page-numbers" href="?page={{$i}}">{{$i}}</a>
+                                    {{end}}
+                                    {{else}} <!-- 如果当前页小于 3，从第二页开始显示 -->
+                                    {{range $i := until 2 5}}
+                                    <a class="page-numbers" href="?page={{$i}}">{{$i}}</a>
+                                    {{end}}
+                                    {{end}}
+                                    {{end}}
+                                    {{if lt .TotalPages 6}} <!-- 如果总页数小于 6，显示所有页面 -->
+                                    {{range $i := until 2 .TotalPages}}
+                                    <a class="page-numbers" href="?page={{$i}}">{{$i}}</a>
+                                    {{end}}
+                                    {{else}}
+                                    <span class="page-numbers dots">…</span> <!-- 如果总页数大于 5，显示省略号 -->
+                                    {{end}}
+                                    <a class="page-numbers" href="?page={{.TotalPages}}">{{.TotalPages}}</a>
+                                    {{if .HasNext}}
+                                    <a class="next page-numbers" href="?page={{.NextPage}}">下一页</a>
+                                    {{end}}
                                 </div>
                             </nav>
+
+
+
+
                         </div>
-
-
+                        <div class="col-md-4" style="width: 300px">
+                            <aside class="widget widget_recent_entries" id="recent-posts-2">
+                                <div class="widget-header"><h3 class="widget-title">最新发布</h3></div>
+                                <ul>
+                                    {{range .ArticlesByCategory}}
+                                    <li>
+                                        <a href="/article/getArticleByID?id={{.ID}}">{{.Title}}</a>
+                                        <span class="post-date">{{.CreateTime}}</span>
+                                    </li>
+                                    {{end}}
+                                </ul>
+                            </aside>
+                        </div>
                     </div>
                 </div>
             </div>
