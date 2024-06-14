@@ -29,7 +29,7 @@ function createArticle() {
         data: JSON.stringify(articleData),
         success: function () {
             alert("文章发布成功");
-            // window.location.href = "/";
+            window.location.href = "/";
         },
         error: function (err) {
             let errorMessage = "文章发布失败";

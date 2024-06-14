@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"go-web/model"
 	"html/template"
 	"io"
 	"mime/multipart"
@@ -14,12 +13,12 @@ import (
 	"time"
 )
 
-type Article interface {
-	GetArticleByKeyword(w http.ResponseWriter, r *http.Request)
-	CreateArticle(w http.ResponseWriter, r *http.Request)
-	GetArticleByCategory(w http.ResponseWriter, r *http.Request)
-	UploadFile(w http.ResponseWriter, r *http.Request)
-}
+//type Article interface {
+//	GetArticleByKeyword(w http.ResponseWriter, r *http.Request)
+//	//CreateArticle(w http.ResponseWriter, r *http.Request)
+//	GetArticleByCategory(w http.ResponseWriter, r *http.Request)
+//	UploadFile(w http.ResponseWriter, r *http.Request)
+//}
 
 type ArticleImpl struct{}
 
@@ -28,21 +27,20 @@ func (u ArticleImpl) UploadFile(w http.ResponseWriter, r *http.Request) {
 	const MaxUploadSize = 10 << 20 // 10MB
 	err := r.ParseMultipartForm(MaxUploadSize)
 	if err != nil {
-		http.Error(w, "Unable to parse form", http.StatusBadRequest)
+		http.Error(w, "上传文件太大了", http.StatusBadRequest)
 		return
 	}
 
 	// 获取上传的文件句柄
 	file, handler, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, "Error retrieving file from form data", http.StatusInternalServerError)
-		fmt.Println("Error retrieving file from form data:", err)
+		http.Error(w, "读取数据错误", http.StatusInternalServerError)
 		return
 	}
 	defer func(file multipart.File) {
 		err = file.Close()
 		if err != nil {
-			fmt.Println("Error closing file:", err)
+			fmt.Println("关闭文件失败", err)
 		}
 	}(file)
 
@@ -50,7 +48,7 @@ func (u ArticleImpl) UploadFile(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	year, month, day := now.Date()
 
-	// 创建目录路径
+	// 根据日期创建路径
 	uploadDir := fmt.Sprintf("./uploads/%d/%02d/%02d", year, month, day)
 
 	// 如果目录不存在，则创建目录
@@ -66,22 +64,21 @@ func (u ArticleImpl) UploadFile(w http.ResponseWriter, r *http.Request) {
 	filePath := path.Join(uploadDir, handler.Filename)
 	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
-		http.Error(w, "Error creating file", http.StatusInternalServerError)
-		fmt.Println("Error creating file:", err)
+		http.Error(w, "文件创建失败", http.StatusInternalServerError)
 		return
 	}
 	defer func(f *os.File) {
 		err = f.Close()
 		if err != nil {
-			fmt.Println("Error closing file:", err)
+			fmt.Println("关闭文件流失败", err)
 		}
 	}(f)
 
 	// 将上传的文件内容复制到新文件中
 	_, err = io.Copy(f, file)
 	if err != nil {
-		http.Error(w, "Error copying file", http.StatusInternalServerError)
-		fmt.Println("Error copying file:", err)
+		http.Error(w, "复制文件失败", http.StatusInternalServerError)
+		fmt.Println("无法复制文件", err)
 		return
 	}
 
@@ -125,30 +122,31 @@ func (u ArticleImpl) GetArticleByKeyword(w http.ResponseWriter, r *http.Request)
 	}
 }
 
-func (u ArticleImpl) CreateArticle(w http.ResponseWriter, r *http.Request) {
-	var newArticle model.Article
-	err := json.NewDecoder(r.Body).Decode(&newArticle)
-	if err != nil {
-		http.Error(w, "解码json失败", http.StatusBadRequest)
-		return
-	}
-
-	// 调用服务层方法添加用户
-	//err = ArticleService.AddUser(&newArticle)
-	err = ArticleServer.CreateArticle(&newArticle)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// 返回成功响应
-	w.WriteHeader(http.StatusCreated)
-	_, err = w.Write([]byte("文章发布成功"))
-	if err != nil {
-		fmt.Println("文章发布失败!", err)
-		return
-	}
-}
+//func (u ArticleImpl) CreateArticle(w http.ResponseWriter, r *http.Request) {
+//	var newArticle model.Article
+//	err := json.NewDecoder(r.Body).Decode(&newArticle)
+//	if err != nil {
+//		http.Error(w, "解码json失败", http.StatusBadRequest)
+//		fmt.Println(err)
+//		return
+//	}
+//
+//	// 调用服务层方法添加用户
+//	//err = ArticleService.AddUser(&newArticle)
+//	err = ArticleServer.CreateArticle(&newArticle)
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//
+//	// 返回成功响应
+//	w.WriteHeader(http.StatusCreated)
+//	_, err = w.Write([]byte("文章发布成功"))
+//	if err != nil {
+//		fmt.Println("文章发布失败!", err)
+//		return
+//	}
+//}
 
 func (u ArticleImpl) GetArticleByCategory(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {

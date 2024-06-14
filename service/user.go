@@ -7,18 +7,11 @@ import (
 //var dbInit = DbInit
 //var MyDatabaseUser = MyDatabaseUser
 
-type UserService interface {
-	AddUser(user *model.Register) error
-	GetUserByKeyword(username string) ([]*model.User, error)
-	Login(login *model.Login) (*model.Login, error)
-	GetUserByPhoneNum(PhoneNum string) *model.User
-	DeleteUser(StudID int) error
-	UpdateUser(user *model.Register) error
+type UserServiceImpl struct {
 }
 
-type UserServiceImpl struct{}
-
 func (u *UserServiceImpl) UpdateUser(user *model.Register) error {
+
 	err := MyDatabaseUser.UpdateUser(user)
 	if err != nil {
 		return err

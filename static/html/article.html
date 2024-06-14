@@ -1,4 +1,4 @@
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns="">
 <head><meta charset="UTF-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="webkit|ie-comp|ie-stand" name="renderer">
@@ -6,6 +6,8 @@
     <meta content="yes" name="mobile-web-app-capable">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="西南林业大学 - 西南林业大学" name="apple-mobile-web-app-title">
+    <script src="/static/script/jquery-3.7.1.js"></script>
+    <script src="/static/script/comment.js"></script>
     <style id="kirki-css-vars">:root {
     }</style>
 
@@ -84,6 +86,108 @@
                                 </ul>
                             </aside>
                         </div>
+
+
+                        <style>
+                            /*body {*/
+                            /*    font-family: Arial, sans-serif;*/
+                            /*    margin: 0;*/
+                            /*    padding: 0;*/
+                            /*    background-color: #f4f4f4;*/
+                            /*}*/
+                            /*.container {*/
+                            /*    width: 50%;*/
+                            /*    margin: auto;*/
+                            /*    overflow: hidden;*/
+                            /*}*/
+                            .comments-section {
+                                background: #fff;
+                                padding: 20px;
+                                margin-top: 20px;
+                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                            }
+                            .comment {
+                                border-bottom: 1px solid #ddd;
+                                padding: 10px 0;
+                            }
+                            .comment:last-child {
+                                border-bottom: none;
+                            }
+                            .comment .username {
+                                font-weight: bold;
+                                margin-bottom: 5px;
+                            }
+                            .comment .date {
+                                font-size: 0.9em;
+                                color: #999;
+                                margin-bottom: 10px;
+                            }
+                            .comment .content {
+                                font-size: 1em;
+                            }
+                            .comment-form {
+                                background: #fff;
+                                padding: 20px;
+                                margin-top: 20px;
+                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                            }
+                            .comment-form input, .comment-form textarea {
+                                width: 100%;
+                                padding: 10px;
+                                margin-bottom: 10px;
+                                border: 1px solid #ddd;
+                                border-radius: 5px;
+                            }
+                            .comment-form button {
+                                background: #5cb85c;
+                                color: #fff;
+                                border: none;
+                                padding: 10px 20px;
+                                cursor: pointer;
+                                border-radius: 5px;
+                            }
+                            .comment-form button:hover {
+                                background: #4cae4c;
+                            }
+                        </style>
+                        <div class="container">
+                            <div class="comments-section">
+                                {{if .Comment}}
+                                <h2>评论</h2>
+                                <div class="comment">
+                                    {{range .Comment}}
+
+                                    <div class="username">{{.Username}}</div>
+                                    <div class="date">{{.CreateTime}}</div>
+                                    <div class="content">{{.Content}}</div>
+                                    <hr>
+                                    {{end}}
+
+                                </div>
+                                {{else}}
+                                <p>暂时没评论,快来抢一楼把~</p>
+                                {{end}}
+
+                            </div>
+
+                            {{if .ShowComments}}
+                            <div class="comment-form">
+                                <h2>添加评论</h2>
+                                <form id="commentForm">
+                                    <input type="text" name="username" placeholder="你的名字" required>
+                                    <textarea name="content" rows="5" placeholder="你的评论" required></textarea>
+                                    <button type="submit">提交评论</button>
+                                </form>
+                                <div id="errorInfo"></div>
+                            </div>
+                            {{else}}
+                            <a href="/user/login">需要登录才能评论,点我登陆</a>
+                            {{end}}
+
+                        </div>
+
+
+
 
 
                     </div>

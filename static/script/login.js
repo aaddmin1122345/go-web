@@ -14,6 +14,10 @@ function login() {
         return;
     }
 
+    // 登录页面或者需要登录的页面保存当前页面地址
+    localStorage.setItem("lastVisitedPage", document.referrer);
+
+// 登录成功后从 localStorage 获取保存的页面地址并重定向
     $.ajax({
         type: "POST",
         url: "/api/login",
@@ -22,13 +26,12 @@ function login() {
         data: JSON.stringify(jsonData),
         success: function (data) {
             if (data.valid) {
-                // 登录成功时将错误信息设置为绿色
                 alert("登录成功");
-                window.location.href = "/";
+                const redirectTo = localStorage.getItem("lastVisitedPage") || "/";
+                window.location.href = redirectTo;
             }
         },
         error: function (err) {
-            // 错误处理，提示更详细的错误信息
             let errorMessage = "账号或者密码错误";
             if (err.responseJSON && err.responseJSON.message) {
                 errorMessage = err.responseJSON.message;
@@ -38,7 +41,7 @@ function login() {
     });
 }
 
-$(document).ready(function () {
+    $(document).ready(function () {
     $("#loginForm").submit(function (event) {
         event.preventDefault(); // 阻止表单默认提交行为
         login();

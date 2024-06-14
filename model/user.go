@@ -30,3 +30,8 @@ type Register struct {
 	Password string
 	UserType string
 }
+
+type SessionInfo struct {
+	Username string
+	UserType string
+}

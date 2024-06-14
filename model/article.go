@@ -11,3 +11,21 @@ type Article struct {
 	ImageURL   string
 	Category   string
 }
+
+type TemplateDataByCategory struct {
+	Article            []*Article
+	ArticlesByCategory []*Article
+	CurrentPage        int
+	TotalPages         int
+	PrevPage           int
+	NextPage           int
+	HasPrev            bool
+	HasNext            bool
+}
+
+type TemplateDataByID struct {
+	Article            *Article
+	ArticlesByCategory []*Article
+	Comment            []*Comment
+	ShowComments       bool
+}

@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gorilla/sessions"
 	"go-web/model"
@@ -10,18 +11,6 @@ import (
 	"strconv"
 	"time"
 )
-
-type UserApi interface {
-	DecodeJson(w http.ResponseWriter, r *http.Request, newData interface{}) error
-	bodyToInit(body io.Reader) (int, error)
-	Login(w http.ResponseWriter, r *http.Request)
-	GetUserByKeyword(w http.ResponseWriter, r *http.Request)
-	AddUser(w http.ResponseWriter, r *http.Request)
-	DeleteUser(w http.ResponseWriter, r *http.Request)
-	UpdateUser(w http.ResponseWriter, r *http.Request)
-	Logout(w http.ResponseWriter, r *http.Request)
-	ValidUser(w http.ResponseWriter, r *http.Request)
-}
 
 type UserApiImpl struct {
 	Session sessions.Store
@@ -74,38 +63,38 @@ func (u *UserApiImpl) bodyToInit(body io.Reader) (int, error) {
 	return value, nil
 }
 
-func (u *UserApiImpl) GetUserByPhoneNum(w http.ResponseWriter, r *http.Request) {
-	//studID, err := u.bodyToInit(r.Body)
-	//if err != nil {
-	//	http.Error(w, err.Error(), http.StatusBadRequest)
-	//	return
-	//}
-
-	//fmt.Println("11111111111111")
-	//fmt.Println(studID)
-
-	data, err := io.ReadAll(r.Body)
-	if err != nil {
-		return
-	}
-	user := UserService.GetUserByPhoneNum(string(data))
-
-	//解码json
-	responseData, err := json.Marshal(user)
-	//http.StatusInternalServerError 返回特定类型的报错
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-
-	_, err = w.Write(responseData)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
+//func (u *UserApiImpl) GetUserByPhoneNum(w http.ResponseWriter, r *http.Request) {
+//	//studID, err := u.bodyToInit(r.Body)
+//	//if err != nil {
+//	//	http.Error(w, err.Error(), http.StatusBadRequest)
+//	//	return
+//	//}
+//
+//	//fmt.Println("11111111111111")
+//	//fmt.Println(studID)
+//
+//	data, err := io.ReadAll(r.Body)
+//	if err != nil {
+//		return
+//	}
+//	user := UserService.GetUserByPhoneNum(string(data))
+//
+//	//解码json
+//	responseData, err := json.Marshal(user)
+//	//http.StatusInternalServerError 返回特定类型的报错
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//
+//	w.Header().Set("Content-Type", "application/json")
+//
+//	_, err = w.Write(responseData)
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//}
 
 func (u *UserApiImpl) GetUserByKeyword(w http.ResponseWriter, r *http.Request) {
 	// 解析请求体中的 JSON 数据到 requestData 变量中
@@ -201,7 +190,7 @@ func (u *UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
 	// 创建或获取 session
 	session, err := u.Session.Get(r, "session")
 	if err != nil {
-		http.Error(w, "无法创建或获取session", http.StatusInternalServerError)
+		http.Error(w, "无法获取session", http.StatusInternalServerError)
 		return
 	}
 
@@ -209,15 +198,13 @@ func (u *UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
 	session.Values["username"] = user.Username
 	session.Values["usertype"] = user.UserType
 
-	//前端的rememberMe按钮
-	//rememberMe := r.FormValue("rememberMe")
+	// 设置 session 的 Options
 	if requestData.RememberMe {
 		session.Options = &sessions.Options{
 			Path:     "/",
 			MaxAge:   168 * 3600, // 记住 7 天，以秒为单位
 			HttpOnly: true,
 		}
-		fmt.Println("用户勾选了记住我")
 	} else {
 		session.Options = &sessions.Options{
 			Path:     "/",
@@ -249,6 +236,32 @@ func (u *UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (u *UserApiImpl) GetSessionInfo(r *http.Request) (model.SessionInfo, error) {
+	var sessionInfo model.SessionInfo
+
+	// 获取 session
+	session, err := u.Session.Get(r, "session")
+	if err != nil {
+		return sessionInfo, err
+	}
+
+	// 从 session 中读取用户名和用户类型
+	username, usernameOK := session.Values["username"].(string)
+	usertype, usertypeOK := session.Values["usertype"].(string)
+
+	if !usernameOK || !usertypeOK || username == "" || usertype == "" {
+		return sessionInfo, errors.New("未授权访问")
+	}
+
+	// 将读取到的值赋给 sessionInfo
+	sessionInfo = model.SessionInfo{
+		Username: username,
+		UserType: usertype,
+	}
+
+	return sessionInfo, nil
+}
+
 func (u *UserApiImpl) Logout(w http.ResponseWriter, r *http.Request) {
 	// 删除名为 "session" 的cookie，使其立即过期
 	http.SetCookie(w, &http.Cookie{
@@ -268,28 +281,18 @@ func (u *UserApiImpl) Logout(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (u *UserApiImpl) ValidUser(w http.ResponseWriter, r *http.Request) {
+func (u *UserApiImpl) GetUserType(w http.ResponseWriter, r *http.Request) (string, error) {
 	// 获取 session
-	session, err := u.Session.Get(r, "session")
-	if err != nil {
-		http.Error(w, "无法获取session", http.StatusInternalServerError)
-		return
-	}
+	sessionInfo, _ := u.GetSessionInfo(r)
 
-	//使用类型断言并检查其是否成功。这样可以避免 panic。
-
-	username, usernameOK := session.Values["username"].(string)
-	usertype, usertypeOK := session.Values["usertype"].(string)
-
-	if !usernameOK || !usertypeOK || username == "" || usertype == "" {
-		http.Error(w, "未授权访问", http.StatusUnauthorized)
-		return
-	}
-
-	//Fprintf允许将信息写入到某个io中,这里可以通过w写入到响应中
-	_, err = fmt.Fprintf(w, "当前用户: %s, 用户类型: %s", username, usertype)
-	if err != nil {
-		return
-	}
-
+	// 返回当前用户的 userType
+	return sessionInfo.UserType, nil
 }
+
+//func (u *UserApiImpl) bodyToInit(body io.Reader) (string, error) {
+//	data, err := io.ReadAll(body)
+//	if err != nil {
+//		return "", err
+//	}
+//	return string(data), nil
+//}

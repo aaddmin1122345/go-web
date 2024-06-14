@@ -8,15 +8,6 @@ import (
 	"go-web/model"
 )
 
-type Article interface {
-	GetArticleByKeyword(keyword string) ([]*model.Article, error)
-	CreateArticle(article *model.Article) error
-	SetDb(db *sql.DB)
-	GetArticleByCategory(category string, page int, pageSize int) ([]*model.Article, error)
-	GetArticleByID(id int) (*model.Article, error)
-	CountArticle(category string) (int, error)
-}
-
 type ArticleImpl struct {
 	db *sql.DB
 }

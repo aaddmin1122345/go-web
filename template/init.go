@@ -1,6 +1,7 @@
 package template
 
 import (
+	"github.com/gorilla/sessions"
 	"go-web/api"
 	"go-web/model"
 	"go-web/service"
@@ -8,9 +9,17 @@ import (
 	"net/http"
 )
 
-var ArticleApi = api.ArticleImpl{}
-var ArticleServer = service.ArticleImpl{}
+// 不初始化一个session会报错,暂时先这样写,后面在来细优化
+var store = sessions.NewCookieStore([]byte("go-web-session-test"))
+
+// var CommentApi = &api.CommentImpl{}
+var UserApi = &api.UserApiImpl{Session: store}
+
+// var UserApi = &api.UserApiImpl{}
+var ArticleApi = &api.ArticleImpl{}
+var ArticleServer = &service.ArticleImpl{}
 var ServiceArticle = service.ArticleImpl{}
+var CommentServer = service.CommentImpl{}
 
 type MyTemplate interface {
 	Index(w http.ResponseWriter, res *http.Request)
@@ -24,14 +33,6 @@ type MyTemplate interface {
 }
 
 type MyTemplateImpl struct {
-}
-
-func (t MyTemplateImpl) until(start, end int) []int {
-	var result []int
-	for i := start; i <= end; i++ {
-		result = append(result, i)
-	}
-	return result
 }
 
 func (t MyTemplateImpl) Index(w http.ResponseWriter, res *http.Request) {
@@ -90,10 +91,19 @@ func (t MyTemplateImpl) RenderSwfuPage(w http.ResponseWriter, res *http.Request)
 }
 
 func (t MyTemplateImpl) NotFoundHandler(w http.ResponseWriter, req *http.Request) {
-	w.WriteHeader(http.StatusNotFound)
+	//w.WriteHeader(http.StatusNotFound)
 
 	t.RenderHead(w, req)
 	t.RenderTemplate(w, "./static/html/404.html", nil)
+	t.RenderFoot(w, req)
+	// 设置响应状态码为 404
+}
+
+func (t MyTemplateImpl) PermissionDenied(w http.ResponseWriter, req *http.Request) {
+	//w.WriteHeader(http.StatusNotFound)
+
+	t.RenderHead(w, req)
+	t.RenderTemplate(w, "./static/html/403.html", nil)
 	t.RenderFoot(w, req)
 	// 设置响应状态码为 404
 }

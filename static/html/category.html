@@ -80,41 +80,69 @@
                             <nav class="navigation pagination" role="navigation">
                                 <h2 class="screen-reader-text">文章导航</h2>
                                 <div class="nav-links">
+                                    <!-- 如果有上一页，显示“上一页”链接 -->
                                     {{if .HasPrev}}
                                     <a class="prev page-numbers" href="?page={{.PrevPage}}">上一页</a>
                                     {{end}}
-                                    <a class="page-numbers" href="?page=1">1</a>
-                                    {{if gt .CurrentPage 4}} <!-- 如果当前页大于 4，显示省略号 -->
+
+                                    <!-- 始终显示第一页 -->
+                                    <a class="page-numbers {{if eq 1 .CurrentPage}}current{{end}}" href="?page=1">1</a>
+
+                                    <!-- 如果当前页码大于4，显示省略号 -->
+                                    {{if gt .CurrentPage 4}}
                                     <span class="page-numbers dots">…</span>
                                     {{end}}
-                                    {{if le .TotalPages 5}} <!-- 如果总页数小于等于 5，显示所有页面 -->
-                                    {{range $i := until 2 .TotalPages}}
-                                    <a class="page-numbers" href="?page={{$i}}">{{$i}}</a>
+
+                                    <!-- 动态显示页码 -->
+                                    {{if le .TotalPages 5}}
+                                    <!-- 如果总页数小于或等于5，显示所有页码 -->
+                                    {{range $i := until 2 (add .TotalPages 1)}}
+                                    <a class="page-numbers {{if eq $i $.CurrentPage}}current{{end}}" href="?page={{$i}}">{{$i}}</a>
                                     {{end}}
                                     {{else}}
-                                    {{if ge .CurrentPage 3}} <!-- 如果当前页大于等于 3，从当前页 - 2 开始显示 -->
-                                    {{range $i := until (add .CurrentPage -2) (minimum (add .CurrentPage 2) .TotalPages)}}
-                                    <a class="page-numbers" href="?page={{$i}}">{{$i}}</a>
-                                    {{end}}
-                                    {{else}} <!-- 如果当前页小于 3，从第二页开始显示 -->
-                                    {{range $i := until 2 5}}
-                                    <a class="page-numbers" href="?page={{$i}}">{{$i}}</a>
-                                    {{end}}
+                                    <!-- 如果总页数大于5 -->
+                                    {{if and (ge .CurrentPage 3) (le .CurrentPage (sub .TotalPages 2))}}
+                                    <!-- 如果当前页码在3到倒数第二页之间，显示当前页码的前后页码 -->
+                                    {{range $i := until (sub .CurrentPage 1) (add .CurrentPage 2)}}
+                                    {{if le $i .TotalPages}}
+                                    <a class="page-numbers {{if eq $i $.CurrentPage}}current{{end}}" href="?page={{$i}}">{{$i}}</a>
                                     {{end}}
                                     {{end}}
-                                    {{if lt .TotalPages 6}} <!-- 如果总页数小于 6，显示所有页面 -->
-                                    {{range $i := until 2 .TotalPages}}
-                                    <a class="page-numbers" href="?page={{$i}}">{{$i}}</a>
+                                    {{else if lt .CurrentPage 3}}
+                                    <!-- 如果当前页码小于3，显示第一页到第四页 -->
+                                    {{range $i := until 2 (minimum 5 (add .TotalPages 1))}}
+                                    {{if le $i .TotalPages}}
+                                    <a class="page-numbers {{if eq $i $.CurrentPage}}current{{end}}" href="?page={{$i}}">{{$i}}</a>
+                                    {{end}}
                                     {{end}}
                                     {{else}}
-                                    <span class="page-numbers dots">…</span> <!-- 如果总页数大于 5，显示省略号 -->
+                                    <!-- 如果当前页码接近总页数，显示倒数第三页到最后一页 -->
+                                    {{range $i := until (sub .TotalPages 3) (add .TotalPages 1)}}
+                                    {{if le $i .TotalPages}}
+                                    <a class="page-numbers {{if eq $i $.CurrentPage}}current{{end}}" href="?page={{$i}}">{{$i}}</a>
                                     {{end}}
+                                    {{end}}
+                                    {{end}}
+                                    {{end}}
+
+                                    <!-- 如果总页数大于5且当前页码小于总页数减去2，显示省略号和最后一页 -->
+                                    {{if and (gt .TotalPages 5) (lt .CurrentPage (sub .TotalPages 2))}}
+                                    <span class="page-numbers dots">…</span>
                                     <a class="page-numbers" href="?page={{.TotalPages}}">{{.TotalPages}}</a>
+                                    {{end}}
+
+                                    <!-- 如果有下一页，显示“下一页”链接 -->
                                     {{if .HasNext}}
                                     <a class="next page-numbers" href="?page={{.NextPage}}">下一页</a>
                                     {{end}}
                                 </div>
                             </nav>
+
+
+
+
+
+
 
 
 
@@ -133,6 +161,8 @@
                                 </ul>
                             </aside>
                         </div>
+
+
                     </div>
                 </div>
             </div>

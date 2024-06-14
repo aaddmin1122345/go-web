@@ -20,7 +20,17 @@ function register() {
         UserType: selectedUserType,
     };
 
+    // 检查密码长度是否大于或等于6位
+    if (!/^\S{6,}$/.test(user.Password)) {
+        alert("密码必须大于或等于6位");
+        return;
+    }
+
     // 如果有字段未填写，可以在这里添加逻辑进行检查
+    if (!user.PhoneNum || !user.Username || !user.Sex || !user.Email || !user.Password || !user.UserType) {
+        alert("所有字段都必须填写");
+        return;
+    }
 
     $.ajax({
         url: '/api/register',

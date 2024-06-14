@@ -1,6 +1,7 @@
 package template
 
 import (
+	"fmt"
 	"go-web/model"
 	"html/template"
 	"math"
@@ -8,19 +9,19 @@ import (
 	"strconv"
 )
 
-func (t MyTemplateImpl) GetArticleByKeyword(w http.ResponseWriter, r *http.Request) {
-	ArticleApi.GetArticleByKeyword(w, r)
-}
+//func (t MyTemplateImpl) GetArticleByKeyword(w http.ResponseWriter, r *http.Request) {
+//	ArticleApi.GetArticleByKeyword(w, r)
+//}
 
-func (t MyTemplateImpl) CreateArticle(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		t.RenderTemplate(w, "./static/html/createArticle.html", nil)
-	}
-}
+//func (t MyTemplateImpl) CreateArticle(w http.ResponseWriter, r *http.Request) {
+//	if r.Method == http.MethodGet {
+//		t.RenderTemplate(w, "./static/html/createArticle.html", nil)
+//	}
+//}
 
-func (t MyTemplateImpl) RenderHead(w http.ResponseWriter, _ *http.Request) {
-
+func (t MyTemplateImpl) RenderHead(w http.ResponseWriter, _ *http.Request) bool {
 	t.RenderTemplate(w, "./static/html/head.html", nil)
+	return true
 }
 
 func (t MyTemplateImpl) RenderFoot(w http.ResponseWriter, _ *http.Request) {
@@ -28,15 +29,13 @@ func (t MyTemplateImpl) RenderFoot(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (t MyTemplateImpl) GetArticleByID(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 
-	type TemplateData struct {
-		Article            *model.Article
-		ArticlesByCategory []*model.Article
-	}
+	//type TemplateDataByID struct {
+	//	Article            *model.Article
+	//	ArticlesByCategory []*model.Article
+	//	Comment            []*model.Comment
+	//	ShowComments       bool
+	//}
 
 	// 获取关键词
 	ID, _ := strconv.Atoi(r.FormValue("id"))
@@ -54,31 +53,36 @@ func (t MyTemplateImpl) GetArticleByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := TemplateData{
-		Article:            article,
-		ArticlesByCategory: articlesByCategory,
+	//id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	//if err != nil {
+	//	http.Error(w, "文章ID必须是整数", http.StatusBadRequest)
+	//	return
+	//}
+
+	comment, err := CommentServer.GetComments(ID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
-	t.RenderHead(w, nil)
-	t.RenderTemplate(w, "./static/html/article.html", data)
-	//t.RenderTemplate(w, "./static/html/latestArticle.html", articlesByCategory)
-	//t.RenderTemplate(w, "./static/html/article.html", articlesByCategory)
+	userType, _ := UserApi.GetUserType(w, r)
 
-	//t.RenderTemplate(w, "./static/html/latestArticle.html", articlesByCategory)
-	t.RenderFoot(w, nil)
+	showComments := userType != ""
+	fmt.Println(showComments)
+
+	data := &model.TemplateDataByID{
+		Article:            article,
+		ArticlesByCategory: articlesByCategory,
+		Comment:            comment,
+		ShowComments:       showComments,
+	}
+
+	t.RenderHead(w, r)
+	t.RenderTemplate(w, "./static/html/article.html", data)
+	t.RenderFoot(w, r)
 }
 
 func (t MyTemplateImpl) GetArticleByCategory(w http.ResponseWriter, r *http.Request) {
-	type TemplateData struct {
-		Article            []*model.Article
-		ArticlesByCategory []*model.Article
-		CurrentPage        int
-		TotalPages         int
-		PrevPage           int
-		NextPage           int
-		HasPrev            bool
-		HasNext            bool
-	}
 
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -117,19 +121,26 @@ func (t MyTemplateImpl) GetArticleByCategory(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	data := TemplateData{
+	data := &model.TemplateDataByCategory{
 		Article:            article,
 		ArticlesByCategory: articlesByCategory,
-		CurrentPage:        page,
-		TotalPages:         totalPages,
-		PrevPage:           page - 1,
-		NextPage:           page + 1,
-		HasPrev:            page > 1,
-		HasNext:            page < totalPages,
+		//当前页
+		CurrentPage: page,
+		//总页面
+		TotalPages: totalPages,
+		//上一页
+		PrevPage: page - 1,
+		//下一页
+		NextPage: page + 1,
+		//是否有后面的页数
+		HasPrev: page > 1,
+		//后面没页码了
+		HasNext: page < totalPages,
 	}
 
 	// 加载并解析模板
-	tmpl, err := template.New("category.html").Funcs(template.FuncMap{"until": until, "add": add, "minimum": minimum}).ParseFiles("./static/html/category.html")
+	t.RenderHead(w, r)
+	tmpl, err := template.New("category.html").Funcs(template.FuncMap{"until": t.until, "add": t.add, "minimum": t.min, "sub": t.sub}).ParseFiles("./static/html/category.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -139,9 +150,11 @@ func (t MyTemplateImpl) GetArticleByCategory(w http.ResponseWriter, r *http.Requ
 	if err = tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+	t.RenderFoot(w, r)
+
 }
 
-func until(start, end int) []int {
+func (t MyTemplateImpl) until(start, end int) []int {
 	var result []int
 	for i := start; i <= end; i++ {
 		result = append(result, i)
@@ -149,18 +162,28 @@ func until(start, end int) []int {
 	return result
 }
 
-func add(a, b int) int {
+func (t MyTemplateImpl) add(a, b int) int {
 	return a + b
 }
 
-func minimum(a, b int) int {
+func (t MyTemplateImpl) min(a, b int) int {
 	if a < b {
 		return a
 	}
 	return b
 }
 
+func (t MyTemplateImpl) sub(a, b int) int {
+	return a - b
+}
+
+func (t MyTemplateImpl) CreateArticle(w http.ResponseWriter, r *http.Request) {
+	//t.RenderHead(w, r)
+	t.RenderTemplate(w, "./static/html/createArticle.html", nil)
+	//ArticleApi.UploadFile(w, r)
+	//t.RenderFoot(w, r)
+}
+
 func (t MyTemplateImpl) UploadFile(w http.ResponseWriter, r *http.Request) {
-	t.RenderTemplate(w, "./static/html/upload.html", nil)
 	ArticleApi.UploadFile(w, r)
 }

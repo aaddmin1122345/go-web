@@ -15,18 +15,6 @@ import (
 //var sexArray [...]string
 
 // Database 连接和关闭已由db.go实现
-type Database interface {
-	HashPassword(password string) ([]byte, error)
-	CheckUser(user *model.Register) error
-	CheckDelUser(id int) error
-	GetUserByKeyword(username string) ([]*model.User, error)
-	GetUserByPhoneNum(phoneNum string) (*model.User, error)
-	AddUser(user *model.Register) error
-	UpdateUser(user *model.Register) error
-	DeleteUser(id int) error
-	Login(login *model.Login) (*model.Login, error)
-	SetDb(db *sql.DB)
-}
 
 type MyDatabaseImpl struct {
 	db *sql.DB
@@ -204,6 +192,11 @@ func (m *MyDatabaseImpl) DeleteUser(id int) error {
 }
 
 func (m *MyDatabaseImpl) Login(login *model.Login) (*model.Login, error) {
+
+	// 检查密码长度
+	if len(login.Password) < 6 {
+		return nil, errors.New("密码必须大于或等于6位")
+	}
 	query := "SELECT Username, Password,UserType FROM user WHERE Username = ? OR PhoneNum = ? OR Email = ?"
 
 	// 执行查询
