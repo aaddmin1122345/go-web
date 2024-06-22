@@ -149,7 +149,47 @@
                             .comment-form button:hover {
                                 background: #4cae4c;
                             }
+
+
+
+
+
                         </style>
+
+
+                        <style>
+                            .attachment-box {
+                                margin-top: 20px;
+                                padding: 10px;
+                                border: 1px solid #ddd;
+                                background-color: #f9f9f9;
+                                border-radius: 5px;
+                            }
+
+                            .attachment-box a {
+                                color: #0073aa;
+                                text-decoration: none;
+                                font-weight: bold;
+                            }
+
+                            .attachment-box a:hover {
+                                text-decoration: underline;
+                            }
+
+                            .attachment-box .file-label {
+                                font-weight: bold;
+                                margin-right: 5px;
+                            }
+                        </style>
+
+                        {{if .Article.File}}
+                        <div class="attachment-box">
+                            <span class="file-label">这是一个简单的附件, 点击预览:</span>
+                            <a href="../{{.Article.File}}" target="_blank">点我预览</a>
+                        </div>
+                        {{end}}
+
+
                         <div class="container">
                             <div class="comments-section">
                                 {{if .Comment}}
@@ -157,9 +197,9 @@
                                 <div class="comment">
                                     {{range .Comment}}
 
-                                    <div class="username">{{.Username}}</div>
-                                    <div class="date">{{.CreateTime}}</div>
-                                    <div class="content">{{.Content}}</div>
+                                    <div class="username">用户名:{{.Author}}</div>
+                                    <div class="date">发布时间:{{.CreateTime}}</div>
+                                    <div class="content2">{{.Content}}</div>
                                     <hr>
                                     {{end}}
 
@@ -172,10 +212,11 @@
 
                             {{if .ShowComments}}
                             <div class="comment-form">
-                                <h2>添加评论</h2>
+<!--                                <h2>添加评论</h2>-->
                                 <form id="commentForm">
-                                    <input type="text" name="username" placeholder="你的名字" required>
-                                    <textarea name="content" rows="5" placeholder="你的评论" required></textarea>
+                                    <!-- <input name="email" placeholder="你的邮箱" required type="email"> -->
+<!--                                    <input name="username" placeholder="填写邮箱地址或用户名" required type="text">-->
+                                    <div class="content1" contenteditable="true" placeholder="填写评论内容" style="border: 1px solid #ccc; padding: 5px; min-height: 100px;"></div>
                                     <button type="submit">提交评论</button>
                                 </form>
                                 <div id="errorInfo"></div>

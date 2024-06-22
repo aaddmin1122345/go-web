@@ -18,11 +18,14 @@ type Article interface {
 	GetArticleByCategory(category string, page int, pageSize int) ([]*model.Article, error)
 	GetArticleByID(id int) (*model.Article, error)
 	CountArticle(category string) (int, error)
+	DeleteArticle(id int) error
+	EditArticleByID(id, authorID int)
 }
 
 type Comment interface {
 	AddComment(comment *model.Comment) error
 	GetComments(articleID int) ([]*model.Comment, error)
+	DeleteComment(id int) error
 }
 
 type Database interface {

@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/sessions"
 	"go-web/model"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -49,7 +50,7 @@ func (u *UserApiImpl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // 为后续查询用户做准备,把body里面的str to int
-func (u *UserApiImpl) bodyToInit(body io.Reader) (int, error) {
+func (u *UserApiImpl) BodyToInit(body io.Reader) (int, error) {
 	data, err := io.ReadAll(body)
 	if err != nil {
 		return 0, err
@@ -124,6 +125,22 @@ func (u *UserApiImpl) GetUserByKeyword(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//func (u *UserApiImpl) AAtest(w http.ResponseWriter, r *http.Request) {
+//	// 解析请求体中的 JSON 数据到 requestData 变量中
+//
+//	username := r.FormValue("username")
+//	_, err := UserService.GetUserByKeyword(username)
+//
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//
+//	// 将结果编码为 JSON 格式并发送到客户端
+//	//w.Header().Set("Content-Type", "application/json")
+//	return
+//}
+
 func (u *UserApiImpl) AddUser(w http.ResponseWriter, r *http.Request) {
 	var newUser model.Register
 	err := json.NewDecoder(r.Body).Decode(&newUser)
@@ -149,15 +166,12 @@ func (u *UserApiImpl) AddUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u *UserApiImpl) DeleteUser(w http.ResponseWriter, r *http.Request) {
-	studID, err := u.bodyToInit(r.Body)
+	//Sessions, err := UserAPI.GetSessionInfo(r)
+	//author := Sessions.Username
+	//// 获取请求体中的数据
 
-	fmt.Println(studID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	fmt.Println(studID)
-	err = UserService.DeleteUser(studID)
+	id, err := u.BodyToInit(r.Body)
+	err = UserService.DeleteUser(id)
 	if err != nil {
 		http.Error(w, "删除用户失败", http.StatusInternalServerError)
 		return
@@ -197,6 +211,7 @@ func (u *UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
 	// 将用户信息存储到 session 中
 	session.Values["username"] = user.Username
 	session.Values["usertype"] = user.UserType
+	session.Values["userID"] = user.ID
 
 	// 设置 session 的 Options
 	if requestData.RememberMe {
@@ -239,24 +254,33 @@ func (u *UserApiImpl) Login(w http.ResponseWriter, r *http.Request) {
 func (u *UserApiImpl) GetSessionInfo(r *http.Request) (model.SessionInfo, error) {
 	var sessionInfo model.SessionInfo
 
+	if r == nil {
+		log.Println("空请求")
+		return sessionInfo, errors.New("nil request")
+	}
+
 	// 获取 session
 	session, err := u.Session.Get(r, "session")
 	if err != nil {
+		log.Printf("Error getting session: %v\n", err)
 		return sessionInfo, err
 	}
 
 	// 从 session 中读取用户名和用户类型
-	username, usernameOK := session.Values["username"].(string)
-	usertype, usertypeOK := session.Values["usertype"].(string)
+	username, _ := session.Values["username"].(string)
+	usertype, _ := session.Values["usertype"].(string)
+	userID, _ := session.Values["userID"].(int)
 
-	if !usernameOK || !usertypeOK || username == "" || usertype == "" {
+	/*if !usernameOK || !usertypeOK || username == "" || usertype == "" {
+		log.Println("Unauthorized access attempt")
 		return sessionInfo, errors.New("未授权访问")
-	}
+	}*/
 
 	// 将读取到的值赋给 sessionInfo
 	sessionInfo = model.SessionInfo{
 		Username: username,
 		UserType: usertype,
+		UserID:   userID,
 	}
 
 	return sessionInfo, nil

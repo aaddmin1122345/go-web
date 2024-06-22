@@ -10,9 +10,14 @@ type Article struct {
 	CreateTime string
 	ImageURL   string
 	Category   string
+	Author     string
+	IsDelete   int
+	AuthorID   int
+	File       string
 }
 
 type TemplateDataByCategory struct {
+	NewArticle         []*Article
 	Article            []*Article
 	ArticlesByCategory []*Article
 	CurrentPage        int
@@ -28,4 +33,15 @@ type TemplateDataByID struct {
 	ArticlesByCategory []*Article
 	Comment            []*Comment
 	ShowComments       bool
+}
+
+type AuthArticle struct {
+	Articles    []*Article
+	TotalPages  int
+	CurrentPage int
+	Keyword     string
+}
+
+type UserID struct {
+	UserID int
 }

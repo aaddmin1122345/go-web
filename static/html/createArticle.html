@@ -101,64 +101,152 @@
             <img src="/static/image/logo.png">
         </div>
         <div class="right">
-            <!-- 为发布按钮添加 id 并绑定点击事件 -->
+            <input id="attachmentInput" style="display: none;" type="file">
+            <button id="uploadAttachmentButton">附件上传</button>
             <button id="publishButton">发布</button>
         </div>
     </div>
     <div class="editor">
         <input class="title" placeholder="添加标题" type="text">
-        <!-- 添加单选框组 -->
         <div>
-            <label><input type="radio" name="category" value="it"> IT</label>
-            <label><input type="radio" name="category" value="pe"> 体育</label>
-            <label><input type="radio" name="category" value="music"> 音乐</label>
-            <label><input type="radio" name="category" value="shipin"> 视频</label>
+            <label><input name="category" type="radio" value="it"> IT</label>
+            <label><input name="category" type="radio" value="pe"> 体育</label>
+            <label><input name="category" type="radio" value="music"> 音乐</label>
+            <label><input name="category" type="radio" value="shipin"> 视频</label>
         </div>
         <div class="content" contenteditable="true"></div>
     </div>
 </div>
 
 <script>
-    document.querySelector('.content').addEventListener('paste', function (event) {
-        const items = (event.clipboardData || window.clipboardData).items;
-        for (let item of items) {
-            if (item.type.indexOf('image') !== -1) {
-                const file = item.getAsFile();
-                uploadImage(file);
+    $(document).ready(function() {
+        let uploadedFilePath = ''; // 全局变量用于存储上传的文件路径
+
+        // 处理编辑器中的图片粘贴
+        document.querySelector('.content').addEventListener('paste', function (event) {
+            const items = (event.clipboardData || window.clipboardData).items;
+            for (let item of items) {
+                if (item.type.indexOf('image') !== -1) {
+                    const file = item.getAsFile();
+                    uploadImage(file);
+                }
             }
+        });
+
+        // 上传图片文件的函数
+        function uploadImage(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            $.ajax({
+                url: '/api/uploadFile',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    const imageUrl = response.path;
+                    insertImageToEditor(imageUrl);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('上传图片出错:', textStatus, errorThrown);
+                }
+            });
+        }
+
+        // 将上传的图片插入到编辑器中
+        function insertImageToEditor(url) {
+            const img = document.createElement('img');
+            img.src = "/" + url; // 根据服务器响应的结构调整路径
+            img.style.maxWidth = '80%'; // 示例样式
+            document.querySelector('.content').appendChild(img);
+        }
+
+        // 附件上传按钮的事件监听
+        document.getElementById('uploadAttachmentButton').addEventListener('click', function () {
+            document.getElementById('attachmentInput').click();
+        });
+
+        // 文件输入变化事件监听（附件上传）
+        document.getElementById('attachmentInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadAttachmentSimple(file);
+            }
+        });
+
+        // 简单的附件上传函数
+        function uploadAttachmentSimple(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            $.ajax({
+                url: '/api/uploadFile',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    const filePath = response.path ;
+                    console.log('附件上传成功，路径:', filePath);
+                    uploadedFilePath = filePath;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('附件上传失败:', textStatus, errorThrown);
+                }
+            });
+        }
+
+        // 点击发布按钮时调用创建文章函数
+        $(document).on("click", "#publishButton", function () {
+            createArticle();
+        });
+
+        // 创建文章函数
+        function createArticle() {
+            // 获取文章标题、内容和分类
+            const title = $(".title").val();
+            const content = $(".content").html();
+            const category = $("input[name='category']:checked").val();
+            const headURL = $(".content img").attr("src");
+
+            // 构建文章数据
+            const articleData = {
+                title: title,
+                content: content,
+                imageURL: headURL,
+                category: category,
+            };
+
+            // 添加文件路径到文章数据（如果有上传的文件路径）
+            if (uploadedFilePath) {
+                articleData.file = uploadedFilePath;
+            }
+
+            // 输出发送给后端的 JSON 数据
+            console.log("json", JSON.stringify(articleData));
+
+            // 发送文章数据到后端
+            $.ajax({
+                type: "POST",
+                url: "/api/createArticle",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(articleData),
+                success: function () {
+                    alert("文章发布成功");
+                    window.location.href = "/";
+                },
+                error: function (err) {
+                    let errorMessage = "文章发布失败";
+                    if (err.responseJSON && err.responseJSON.message) {
+                        errorMessage = err.responseJSON.message;
+                    }
+                    $("#errorInfo").html(errorMessage).css("color", "red");
+                }
+            });
         }
     });
 
-    function uploadImage(file) {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        $.ajax({
-            url: '/api/upload',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                const imageUrl = response.path;
-                insertImageToEditor(imageUrl);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error uploading image:', textStatus, errorThrown);
-            }
-        });
-    }
-
-    function insertImageToEditor(url) {
-        const img = document.createElement('img');
-        img.src = "/" + url; // 设置图片的 src 属性
-        img.style.maxWidth = '80%'; // 设置图片样式以适应编辑器
-        document.querySelector('.content').appendChild(img); // 将图片插入到编辑器中
-    }
-
-    $(document).on("click", "#publishButton", function () {
-        createArticle();
-    });
 </script>
 
 </body>

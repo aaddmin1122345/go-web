@@ -13,11 +13,19 @@ func (c *CommentImpl) AddComment(comment *model.Comment) error {
 	return nil
 }
 
-func (c *CommentImpl) GetComments(article int) ([]*model.Comment, error) {
-	comment, err := MyDatabaseComment.GetComments(article)
+func (c *CommentImpl) GetComments(articleID int) ([]*model.Comment, error) {
+	comments, err := MyDatabaseComment.GetComments(articleID)
 	if err != nil {
 		return nil, err
 	}
-	return comment, nil
+	return comments, nil
+}
+
+func (c *CommentImpl) DeleteComment(id int) error {
+	err := MyDatabaseComment.DeleteComment(id)
+	if err != nil {
+		return err
+	}
+	return nil
 
 }

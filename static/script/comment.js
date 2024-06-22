@@ -1,53 +1,58 @@
+$(document).ready(function() {
+    // 提交评论表单
+    $("#commentForm").on("submit", createComment);
+
+    // 回复评论按钮点击事件
+    $("#comments-section").on("click", "button", function() {
+        const commentID = $(this).data("comment-id");
+        replyToComment(commentID);
+    });
+});
+
 function createComment(event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
-    // Get username and content values
     const username = $("input[name='username']").val();
-    const content = $("textarea[name='content']").val();
-
-    // Get the current URL and extract 'id' parameter
+    const content = $(".content1").text().trim(); // 使用 .text() 获取文本内容并去除空格
     const currentUrl = window.location.href;
-    const id = parseInt(extractIdFromUrl(currentUrl), 10); // Parse 'id' as integer
+    const id = extractIdFromUrl(currentUrl);
+    const parentCommentID = $("input[name='parentCommentID']").val() || null;
 
-    // Construct comment data
     const commentData = {
         username: username,
         content: content,
-        articleID: id
+        articleID: id,
+        parentCommentID: parseInt(parentCommentID)
     };
 
-    // Output JSON data to console (for debugging)
     console.log("Comment Data:", JSON.stringify(commentData));
 
-    // Send comment data to the backend using AJAX
     $.ajax({
         type: "POST",
         url: "/api/createComment",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(commentData),
         success: function () {
-            alert("评论成功");
-            location.reload(); // Reload the page after successful comment submission
+            alert("评论提交成功");
+            location.reload(); // 成功提交后刷新页面
         },
         error: function (err) {
-            let errorMessage = "发送失败";
+            let errorMessage = "评论提交失败";
             if (err.responseJSON && err.responseJSON.message) {
                 errorMessage = err.responseJSON.message;
             }
-            $("#errorInfo").html(errorMessage).css("color", "red"); // Display error message to user
+            $("#errorInfo").html(errorMessage).css("color", "red"); // 显示错误消息给用户
         }
     });
 }
 
-// Function to extract 'id' parameter from URL using regex
-function extractIdFromUrl(url) {
-    // Regular expression to match 'id' parameter in URL
-    const regex = /[?&]id=(\d+)/;
-    const match = regex.exec(url);
-    return match && match[1]; // Return the captured group (id value)
+function replyToComment(commentID) {
+    $("input[name='parentCommentID']").val(commentID);
+    $(".content1").focus(); // 设置焦点在评论内容输入框上
 }
 
-// Attach the createComment function to the form's submit event
-$(document).ready(function() {
-    $("#commentForm").on("submit", createComment);
-});
+function extractIdFromUrl(url) {
+    const regex = /[?&]id=(\d+)/;
+    const match = regex.exec(url);
+    return match ? parseInt(match[1], 10) : null;
+}

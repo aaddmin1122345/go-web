@@ -11,7 +11,7 @@ import (
 
 // 不初始化一个session会报错,暂时先这样写,后面在来细优化
 var store = sessions.NewCookieStore([]byte("go-web-session-test"))
-
+var ArticleService = api.ArticleImpl{}
 var CommentApi = &api.CommentImpl{}
 var UserApi = &api.UserApiImpl{Session: store}
 var ArticleApi = &api.ArticleImpl{}
@@ -23,6 +23,7 @@ type MyRoute interface {
 	AuthMiddleware(userType string) mux.MiddlewareFunc
 	Comment(router *mux.Router)
 	Article(router *mux.Router)
+	Admin(router *mux.Router)
 }
 
 type MyRouteImpl struct{}
@@ -47,6 +48,7 @@ func (r MyRouteImpl) Init() {
 	r.Comment(route)
 	r.static(route)
 	r.Article(route)
+	r.Admin(route)
 
 	// 设置根路径的处理函数
 	route.HandleFunc("/", MyTemplate.RenderSwfuPage)

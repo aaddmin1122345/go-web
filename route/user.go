@@ -11,6 +11,7 @@ func (r MyRouteImpl) MyRoutes(router *mux.Router) {
 	router.HandleFunc("/user/register", MyTemplate.Register).Methods("GET")
 	router.HandleFunc("/api/login", UserApi.Login).Methods("POST")
 	router.HandleFunc("/api/register", UserApi.AddUser).Methods("POST")
+	//router.HandleFunc("/api/AAtest", UserApi.AAtest).Methods("GET")
 
 	//router.HandleFunc("/user/logout", UserApi.Logout).Methods("POST")
 
@@ -19,11 +20,14 @@ func (r MyRouteImpl) MyRoutes(router *mux.Router) {
 	auth.Use(r.AuthMiddleware("reader"))
 	auth.HandleFunc("/logout", UserApi.Logout).Methods("GET")
 
-	AdminAuth := router.PathPrefix("/api").Subrouter()
-	AdminAuth.Use(r.AuthMiddleware("admin"))
-	auth.HandleFunc("/deleteUser", UserApi.DeleteUser).Methods("GET")
-	auth.HandleFunc("/getUserByKeyword", UserApi.GetUserByKeyword).Methods("POST")
-	auth.HandleFunc("/deleteUser", UserApi.DeleteUser).Methods("POST")
-	auth.HandleFunc("/updateUser", UserApi.UpdateUser).Methods("POST")
+	//authorAuth := router.PathPrefix("/api").Subrouter()
+	//authorAuth.Use(r.AuthMiddleware("author"))
+	//authorAuth.HandleFunc("/deleteUser", UserApi.DeleteUser).Methods("POST")
+
+	adminAuth := router.PathPrefix("/api").Subrouter()
+	adminAuth.Use(r.AuthMiddleware("admin"))
+	adminAuth.HandleFunc("/deleteUser", UserApi.DeleteUser).Methods("POST")
+	adminAuth.HandleFunc("/getUserByKeyword", UserApi.GetUserByKeyword).Methods("POST")
+	adminAuth.HandleFunc("/updateUser", UserApi.UpdateUser).Methods("POST")
 
 }

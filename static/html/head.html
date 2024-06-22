@@ -183,26 +183,62 @@
                             <a class="nav-link" href="/" title="首页">首页</a>
                         </li>
                         <li class="nav-item" id="menu-item-it">
-                            <a class="nav-link" href="/article/getArticleByCategory?category=it"
-                               title="互联网">互联网</a>
+                            <a class="nav-link" href="/article/getArticleByCategory?category=it" title="互联网">互联网</a>
                         </li>
                         <li class="nav-item" id="menu-item-sports">
                             <a class="nav-link" href="/article/getArticleByCategory?category=pe" title="体育">体育</a>
                         </li>
                         <li class="nav-item" id="menu-item-music">
-                            <a class="nav-link" href="/article/getArticleByCategory?category=music"
-                               title="音乐">音乐</a>
+                            <a class="nav-link" href="/article/getArticleByCategory?category=music" title="音乐">音乐</a>
                         </li>
                         <li class="nav-item" id="menu-item-video">
-                            <a class="nav-link" href="/article/getArticleByCategory?category=shipin"
-                               title="视频">视频</a>
+                            <a class="nav-link" href="/article/getArticleByCategory?category=shipin" title="视频">视频</a>
                         </li>
+<!--                      eq：相等，例如 -->
+<!--                        ne：不等，例如 -->
+<!--                        lt：小于，例如 -->
+<!--                       le：小于等于，例如 -->
+<!--                       gt：大于，例如 -->
+<!--                        ge：大于等于，-->
+                        {{if eq .UserType "admin"}}
+                        <li class="nav-item" id="menu-item-logout">
+                            <a class="nav-link" href="/api/logout" title="Logout">注销</a>
+                        </li>
+                        <li class="nav-item" id="menu-item-username">
+                            <a class="nav-link" href="/admin/user" title="后台管理">后台管理</a>
+                        </li>
+                        {{else if eq .UserType "author"}}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/api/logout" title="Logout">注销</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/article/createArticle" title="发布文章">发布文章</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/article/articleManager" title="文章管理">文章管理</a>
+                        </li>
+                        <!--<li class="nav-item">
+                            <a class="nav-link" href="/userinfo" title="个人中心">个人中心</a>
+                        </li>-->
+                        {{else if eq .UserType "reader"}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/api/logout" title="Logout">注销</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/userinfo" title="个人中心">个人中心</a>
+                        </li>
+                        {{else}}
                         <li class="nav-item" id="menu-item-login">
                             <a class="nav-link" href="/user/login" title="登陆">登陆</a>
                         </li>
+                        {{end}}
+
+
                     </ul>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

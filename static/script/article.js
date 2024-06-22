@@ -4,19 +4,20 @@ function createArticle() {
     const content = $(".content").html();
     const category = $("input[name='category']:checked").val();
     const headURL = $(".content img").attr("src");
-    // 获取页面上的所有图片
-    // const images = [];
-    // $(".content img").each(function() {
-    //     images.push($(this).attr("src"));
-    // });
 
     // 构建文章数据
     const articleData = {
         title: title,
         content: content,
-        imageURL: headURL, // 将图片地址数组添加到文章数据中
+        imageURL: headURL,
         category: category,
+        // userID : userID,
     };
+
+    // 添加文件路径到文章数据（如果有上传的文件路径）
+    if (uploadedFilePath) {
+        articleData.file = uploadedFilePath;
+    }
 
     // 输出发送给后端的 JSON 数据
     console.log("json", JSON.stringify(articleData));

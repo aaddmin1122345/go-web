@@ -9,16 +9,19 @@ type User struct {
 	Password   string
 	UserType   string
 	CreateTime string
+	IsDelete   int
 }
 
 type Login struct {
 	//PhoneNum string
+	ID         int
 	Username   string
 	PhoneNum   string
 	Email      string
 	UserType   string
 	Password   string
 	RememberMe bool
+	IsDelete   int
 }
 
 type Register struct {
@@ -34,4 +37,5 @@ type Register struct {
 type SessionInfo struct {
 	Username string
 	UserType string
+	UserID   int
 }

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"go-web/model"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -25,41 +24,29 @@ func (m *MyDatabaseImpl) SetDb(db *sql.DB) {
 }
 
 func (m *MyDatabaseImpl) GetUserByKeyword(username string) ([]*model.User, error) {
-	//db, err := m.db.Conn()
-	//if err != nil {
-	//	return nil, err
-	//}
-	//defer db.Close()
+	var query string
+	var args []interface{}
 
-	if m.db == nil {
-		fmt.Println("数据库为空")
-
-		return nil, nil
+	if username == "" {
+		query = "SELECT ID, PhoneNum, Username, Sex, Email, Password, UserType, CreateTime, IsDelete FROM user WHERE IsDelete = 0;"
+	} else {
+		query = "SELECT ID, PhoneNum, Username, Sex, Email, Password, UserType, CreateTime, IsDelete FROM user WHERE PhoneNum LIKE ? OR Username LIKE ? OR Sex LIKE ? OR Email LIKE ? OR Password LIKE ? OR UserType LIKE ? OR CreateTime LIKE ? AND IsDelete = 0;"
+		args = []interface{}{"%" + username + "%", "%" + username + "%", "%" + username + "%", "%" + username + "%", "%" + username + "%", "%" + username + "%", "%" + username + "%"}
 	}
-	query := "SELECT ID, PhoneNum, Username, Sex, Email, Password,UserType,CreateTime FROM user WHERE PhoneNum LIKE ? OR Username LIKE ? OR Sex LIKE ? OR Email LIKE ? OR Password LIKE ? OR UserType LIKE ? OR CreateTime LIKE ?;"
-	rows, err := m.db.Query(query, "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%", "%"+username+"%")
+
+	rows, err := m.db.Query(query, args...)
 	if err != nil {
 		return nil, err
 	}
-	defer func(rows *sql.Rows) {
-		err = rows.Close()
-		if err != nil {
-			// handle error
-		}
-	}(rows)
+	defer rows.Close()
 
 	var users []*model.User
 	for rows.Next() {
 		var user model.User
-		err = rows.Scan(&user.ID, &user.PhoneNum, &user.Username, &user.Sex, &user.Email, &user.Password, &user.UserType, &user.CreateTime)
+		err = rows.Scan(&user.ID, &user.PhoneNum, &user.Username, &user.Sex, &user.Email, &user.Password, &user.UserType, &user.CreateTime, &user.IsDelete)
 		if err != nil {
 			return nil, err
 		}
-
-		//fmt.Println(user)
-		//fmt.Println(&user)
-		//fmt.Printf("%T\n", user)
-		//fmt.Printf("%T\n", &user)
 		users = append(users, &user)
 	}
 
@@ -69,7 +56,7 @@ func (m *MyDatabaseImpl) GetUserByKeyword(username string) ([]*model.User, error
 func (m *MyDatabaseImpl) CheckUser(user *model.Register) error {
 	// 定义用户类型和性别的数组
 	userTypeArray := [...]string{"reader", "author"}
-	sexArray := [...]string{"男", "女", "其它", "不便于透露"}
+	sexArray := [...]string{"男", "女", "其它", "不便透露"}
 
 	// 检查用户类型是否有效
 	userTypeValid := false
@@ -154,6 +141,7 @@ func (m *MyDatabaseImpl) AddUser(user *model.Register) error {
 	query := "INSERT INTO user (PhoneNum, Username, Sex, Email, Password, UserType) VALUES (?, ?, ?, ?, ?, ?)"
 	_, err = m.db.Exec(query, user.PhoneNum, user.Username, user.Sex, user.Email, hashPassword, user.UserType)
 	if err != nil {
+		err = errors.New("邮箱/手机号/用户名被人使用了")
 		return err
 	}
 
@@ -186,41 +174,42 @@ func (m *MyDatabaseImpl) DeleteUser(id int) error {
 	if err := m.CheckDelUser(id); err != nil {
 		return err
 	}
-	query := "DELETE FROM user WHERE ID = ?"
+	query := "update user set IsDelete = 1 where ID = ?"
 	_, err := m.db.Exec(query, id)
 	return err
 }
 
 func (m *MyDatabaseImpl) Login(login *model.Login) (*model.Login, error) {
-
 	// 检查密码长度
 	if len(login.Password) < 6 {
-		return nil, errors.New("密码必须大于或等于6位")
+		return nil, errors.New("密码太短了")
 	}
-	query := "SELECT Username, Password,UserType FROM user WHERE Username = ? OR PhoneNum = ? OR Email = ?"
+
+	// 查询语句
+	query := "SELECT ID, Username, Password, UserType FROM user WHERE (Username = ? OR PhoneNum = ? OR Email = ?) AND IsDelete = 0"
 
 	// 执行查询
 	var storedUsername, storedPassword, storedUserType string
-	//sql用了 or 语句,所以两个参数可以设置为Username,Username没匹配到会去匹配PhoneNum,缺点是用户不存在会去查询两次
-	err := m.db.QueryRow(query, login.Username, login.Username, login.Username).Scan(&storedUsername, &storedPassword, &storedUserType)
+	var storedUserID int
+	err := m.db.QueryRow(query, login.Username, login.Username, login.Username).Scan(&storedUserID, &storedUsername, &storedPassword, &storedUserType)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, errors.New("用户名或手机号或邮箱不存在或密码不对")
+			return nil, errors.New("用户或密码不正确")
 		}
 		return nil, err
 	}
 
-	// 验证密码是否匹配,只能使用这个库自带的语句进行验证
+	// 验证密码
 	err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(login.Password))
 	if err != nil {
-		return nil, errors.New("用户名或手机号或邮箱不存在或密码不对")
+		return nil, errors.New("用户或密码不正确")
 	}
 
-	// 便于测试返回登陆的用户信息
+	// 构造并返回登录信息
 	return &model.Login{
+		ID:       storedUserID,
 		Username: storedUsername,
-		Password: "none",
+		Password: "*********", // 或者使用空字符串或其他占位符
 		UserType: storedUserType,
 	}, nil
-
 }

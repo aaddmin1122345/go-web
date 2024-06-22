@@ -1,0 +1,539 @@
+<html class="wp-toolbar immersion-color" lang="zh-CN">
+
+<head>
+
+    <script src="/static/script/jquery-3.7.1.js"></script>
+
+
+
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>用户 ‹ — WordPress</title>
+    <link href="/static/css/admin/load-style.css" rel="stylesheet" type="text/css">
+    <!-- <style type="text/css">
+         @media print { #wpadminbar { display:none; } }
+     </style>-->
+    <link href="/static/css/admin/admin.css" id="colors-css" media="all" rel="stylesheet">
+    <style id="wp-emoji-styles-inline-css">
+
+    </style>
+    <style id="themecolor_css">
+        :root {
+            --themecolor: #5e72e4;
+            --themecolor-R: 94;
+            --themecolor-G: 114;
+            --themecolor-B: 228;
+            --themecolor-H: 231;
+            --themecolor-S: 71;
+            --themecolor-L: 63;
+        }
+    </style>
+
+    <meta content="width=device-width,initial-scale=1.0" name="viewport">
+</head>
+<body class="wp-admin wp-core-ui js users-php auto-fold admin-bar branch-6-5 version-6-5-4 admin-color-argon locale-zh-cn customize-support sticky-menu svg">
+
+
+
+
+<div id="wpwrap">
+
+    <div aria-label="主页" id="adminmenumain" role="navigation">
+        <a class="screen-reader-shortcut" href="#wpbody-content">跳至主内容</a>
+        <a class="screen-reader-shortcut" href="#wp-toolbar">跳至工具栏</a>
+        <div id="adminmenuback"></div>
+        <div id="adminmenuwrap">
+            <ul id="adminmenu">
+
+
+                <li aria-hidden="true" class="wp-not-current-submenu wp-menu-separator">
+                    <div class="separator"></div>
+                </li>
+                <li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-post open-if-no-js menu-top-first"
+                    id="menu-posts">
+                    <a aria-haspopup="true"
+                       class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-post open-if-no-js menu-top-first"
+                       href="article">
+                        <div class="wp-menu-arrow">
+                            <div></div>
+                        </div>
+                        <div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-post"><br></div>
+                        <div class="wp-menu-name">文章</div>
+                    </a>
+                    <!--                    <ul class="wp-submenu wp-submenu-wrap">-->
+                    <!--                        <li aria-hidden="true" class="wp-submenu-head">文章</li>-->
+                    <!--                        <li class="wp-first-item"><a class="wp-first-item" href="edit.php">所有文章</a></li>-->
+                    <!--                        <li><a href="post-new.php">写文章</a></li>-->
+                    <!--                        <li><a href="edit-tags.php?taxonomy=category">分类目录</a></li>-->
+                    <!--                        <li><a href="edit-tags.php?taxonomy=post_tag">标签</a></li>-->
+                    <!--                    </ul>-->
+                </li>
+                <!--                <li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-media" id="menu-media">-->
+                <!--                    <a aria-haspopup="true" class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-media"-->
+                <!--                       href="upload.php">-->
+                <!--                        <div class="wp-menu-arrow">-->
+                <!--                            <div></div>-->
+                <!--                        </div>-->
+                <!--                        <div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-media"><br></div>-->
+                <!--                        <div class="wp-menu-name">媒体</div>-->
+                <!--                    </a>-->
+                <!--&lt;!&ndash;                    <ul class="wp-submenu wp-submenu-wrap">&ndash;&gt;-->
+                <!--&lt;!&ndash;                        <li aria-hidden="true" class="wp-submenu-head">媒体</li>&ndash;&gt;-->
+                <!--&lt;!&ndash;                        <li class="wp-first-item"><a class="wp-first-item" href="upload.php">媒体库</a></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;                        <li><a href="media-new.php">添加文件</a></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;                    </ul>&ndash;&gt;-->
+                <!--                </li>-->
+
+
+                <!--                <li class="wp-not-current-submenu menu-top menu-icon-comments" id="menu-comments">-->
+                <!--                    <a class="wp-not-current-submenu menu-top menu-icon-comments" href="edit-comments.php">-->
+                <!--                        <div class="wp-menu-arrow">-->
+                <!--                            <div></div>-->
+                <!--                        </div>-->
+                <!--                        <div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-comments"><br>-->
+                <!--                        </div>-->
+                <!--                        <div class="wp-menu-name">评论 <span class="awaiting-mod count-0"><span aria-hidden="true"-->
+                <!--                                                                                                class="pending-count">0</span><span-->
+                <!--                                class="comments-in-moderation-text screen-reader-text">0 条评论待审</span></span></div>-->
+                <!--                    </a></li>-->
+
+
+                <li class="wp-has-submenu wp-has-current-submenu wp-menu-open menu-top menu-icon-users" id="menu-users">
+                    <a aria-haspopup="false"
+                       class="wp-has-submenu wp-has-current-submenu wp-menu-open menu-top menu-icon-users"
+                       href="user">
+                        <div class="wp-menu-arrow">
+                            <div></div>
+                        </div>
+                        <div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-users"><br></div>
+                        <div class="wp-menu-name">用户</div>
+                    </a>
+                    <!--                    <ul class="wp-submenu wp-submenu-wrap">-->
+                    <!--                        <li aria-hidden="true" class="wp-submenu-head">用户</li>-->
+                    <!--&lt;!&ndash;                        <li class="wp-first-item current"><a aria-current="page" class="wp-first-item current"&ndash;&gt;-->
+                    <!--&lt;!&ndash;                                                             href="/api/getUserByKeyword">所有用户</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <li><a href="/user/register">添加用户</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <li><a href="profile.php">个人资料</a></li>&ndash;&gt;-->
+                    <!--                    </ul>-->
+                </li>
+
+
+                <li aria-hidden="true" class="wp-not-current-submenu wp-menu-separator">
+                    <div class="separator"></div>
+                </li>
+                <li class="hide-if-no-js" id="collapse-menu"></li>
+            </ul>
+        </div>
+    </div>
+    <div id="wpcontent">
+
+        <div class="nojq" id="wpadminbar">
+            <div aria-label="工具栏" class="quicklinks" id="wp-toolbar" role="navigation">
+                <ul class="ab-top-menu" id="wp-admin-bar-root-default" role="menu">
+                    <li id="wp-admin-bar-menu-toggle"><a aria-expanded="false" class="ab-item" href="#" role="menuitem"><span
+                            aria-hidden="true" class="ab-icon"></span><span class="screen-reader-text">菜单</span></a>
+                    </li>
+                    <li class="menupop" id="wp-admin-bar-wp-logo"><a aria-expanded="false" class="ab-item"
+                                                                     href="https://0x00.fun/wp-admin/about.php"
+                                                                     role="menuitem"><span aria-hidden="true"
+                                                                                           class="ab-icon"></span><span
+                            class="screen-reader-text">关于 WordPress</span></a>
+                        <div class="ab-sub-wrapper">
+                            <ul aria-label="关于 WordPress" class="ab-submenu" id="wp-admin-bar-wp-logo-default"
+                                role="menu">
+                                <li id="wp-admin-bar-about"><a class="ab-item"
+                                                               href="https://0x00.fun/wp-admin/about.php"
+                                                               role="menuitem">关于 WordPress</a></li>
+                                <li id="wp-admin-bar-contribute"><a class="ab-item"
+                                                                    href="https://0x00.fun/wp-admin/contribute.php"
+                                                                    role="menuitem">参与</a></li>
+                            </ul>
+                            <ul aria-label="关于 WordPress" class="ab-sub-secondary ab-submenu"
+                                id="wp-admin-bar-wp-logo-external" role="menu">
+                                <li id="wp-admin-bar-wporg"><a class="ab-item" href="https://cn.wordpress.org/"
+                                                               role="menuitem">WordPress.org</a></li>
+                                <li id="wp-admin-bar-documentation"><a class="ab-item"
+                                                                       href="https://wordpress.org/documentation/"
+                                                                       role="menuitem">文档</a></li>
+                                <li id="wp-admin-bar-learn"><a class="ab-item" href="https://learn.wordpress.org/"
+                                                               role="menuitem">学习 WordPress</a></li>
+                                <li id="wp-admin-bar-support-forums"><a class="ab-item"
+                                                                        href="https://cn.wordpress.org/support/forums/"
+                                                                        role="menuitem">支持</a></li>
+                                <li id="wp-admin-bar-feedback"><a class="ab-item"
+                                                                  href="https://cn.wordpress.org/support/forum/suggestions/"
+                                                                  role="menuitem">反馈</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menupop" id="wp-admin-bar-site-name"><a aria-expanded="false" class="ab-item"
+                                                                       href="https://0x00.fun/"
+                                                                       role="menuitem">0x00.fun</a>
+                        <div class="ab-sub-wrapper">
+                            <ul aria-label="0x00.fun" class="ab-submenu" id="wp-admin-bar-site-name-default"
+                                role="menu">
+                                <li id="wp-admin-bar-view-site"><a class="ab-item" href="https://0x00.fun/"
+                                                                   role="menuitem">查看站点</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li id="wp-admin-bar-updates"></li>
+                    <li id="wp-admin-bar-comments"></li>
+                    <li class="menupop" id="wp-admin-bar-new-content">
+                        <div class="ab-sub-wrapper">
+                            <ul aria-label="新建" class="ab-submenu" id="wp-admin-bar-new-content-default" role="menu">
+                                <li id="wp-admin-bar-new-post"><a class="ab-item"
+                                                                  href="https://0x00.fun/wp-admin/post-new.php"
+                                                                  role="menuitem">文章</a></li>
+                                <li id="wp-admin-bar-new-media"><a class="ab-item"
+                                                                   href="https://0x00.fun/wp-admin/media-new.php"
+                                                                   role="menuitem">媒体</a></li>
+                                <li id="wp-admin-bar-new-link"><a class="ab-item"
+                                                                  href="https://0x00.fun/wp-admin/link-add.php"
+                                                                  role="menuitem">链接</a></li>
+                                <li id="wp-admin-bar-new-page"><a class="ab-item"
+                                                                  href="https://0x00.fun/wp-admin/post-new.php?post_type=page"
+                                                                  role="menuitem">页面</a></li>
+                                <li id="wp-admin-bar-new-shuoshuo"><a class="ab-item"
+                                                                      href="https://0x00.fun/wp-admin/post-new.php?post_type=shuoshuo"
+                                                                      role="menuitem">说说</a></li>
+                                <li id="wp-admin-bar-new-user"><a class="ab-item"
+                                                                  href="https://0x00.fun/wp-admin/user-new.php"
+                                                                  role="menuitem">用户</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="ab-top-secondary ab-top-menu" id="wp-admin-bar-top-secondary" role="menu">
+                    <li class="menupop with-avatar" id="wp-admin-bar-my-account"><a aria-expanded="false"
+                                                                                    class="ab-item"
+                                                                                    href="https://0x00.fun/wp-admin/profile.php"
+                                                                                    role="menuitem">您好，<span
+                            class="display-name">admin</span><img alt="" class="avatar avatar-26 photo" decoding="async"
+                                                                  height="26" loading="lazy"
+                                                                  src="https://secure.gravatar.com/avatar/a4b8f70cea03fbfc92450b4031b71df7?s=26&amp;d=mm&amp;r=g"
+                                                                  srcset="https://secure.gravatar.com/avatar/a4b8f70cea03fbfc92450b4031b71df7?s=52&amp;d=mm&amp;r=g 2x"
+                                                                  width="26"></a>
+                        <div class="ab-sub-wrapper">
+                            <ul aria-label="您好，admin" class="ab-submenu" id="wp-admin-bar-user-actions" role="menu">
+                                <li id="wp-admin-bar-user-info"><a class="ab-item"
+                                                                   href="https://0x00.fun/wp-admin/profile.php"
+                                                                   role="menuitem"><img alt=""
+                                                                                        class="avatar avatar-64 photo"
+                                                                                        decoding="async" height="64"
+                                                                                        loading="lazy"
+                                                                                        src="https://secure.gravatar.com/avatar/a4b8f70cea03fbfc92450b4031b71df7?s=64&amp;d=mm&amp;r=g"
+                                                                                        srcset="https://secure.gravatar.com/avatar/a4b8f70cea03fbfc92450b4031b71df7?s=128&amp;d=mm&amp;r=g 2x"
+                                                                                        width="64"><span
+                                        class="display-name">admin</span><span class="username">qxqzx</span><span
+                                        class="display-name edit-profile">编辑个人资料</span></a></li>
+                                <li id="wp-admin-bar-logout"><a class="ab-item"
+                                                                href="https://0x00.fun/wp-login.php?action=logout&amp;_wpnonce=7fc8657d76"
+                                                                role="menuitem">注销</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div id="wpbody" role="main">
+
+            <div id="wpbody-content">
+                <div class="metabox-prefs" id="screen-meta">
+
+                    <div aria-label="「上下文帮助」选项卡" class="hidden" id="contextual-help-wrap" tabindex="-1">
+                        <div id="contextual-help-back"></div>
+                        <div id="contextual-help-columns">
+                            <div class="contextual-help-tabs">
+                                <ul>
+
+                                    <li class="active" id="tab-link-overview">
+                                        <a aria-controls="tab-panel-overview" href="#tab-panel-overview">
+                                            概述 </a>
+                                    </li>
+
+                                    <li id="tab-link-screen-content">
+                                        <a aria-controls="tab-panel-screen-content" href="#tab-panel-screen-content">
+                                            页面内容 </a>
+                                    </li>
+
+                                    <li id="tab-link-action-links">
+                                        <a aria-controls="tab-panel-action-links" href="#tab-panel-action-links">
+                                            可进行的操作 </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="contextual-help-sidebar">
+                                <p><strong>更多信息：</strong></p>
+                                <p><a href="https://wordpress.org/documentation/article/users-screen/">管理用户文档</a>
+                                </p>
+                                <p>
+                                    <a href="https://wordpress.org/documentation/article/roles-and-capabilities/">角色和能力文档</a>
+                                </p>
+                                <p><a href="https://cn.wordpress.org/support/forums/">支持论坛</a></p></div>
+
+                            <div class="contextual-help-tabs-wrap">
+
+                                <div class="help-tab-content active" id="tab-panel-overview">
+                                    <p>
+                                        本页面列出了您站点当前的所有用户。根据站点管理员的意愿，每位用户都有下列五种用户角色中的其中一种：站点管理员、编辑、作者、贡献者或订阅者。在用户登录到仪表盘后，权限低于管理员角色的用户，只能基于其权限看到部分选项。</p>
+                                    <p>
+                                        要添加一位新用户到站点中，点击屏幕上方的「添加用户」按钮，或选择左侧菜单中的「用户」→「添加用户」。</p>
+                                </div>
+
+                                <div class="help-tab-content" id="tab-panel-screen-content">
+                                    <p>您可以通过以下方法来自定义本页面：</p>
+                                    <ul>
+                                        <li>您可在「显示选项」中按需隐藏或显示各个栏目，并决定每页显示的用户数。</li>
+                                        <li>
+                                            您可以使用用户列表上方的文字链接按用户角色筛选用户列表，可显示所有、管理员、编辑、作者、贡献者或订阅者。默认视图为显示所有用户。未使用的用户角色不会被列出。
+                                        </li>
+                                        <li>WordPress
+                                            可列出一个用户发布的所有文章——点击列表中相应用户「文章」一栏的数字来查看该人所写的文章。
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="help-tab-content" id="tab-panel-action-links">
+                                    <p>
+                                        将鼠标光标悬停在用户列表中的某一行，操作链接将会显示出来，您可以通过它们快速管理用户。您可进行下列操作：</p>
+                                    <ul>
+                                        <li>点击「<strong>编辑</strong>」可在个人资料编辑器中编辑该用户。当然，直接点击用户名也是可以的。
+                                        </li>
+                                        <li>「<strong>删除</strong>」链接会带您到「删除用户」确认页面。在确认页面，您可以永久从站点中删除用户，并决定是否保留他们的内容。您也可以通过批量操作功能一次删除多个用户。
+                                        </li>
+                                        <li><strong>查看</strong> 带您前往一个公开的作者归档页面，其中列出了由此用户发表的全部文章。
+                                        </li>
+                                        <li><strong>发送密码重置</strong> 将向用户发送一封带有设置新密码链接的电子邮件。
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-label="「显示选项」选项卡" class="hidden" id="screen-options-wrap" tabindex="-1">
+                        <form id="adv-settings" method="post">
+                            <fieldset class="metabox-prefs">
+                                <legend>栏目</legend>
+                                <label><input checked="checked" class="hide-column-tog" id="email-hide"
+                                              name="email-hide" type="checkbox" value="email">电子邮箱地址</label>
+                                <label><input checked="checked" class="hide-column-tog" id="role-hide" name="role-hide"
+                                              type="checkbox" value="role">角色</label>
+                                <label><input checked="checked" class="hide-column-tog" id="posts-hide"
+                                              name="posts-hide" type="checkbox" value="posts">文章</label>
+                            </fieldset>
+                            <fieldset class="screen-options">
+                                <legend>分页</legend>
+                                <label for="users_per_page">每页的项目数：</label>
+                                <input class="screen-per-page" id="users_per_page" max="999" min="1"
+                                       name="wp_screen_options[value]" step="1" type="number" value="20">
+                                <input name="wp_screen_options[option]" type="hidden" value="users_per_page">
+                            </fieldset>
+                            <p class="submit"><input class="button button-primary" id="screen-options-apply"
+                                                     name="screen-options-apply" type="submit" value="应用"></p>
+                            <input id="screenoptionnonce" name="screenoptionnonce" type="hidden" value="961d028c51">
+                        </form>
+                    </div>
+                </div>
+                <div id="screen-meta-links">
+                    <div class="hide-if-no-js screen-meta-toggle" id="screen-options-link-wrap">
+
+                    </div>
+                    <div class="hide-if-no-js screen-meta-toggle" id="contextual-help-link-wrap">
+
+                    </div>
+                </div>
+
+
+                <div class="wrap">
+                    <h1 class="wp-heading-inline">
+                        用户 </h1>
+
+                    <a class="page-title-action" href="/user/register">添加用户</a>
+                    <hr class="wp-header-end">
+
+                    <h2 class="screen-reader-text">筛选用户列表</h2>
+                    <ul class="subsubsub">
+                        <li class="all"><a aria-current="page" class="current" href="users.php">全部<span class="count">（1）</span></a>
+                            |
+                        </li>
+                        <li class="administrator"><a href="users.php?role=administrator">管理员<span
+                                class="count">（1）</span></a></li>
+                    </ul>
+                    <form method="get">
+
+                        <p class="search-box">
+                            <label class="screen-reader-text" for="user-search-input">搜索用户:</label>
+                            <input id="user-search-input" name="s" type="search" value="">
+                            <input class="button" id="search-submit" type="submit" value="搜索用户">
+                        </p>
+                        <input id="_wpnonce" name="_wpnonce" type="hidden" value="feca1236c2"><input
+                            name="_wp_http_referer" type="hidden" value="/wp-admin/users.php">
+
+                        <h2 class="screen-reader-text">用户列表</h2>
+                        <table class="wp-list-table widefat fixed striped table-view-list users">
+                            <caption class="screen-reader-text">表格按用户名排序。 升序。</caption>
+                            <thead>
+                            <tr>
+                                <td class="manage-column column-cb check-column">
+                                    <!--                                    id="cb"><input id="cb-select-all-1"-->
+                                    <!--                                                                                                type="checkbox">-->
+                                    <!--                                    <label for="cb-select-all-1"><span class="screen-reader-text">全选</span></label>-->
+                                </td>
+                                <th abbr="用户名" aria-sort="ascending"
+                                    class="manage-column column-username column-primary sorted asc" id="username"
+                                    scope="col"><a
+                                        href="https://0x00.fun/wp-admin/users.php?orderby=login&amp;order=desc"><span>用户名</span><span
+                                        class="sorting-indicators"><span aria-hidden="true"
+                                                                         class="sorting-indicator asc"></span><span
+                                        aria-hidden="true" class="sorting-indicator desc"></span></span></a></th>
+                                <th class="manage-column column-name" id="name" scope="col">显示名称</th>
+                                <th abbr="邮箱" class="manage-column column-email sortable desc" id="email" scope="col">
+                                    <a href="https://0x00.fun/wp-admin/users.php?orderby=email&amp;order=asc"><span>电子邮箱地址</span><span
+                                            class="sorting-indicators"><span aria-hidden="true"
+                                                                             class="sorting-indicator asc"></span><span
+                                            aria-hidden="true" class="sorting-indicator desc"></span></span> <span
+                                            class="screen-reader-text">升序排列。</span></a></th>
+                                <th class="manage-column column-role" id="role" scope="col">角色</th>
+                                <th class="manage-column column-posts num" id="posts" scope="col">文章</th>
+                            </tr>
+                            </thead>
+
+                            <tbody data-wp-lists="list:user" id="the-list">
+                            {{range .ALLUser}}
+
+
+                            <tr id="user-1">
+                                <th class="check-column" scope="row">
+                                    <!--                                <input class="subscriber" id="user_2"-->
+                                    <!--                                                                            name="users[]">-->
+                                    <!--                                                                            type="checkbox"-->
+                                    <!--                                                                            value="2">-->
+                                    <!--                                    <label for="user_2"><span-->
+                                    <!--                                        class="screen-reader-text"></span>-->
+                                    <!--                                    </label>-->
+                                </th>
+                                <td class="username column-username has-row-actions column-primary"
+                                    data-colname="用户名"><img alt="" class="avatar avatar-32 photo" decoding="async"
+                                                               height="32" loading="lazy"
+                                                               src="/static/image/logo.png"
+                                                               srcset=""
+                                                               width="32"> <strong><a
+                                        href="#">{{.Username}}</a></strong><br>
+                                    <div class="row-actions" id="{{.ID}}">
+    <span class="edit">
+        <a href="#">编辑</a> |
+    </span>
+                                        <span class="delete">
+        <a class="submitdelete" href="/">删除</a> |
+    </span>
+                                        <span class="view">
+        <a aria-label="阅读 123, 123 的文章" href="#">查看</a> |
+    </span>
+                                    </div>
+
+                                    <button class="toggle-row" type="button"><span
+                                            class="screen-reader-text">显示详情</span></button>
+                                </td>
+                                <td class="name column-name" data-colname="显示名称">{{.Username}}</td>
+                                <td class="email column-email" data-colname="电子邮箱地址"><a href="mailto:22@22.com">{{.Email}}</a>
+                                </td>
+                                <td class="role column-role" data-colname="角色">{{.UserType}}</td>
+                                <td class="posts column-posts num" data-colname="文章">0</td>
+                            </tr>
+                            {{end}}
+                            </tbody>
+
+                            <script>
+                                // 使用 jQuery，监听每个删除按钮的点击事件
+                                $(document).ready(function() {
+                                    $('.submitdelete').on('click', function(event) {
+                                        event.preventDefault(); // 阻止默认行为
+
+                                        const userId = $(this).closest('div.row-actions').attr('id'); // 获取当前行的用户 ID
+                                        // 现在你可以使用 userId 做进一步的操作，比如发送 AJAX 请求删除用户
+
+                                        // 示例：发送 AJAX 请求删除用户
+                                        $.ajax({
+                                            url: '/api/deleteUser',
+                                            method: 'POST',
+                                            data: userId,
+                                            success: function(response) {
+                                                alert("删除成功");
+                                                location.reload();
+                                            },
+                                            error: function(xhr, status, error) {
+                                                // 处理错误的响应
+                                                console.error('删除用户出错：', error);
+                                            }
+                                        });
+                                    });
+                                });
+
+                            </script>
+
+
+                            <tfoot>
+                            <tr>
+                                <td class="manage-column column-cb check-column">
+                                </td>
+                                <th abbr="用户名" aria-sort="ascending"
+                                    class="manage-column column-username column-primary sorted asc" scope="col"><a
+                                        href="https://0x00.fun/wp-admin/users.php?orderby=login&amp;order=desc"><span>用户名</span><span
+                                        class="sorting-indicators"><span aria-hidden="true"
+                                                                         class="sorting-indicator asc"></span><span
+                                        aria-hidden="true" class="sorting-indicator desc"></span></span></a></th>
+                                <th class="manage-column column-name" scope="col">显示名称</th>
+                                <th abbr="邮箱" class="manage-column column-email sortable desc" scope="col"><a
+                                        href="https://0x00.fun/wp-admin/users.php?orderby=email&amp;order=asc"><span>电子邮箱地址</span><span
+                                        class="sorting-indicators"><span aria-hidden="true"
+                                                                         class="sorting-indicator asc"></span><span
+                                        aria-hidden="true" class="sorting-indicator desc"></span></span> <span
+                                        class="screen-reader-text">升序排列。</span></a></th>
+                                <th class="manage-column column-role" scope="col">角色</th>
+                                <th class="manage-column column-posts num" scope="col">文章</th>
+                            </tr>
+                            </tfoot>
+
+                        </table>
+
+
+                    </form>
+
+                    <div class="clear"></div>
+                </div><!-- .wrap -->
+
+                <div class="clear"></div>
+            </div><!-- wpbody-content -->
+            <div class="clear"></div>
+        </div><!-- wpbody -->
+        <div class="clear"></div>
+    </div><!-- wpcontent -->
+
+    <div id="wpfooter" role="contentinfo">
+        <p class="alignleft" id="footer-left">
+            <span id="footer-thankyou">感谢使用 <a href="https://cn.wordpress.org/">WordPress</a> 进行创作。</span></p>
+        <p class="alignright" id="footer-upgrade">
+            6.5.4 版本 </p>
+        <div class="clear"></div>
+    </div>
+    <div class="hidden" id="wp-auth-check-wrap">
+        <div id="wp-auth-check-bg"></div>
+        <div id="wp-auth-check">
+            <button class="wp-auth-check-close button-link" type="button"><span class="screen-reader-text">
+		关闭对话框	</span></button>
+            <div class="loading" data-src="https://0x00.fun/wp-login.php?interim-login=1&amp;wp_lang=zh_CN"
+                 id="wp-auth-check-form"></div>
+            <div class="wp-auth-fallback">
+                <p><b class="wp-auth-fallback-expired" tabindex="0">会话已过期</b></p>
+                <p><a href="https://0x00.fun/wp-login.php" target="_blank">请重新登录。</a>
+                    登录页将在新标签页中打开。登录后您可关闭该页并返回本页。</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
